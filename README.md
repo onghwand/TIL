@@ -4,9 +4,9 @@
 
 ## 목차
 
-- [01. Markdown - 220112](./01_Markdown)
+- [01. Markdown - 220112](./Markdown)
 
-- [02. Git - 220113](./02_Git)
+- [02. Git - 220113](./Git)
 
   
 
