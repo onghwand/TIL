@@ -58,7 +58,7 @@ bool([]) # False
 abs(a - b) <= 1e-10
 # 2.
 import math
-math.inclose(a, b)
+math.isclose(a, b)
 ```
 
 ### String
