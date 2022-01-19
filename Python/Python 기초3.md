@@ -95,10 +95,10 @@ print(f'a:{a}, id:{id(a)}')
 
 
 # append와 같은 작업을 했는데 id가 변하지 않았다 -> mutable = id를 유지하면서 변화가 일어남
-b={1.2}
-print(b, id(b))
+b = {1,2}
+print(f'b:{b}, id:{id(b)}')
 b.add(3)
-print(b, id(b))
+print(f'b:{b}, id:{id(b)}')
 
 >>> b:{1, 2}, id:1676263832928
     b:{1, 2, 3}, id:1676263832928
