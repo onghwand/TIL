@@ -23,7 +23,7 @@ def my_abs(x):
 print(my_abs(-3-4j))
 print(my_abs(-0.0))
 >>> 5.0
-	0.0
+0.0
 ```
 
 
@@ -47,8 +47,8 @@ print(my_all([]))
 print(my_all([1, 2, 5, '6']))
 print(my_all([[], 2, 5, '6']))
 >>> True
-	True
-	False
+True
+False
 ```
 
 
@@ -102,7 +102,7 @@ print(sum_of_digit(1234))
 print(sum_of_digit(4321))
 print(sum_of_digit(54321))
 >>> 10
-	10
-	15
+10
+15
 ```
 
