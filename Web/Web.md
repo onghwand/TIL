@@ -152,40 +152,117 @@
   </head>
   <body>
     <header>
-      <img src="" alt="main img" />
+      <a href="https://www.ssafy.com/">
+        <img src="ssafy.png" alt="main img" />
+      </a>
       <h1>SSAFY 건강설문</h1>
     </header>
     <section>
-      <div>
-        <label for="name">이름을 기재해주세요</label><br />
-        <input type="text" id="name" />
-        <hr />
-      </div>
-      <div>
-        <label for="location">지역을 선택해주세요</label><br />
-        <select name="location" id="location">
-          <option value="seoul">서울</option>
-          <option value="kangwon">강원도</option>
-          <option value="jeonla">전라도</option>
-          <option value="kyeongsang">경상도</option>
-          <option value="etc">그 외</option>
-        </select>
-        <hr />
-      </div>
-      <div>
-        <p>오늘의 체온을 선택해주세요.</p>
-        <input id="under37" type="radio" name="temp" value="under37" />
-        <label for="under37">37도 미만</label><br />
-        <input id="over37" type="radio" name="temp" value="over37" />
-        <label for="over37">37도 이상</label>
-        <hr />
-      </div>
+      <form action="#">
+        <div>
+          <label for="name">이름을 기재해주세요.</label><br />
+          <input type="text" id="name" />
+          <hr />
+        </div>
+        <div>
+          <label for="location">지역을 선택해주세요.</label><br />
+          <select name="location" id="location">
+            <option value="seoul">서울</option>
+            <option value="kangwon">강원도</option>
+            <option value="jeonla">전라도</option>
+            <option value="kyeongsang">경상도</option>
+            <option value="etc">그 외</option>
+          </select>
+          <hr />
+        </div>
+        <div>
+          <p>오늘의 체온을 선택해주세요.</p>
+          <input id="under37" type="radio" name="temp" value="under37" />
+          <label for="under37">37도 미만</label><br />
+          <input id="over37" type="radio" name="temp" value="over37" />
+          <label for="over37">37도 이상</label>
+          <hr />
+        </div>
+        <input type="submit" value="제출" />
+      </form>
     </section>
-    <footer>
-      <input type="button" value="제출" /><br />
-      Google 설문지를 통해 비밀번호를 제출하지 마시오.
-    </footer>
+    <footer>Google 설문지를 통해 비밀번호를 제출하지 마시오.</footer>
   </body>
 </html>
 ```
 
+
+
+> CSS (Cascading Style Sheets)
+>
+> 스타일을 지정하기 위한 언어
+
+``` css
+h1/*(선택자)*/{
+    color: blue;/*(선언)*/ 
+    font-size/*(속성)*/: 15px;/*(값)*/
+}
+```
+
+> 선택자
+
+- `*` : 전체 선택자
+- `<tag>` : 요소 선택자
+- **`.class` : class 선택자**
+  - **일반적인 스타일링시 사용되는것**
+- `#id` : id 선택자
+- `div > .children` : 자식 선택자
+  - div 태그 바로 밑에 있는 children 클래스를 가진 것
+- `div .baby` : 자손 선택자
+  - div 태그 하위 모든 baby 클래스를 가진 것
+
+> 기본 선택자 우선순위
+
+- `!important`
+- 인라인 `style`
+
+- `*` <`<tag>`<`.class`<`#id`
+  - 같은 우선순위인 경우에는 CSS가 나중에 선언된 것
+
+> CSS 상속
+
+- 상속 되는 속성 => style 상속 O
+- 상속 되지 않는 속성 => box model, position 상속 X
+
+> CSS Box model
+
+- box model 구성요소
+  - contents
+  - padding
+  - border
+  - margin
+
+- box model 너비 기준 지정(`box-sizing`)
+
+  - content-box (기본값)
+
+  - border-box => 일반적인 선호
+
+```css
+.box_sizing{
+    box-sizing: border-box;
+}
+```
+
+> CSS Display
+
+- display : block
+  - 줄 바꿈이 일어나는 요소
+- display : inline
+  - 줄 바꿈이 일어나지 않는 행의 일부 요소
+
+> CSS position
+
+- relative : 상대 위치
+  - 자기 자신의 static 위치를 기준으로 이동
+- absolute : 절대 위치
+  - 요소를 일반적인 무서 흐름에서 제거 후 레이아웃 공간을 차지하지 않음
+  - static이 아닌 가장 가까이 있는 부모/조상 요소를 기준으로 이동
+- fixed : 고정 위치
+  - 부모 요소와 관계없이 viewport를 기준으로 이동
+    - 스크롤 시에도 항상 같은 곳에 위치함
