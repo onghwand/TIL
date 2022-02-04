@@ -1,3 +1,5 @@
+
+
 ## CSS 실습
 
 > CSS styling
@@ -41,6 +43,8 @@ img{
 > 변경 후
 
 ![image-20220204132709502](CSS_styling.assets/image-20220204132709502.png)
+
+> HTML
 
 ```html
 <!DOCTYPE html>
@@ -86,6 +90,8 @@ img{
 </body>
 </html>
 ```
+
+> CSS
 
 ```css
 * {
@@ -183,6 +189,8 @@ p {
 
 ![image-20220204135320204](CSS_styling.assets/image-20220204135320204.png)
 
+> HTML
+
 ```html
 <!DOCTYPE html>
 <html lang="ko">
@@ -203,6 +211,8 @@ p {
   </body>
 </html>
 ```
+
+> CSS
 
 ```css
 .big-box {
