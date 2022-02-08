@@ -2,7 +2,7 @@
 
 >Bootstrap
 
-![image-20220208130013361](C:\Users\82102\AppData\Roaming\Typora\typora-user-images\image-20220208130013361.png)
+![image-20220208130013361](Bootstrap&Responsive.assets/image-20220208130013361.png)
 
 ```html
 <!DOCTYPE html>
