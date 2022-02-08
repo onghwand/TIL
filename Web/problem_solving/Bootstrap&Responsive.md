@@ -94,15 +94,15 @@
 
 - width: 992px 이상
 
-![image-20220208145012058](Bootstrap,CSS.assets/image-20220208145012058.png)
+![image-20220208145012058](Bootstrap&Responsive.assets/image-20220208145012058.png)
 
 - width: 768px-992px
 
-![image-20220208145327501](Bootstrap,CSS.assets/image-20220208145327501.png)
+![image-20220208145327501](Bootstrap&Responsive.assets/image-20220208145327501.png)
 
 - width: 768px이하
 
-![image-20220208145353123](Bootstrap,CSS.assets/image-20220208145353123.png)
+![image-20220208145353123](Bootstrap&Responsive.assets/image-20220208145353123.png)
 
 ```html
 <!DOCTYPE html>
