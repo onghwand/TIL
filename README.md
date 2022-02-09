@@ -10,6 +10,11 @@
 
 - [03. Python](./Python) 
 
+  - [Python_Basic](./Python/Python_Basic) 
+  - [Project](./Python/Project) 
+  - [SWEA](./Python/SWEA) 
+  - [Algorithm](./Python/Algorithm) 
+
 - [04. Web](./Web)   
 
   
