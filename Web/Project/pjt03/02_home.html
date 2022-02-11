@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="01_nav_footer.css" />
+    <link rel="stylesheet" href="02_home.css" />
+
+    <!-- font CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Home</title>
+  </head>
+  <body>
+    <!-- 01_nav_footer.html -->
+    <!-- 01_nav_footer 에서 완성한 Navigation bar 코드를 붙여넣어 주세요. -->
+    <!-- 01_nav_footer.html -->
+    <nav class="d-flex navbar sticky-top navbar-dark bg-dark">
+      <div class="container-fluid">
+        <!-- logo -->
+        <a class="navbar-brand" href="02_home.html">
+          <img src="images/logo.png" alt="logo" width="180" height="70" />
+        </a>
+        <!-- row menu -->
+        <div class="d-none d-md-block">
+          <ul class="d-flex list-unstyled mb-0">
+            <a href="02_home.html" class="text-decoration-none mx-3 text-white">
+              <li>Home</li>
+            </a>
+            <a
+              href="03_community.html"
+              class="text-decoration-none mx-3 text-secondary"
+            >
+              <li>Community</li>
+            </a>
+            <a
+              href="#"
+              class="text-decoration-none mx-3 text-secondary"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              <li>Login</li>
+            </a>
+          </ul>
+        </div>
+        <!-- col menu -->
+        <button
+          class="navbar-toggler d-md-none"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarToggleExternalContent"
+          aria-controls="navbarToggleExternalContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </nav>
+    <!-- nav-hamburger contents-->
+    <div class="collapse" id="navbarToggleExternalContent">
+      <div class="bg-dark p-4 d-md-none">
+        <ul class="d-flex flex-column align-items-end list-unstyled mb-0">
+          <a href="02_home.html" class="text-decoration-none my-2 text-white">
+            <li>Home</li>
+          </a>
+          <a
+            href="03_community.html"
+            class="text-decoration-none my-2 text-white"
+          >
+            <li>Community</li>
+          </a>
+          <a
+            href="#"
+            class="text-decoration-none my-2 text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+          >
+            <li>Login</li>
+          </a>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div
+            class="modal-body d-flex justify-content-center align-items-center"
+          >
+            <form action="#">
+              <div class="my-3">
+                <label for="id">ID :</label> <input type="text" id="id" />
+              </div>
+              <div class="my-3">
+                <label for="pwd">PW :</label>
+                <input type="password" id="pwd" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Login</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02_home.html -->
+    <!-- Carousel -->
+    <header>
+      <div
+        id="carouselExampleIndicators"
+        class="carousel slide"
+        data-bs-ride="carousel"
+      >
+        <div class="carousel-indicators">
+          <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="0"
+            class="active"
+            aria-current="true"
+            aria-label="Slide 1"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="1"
+            aria-label="Slide 2"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide-to="2"
+            aria-label="Slide 3"
+          ></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="images/header1.jpg" class="d-block w-100" alt="header1" />
+          </div>
+          <div class="carousel-item">
+            <img src="images/header2.jpg" class="d-block w-100" alt="header2" />
+          </div>
+          <div class="carousel-item">
+            <img src="images/header3.jpg" class="d-block w-100" alt="header3" />
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </header>
+
+    <h1 class="text-center py-4 fw-bold">Box office</h1>
+
+    <!-- movie cards -->
+    <section class="container movie-description mb-5">
+      <div class="row">
+        <article
+          class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center my-3"
+        >
+          <div class="card" style="width: 18rem">
+            <img src="images/movie1.jpg" class="card-img-top" alt="movie1" />
+            <div
+              class="card-body d-flex flex-column align-items-center justify-content-center"
+            >
+              <h5 class="card-title text-center fw-bold">쇼생크 탈출</h5>
+              <p class="card-text">
+                희망은 좋은거죠. 가장 소중한 것이죠. 좋은것은 절대 사라지지
+                않아요.
+              </p>
+            </div>
+          </div>
+        </article>
+        <article
+          class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center my-3"
+        >
+          <div class="card" style="width: 18rem">
+            <img src="images/movie2.jpg" class="card-img-top" alt="movie2" />
+            <div
+              class="card-body d-flex flex-column align-items-center justify-content-center"
+            >
+              <h5 class="card-title text-center fw-bold">죽은 시인의 사회</h5>
+              <p class="card-text">Carpe Diem.</p>
+            </div>
+          </div>
+        </article>
+        <article
+          class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center my-3"
+        >
+          <div class="card" style="width: 18rem">
+            <img src="images/movie3.jpg" class="card-img-top" alt="movie3" />
+            <div
+              class="card-body d-flex flex-column align-items-center justify-content-center"
+            >
+              <h5 class="card-title text-center fw-bold">다크 나이트 라이즈</h5>
+              <p class="card-text">
+                어린아이의 어깨에 코트를 걸쳐주며 세상이 끝나지 않았다고
+                얘기해주는 사람도 영웅이죠.
+              </p>
+            </div>
+          </div>
+        </article>
+        <article
+          class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center my-3"
+        >
+          <div class="card" style="width: 18rem">
+            <img src="images/movie4.jpg" class="card-img-top" alt="movie4" />
+            <div
+              class="card-body d-flex flex-column align-items-center justify-content-center"
+            >
+              <h5 class="card-title text-center fw-bold">
+                그랜드 부다페스트 호텔
+              </h5>
+              <p class="card-text">
+                혹시 그랜드 부다페스트 호텔의 무슈 구스타프 씨?
+              </p>
+            </div>
+          </div>
+        </article>
+        <article
+          class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center my-3"
+        >
+          <div class="card" style="width: 18rem">
+            <img src="images/movie5.jpg" class="card-img-top" alt="movie5" />
+            <div
+              class="card-body d-flex flex-column align-items-center justify-content-center"
+            >
+              <h5 class="card-title text-center fw-bold">her</h5>
+              <p class="card-text">I'm yours and I'm not yours.</p>
+            </div>
+          </div>
+        </article>
+        <article
+          class="col-12 col-sm-6 col-lg-4 d-flex justify-content-center my-3"
+        >
+          <div class="card" style="width: 18rem">
+            <img src="images/movie6.jpg" class="card-img-top" alt="movie6" />
+            <div
+              class="card-body d-flex flex-column align-items-center justify-content-center"
+            >
+              <h5 class="card-title text-center fw-bold">위대한 쇼맨</h5>
+              <p class="card-text">
+                모두에게 사랑받을 필욘없어요 곁에 좋은사람만 몇있으면 된거예요
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 01_nav_footer.html -->
+    <!-- 01_nav_footer 에서 완성한 Footer 코드를 붙여넣어 주세요. -->
+    <footer class="d-flex justify-content-center sticky-bottom">
+      <div class="my-3">Web-bootstrap PJT. by LDH</div>
+    </footer>
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
