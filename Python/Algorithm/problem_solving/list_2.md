@@ -1,5 +1,7 @@
 ## list_2 문제풀이
 
+- 출처 : https://swexpertacademy.com/main/main.do
+
 ### List2_연습2
 
 ```python
