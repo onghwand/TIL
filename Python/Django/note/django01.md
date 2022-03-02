@@ -188,3 +188,161 @@ def index(request): # request는 무조건 써야함 client가 요청한 모든 
 <h1>만나서 반가워요!</h1>
 ```
 
+
+
+## 7. Template
+
+- 데이터 표현을 제어하는 도구이자 표현에 관련된 로직>
+
+> Django Template Language (DTL)
+
+- built-in template system
+- 단순히 Python이 HTML이 포함 된 것이 아니며, 프로그래밍적 로직이 아니라 프레젠테이션을 표현하기 위한 것
+
+> Variable / 변수 접근
+
+- render()를 사용하여 views.py에서 정의한 변수를 template 파일로 넘겨 사용하는 것
+- render()의 세번째 인자로 딕셔너리 형태로 넘겨줌
+
+```python
+# views.py
+def greeting(request):
+    foods = ['apple', 'banana', 'coconut', ]
+    info = {
+        'name': 'Alice',
+    }
+    context = {
+        'foods': foods,
+        'info': info,
+    }
+    return render(request, 'greeting.html', context)
+```
+
+```django
+<p>안녕하세요 저는 {{ info.name }}입니다.</p>
+<p>음식은 {{ foods.0 }}</p> # 인덱스 접근
+```
+
+> Filters / 내장함수
+
+```django
+<p>안녕하세요 저는 {{ info.name|lower }}입니다.</p>
+<p>{{ foods|join:', ' }}</p>
+```
+
+> Tags / 조건 반목문
+
+```django
+<p>메뉴판</p>
+<ul>
+  {% for food in foods %}
+  <li>{{ food }}</li>
+  {% endfor %}
+</ul>
+```
+
+> Comments / 주석
+
+```django
+#여러줄 주석
+{% comment %}
+<p>1</p> 
+{% endcomment %}
+
+# 한 줄 주석
+{# as #} 
+```
+
+
+
+## 8. Template inheritance
+
+- 템플릿 상속을 사용하면 사이트의 모든 공통 요소를 포함하고, 하위 템플릿이 재정의 할 수 있는 블록을 정의하는 기본 'skeleton' 템플릿을 만들 수 있음
+
+> extends
+
+```django
+{% extends '' %}
+```
+
+- 자식 템플릿이 부모 템플릿을 확장한다는 것을 알림
+- 반드시 템플릿 최상단에 작성 되어야함
+
+> block
+
+```django
+{% block content %}{% endblock}
+```
+
+- 하위 템플릿에서 재지정(overridden)할 수 있는 블록을 정의
+- 하위 템플릿이 채울 수 있는 공간
+
+
+
+> 상속하는 방법
+
+1. settings.py에서 BASE_DIR / 'templates' 추가
+   - BASE_DIR은 최상위 폴더
+
+```python
+TEMPLATES = [
+    {    
+        'DIRS': [BASE_DIR / 'templates', ],       
+    },
+]
+```
+
+2. base.html에 공통양식 적용
+   - nav만 따로 _nav.html 만들고 {% include '_nav.html' %} 이라고 써도 똑같음
+
+```django
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+
+    <title>Document</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img
+            src="/docs/5.0/assets/brand/bootstrap-logo.svg"
+            alt=""
+            width="30"
+            height="24"
+            class="d-inline-block align-text-top"
+          />
+          Bootstrap
+        </a>
+      </div>
+    </nav>
+    {% block content %} {% endblock content %}
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
+```
+
+3. 상속시킬 html에 적용
+
+```django
+{% extends 'base.html' %} # 상속받을 html이름
+
+{% block content %} # 블록 이름 똑같이
+<h1>hihi</h1>
+{% endblock content %}
+```
+
