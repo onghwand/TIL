@@ -15,6 +15,7 @@
   - [SWEA](./Python/SWEA) 
     - 출처: https://swexpertacademy.com/main/main.do
   - [Algorithm](./Python/Algorithm) 
+  - [Django](./Python/Django)
 
 - [04. Web](./Web)   
 
