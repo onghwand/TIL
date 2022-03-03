@@ -1,5 +1,9 @@
 ## 로또 당첨 횟수
 
+> 결과 화면
+
+![image-20220303164431165](django01.assets/image-20220303164431165.png)
+
 > urls.py
 
 ```python
