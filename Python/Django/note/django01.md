@@ -341,8 +341,109 @@ TEMPLATES = [
 ```django
 {% extends 'base.html' %} # 상속받을 html이름
 
-{% block content %} # 블록 이름 똑같이
+{% block content %} # 블록 이름:content 똑같이
 <h1>hihi</h1>
 {% endblock content %}
+```
+
+
+
+### 9. THROW & CATCH
+
+```python
+# urls.py
+
+urlpatterns = [
+    path('throw/', views.throw),
+    path('catch/', views.catch),   
+]
+
+# views.py
+
+def throw(request):
+    return render(request, 'throw.html') # 여기 html에서 입력 정보 받아야함
+
+
+def catch(request):
+    msg = request.GET.get('msg') # request 객체로 날라온 정보를 받음
+    context = {
+        'msg': msg
+    }
+    return render(request, 'catch.html', context)
+```
+
+```django
+{% comment %} throw.html {% endcomment %}
+
+<form action="/catch/" method="GET">
+  <label for="msg">msg:</label>
+  <input type="text" id="msg" name="msg" />
+  <input type="submit" value="submit" />
+</form>
+
+
+{% comment %} catch.html {% endcomment %}
+
+{{ msg }}
+<a href="/throw/">다시 입력하기</a>
+```
+
+
+
+### 10. variable routing
+
+```python
+# urls.py
+
+urlpatterns = [
+    # variable routing => 뿌리에서 나뉘는 느낌
+    path('blog/<int:id>/', views.blog),
+]
+
+# views.py
+
+def blog(request, id):
+    context = {
+        'id': id
+    }
+    return render(request, 'blog.html', context)
+```
+
+```django
+<h1>{{id}} 번째 글입니다</h1>
+```
+
+
+
+### 11. URL NAME
+
+- 앱이 2개 이상으로 늘어나면 url을 각자 urls.py만들어서 관리
+
+> pjt 파일 urls.py
+
+```python
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('articles/', include('articles.urls')),
+    path('pages/', include('pages.urls')),
+]
+
+```
+
+> 각 app urls.py
+
+```python
+app_name = 'articles' # 앱 이름 지정
+
+urlpatterns = [
+    path('index/', views.index, name='index'),
+]
+```
+
+```django
+<a href="{%url 'articles:index' %}"></a>
 ```
 
