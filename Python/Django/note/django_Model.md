@@ -498,9 +498,10 @@ def delete(request, id):
 
 ### 9. 게시글 수정 UPDATE
 
-1. 글 수정 버튼을 만든다. => 누르면 수정 페이지로 이동
-2. 수정페이지를 만든다. => 기존 내용이 담겨있어야함
-3. 수정해서 `제출`버튼을 누르면 update되어 index.html로 redirect
+1. `detail.html` 글 수정 버튼을 만든다. => 누르면 수정 페이지로 이동
+2. `urls.py` 글 수정 정보를 받을 path & 받아서 DB 업데이트를 해줄 path 등록
+3. `edit.html` 수정페이지를 만든다. => `views.py : def edit`기존 내용이 담겨있어야함
+4. `views.py : def update`수정해서 `제출`버튼을 누르면 update되어 index.html로 redirect
 
 > detail.html
 
@@ -509,4 +510,68 @@ def delete(request, id):
 <a href="{% url 'articles:edit' article.id %}">글 수정</a>
 ```
 
-> 
+> urls.py 
+
+- 글 수정 정보를 받을 path & 받아서 DB 업데이트를 해줄 path
+
+```python
+urlpatterns = [
+    -생략-
+    path('<int:id>/edit', views.edit, name='edit' ),
+    path('<int:id>/update', views.update, name='update'),
+]
+```
+
+> edit.html
+
+- 기존에 입력되어있었던 정보를 그대로 표시해야하므로 
+  - title에는 value로 기존 정보 입력
+  - content에는 태그 사이에 입력
+
+```django
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>게시글 수정</h1>
+<form action="{% url 'articles:update' article.id%}" method="GET">
+  <p>
+    <label for="title">title:</label>
+    <input type="text" id='title' name='title' value={{article.title}}>
+  </p>
+  <p>
+    <label for="content">content:</label>
+  </p>
+  <textarea name="content" id="content" cols="30" rows="10">{{article.content}}</textarea>
+  <p>
+    <input type="submit" value="submit">
+  </p>
+</form>
+{% endblock content %}
+```
+
+> views.py
+
+```python
+def edit(request, id):
+    article = Article.objects.get(id=id)
+    
+    context={
+        'article': article
+    }
+    return render(request, 'articles/edit.html', context)
+
+def update(request, id):
+    # 수정한 정보 땡겨와서
+    title=request.GET.get('title')
+    content=request.GET.get('content')
+    
+    # DB에 update한 후
+    article = Article.objects.get(id=id)
+    article.title = title
+    article.content = content
+    article.save()
+    
+    # 홈 화면으로 연결
+    return redirect('articles:index')
+```
+
