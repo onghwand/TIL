@@ -536,7 +536,7 @@ urlpatterns = [
 <form action="{% url 'articles:update' article.id%}" method="GET">
   <p>
     <label for="title">title:</label>
-    <input type="text" id='title' name='title' value={{article.title}}>
+    <input type="text" id='title' name='title' value="{{article.title}}">
   </p>
   <p>
     <label for="content">content:</label>
