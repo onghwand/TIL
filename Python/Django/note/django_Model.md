@@ -575,3 +575,47 @@ def update(request, id):
     return redirect('articles:index')
 ```
 
+
+
+## 10. POST & CSRF
+
+- GET은 정보를 받아올 때, POST는 정보를 입력해서 전송할 때
+- method="POST" 하고 해킹방지를 위해 {% csrf_token %} 입력해야함
+
+```django
+<form action="{% url 'articles:update' article.id %}" method="POST">
+  {% csrf_token %}
+```
+
+
+
+## 11. 관리자 계정 ADMIN
+
+- app을 관리할 수 있음
+
+> articles/admin.py
+
+```python
+from django.contrib import admin
+from .models import Article
+# Register your models here.
+
+# admin site에 register하겠다.
+admin.site.register(Article)
+```
+
+> bash
+
+```bash
+$ python manage.py createsuperuser
+사용자 이름 (leave blank to use '82102'): admin
+이메일 주소: 
+Password: #1234
+Password (again): #1234
+비밀번호가 너무 짧습니다. 최소 8 문자를 포함해야 합니다.
+비밀번호가 너무 일상적인 단어입니다.
+비밀번호가 전부 숫자로 되어 있습니다.
+Bypass password validation and create user anyway? [y/N]: y
+Superuser created successfully.
+```
+
