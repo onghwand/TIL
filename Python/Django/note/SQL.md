@@ -67,15 +67,17 @@
 
 3. bash 창에서 sqlite3 실행 => bash 창에서 쿼리문 작성
 
+   - [.mode 설명](https://itbellstone.tistory.com/90) => csv, ascii, column, html, insert, list, quote, tabs, tcl 등등
+
    ```bash
    $ sqlite3
    sqlite> .database # .의 의미는 sqlite 프로그램의 기능을 실행하는것
-   sqlite> .mode csv
+   sqlite> .mode csv # csv 출력모드 => ,로 구분하여 한 줄씩 출력
    sqlite> .import hellodb.csv examples # 만들어 놓은 examples.sqlite3에 기존 csv파일 들여오기
    sqlite> .tables # 현재 있는 테이블 보여줌
    sqlite> SELECT * FROM examples;
    sqlite> .headers on # 열 이름까지 같이 출력
-   sqlite> .mode column # 표의 형식을 갖추어서 출력
+   sqlite> .mode column # column 출력모드 => column으로 구분하여 한 줄씩 출력
    ```
 
 4. or SQLITE EXPLORER에서 sqlite3파일 우클릭해서 `NEW QUERY` 클릭 => 편집기에서 쿼리문 작성
@@ -165,5 +167,112 @@ UPDATE classmates SET name='홍길동', address='제주도' WHERE rowid=5;
 ```sqlite
 -- rowid가 5인 데이터(행) 삭제
 DELETE FROM classmates WHERE rowid=5;
+```
+
+<br>
+
+#### 2.2 Aggregate function
+
+> 집계함수
+
+- 집합에 대한 계산을 수행하고 단일 값을 반환
+  - COUNT, AVG, MAX, MIN, SUM ...
+  - 해당 컬럼이 INTEGER일 때만 사용 가능
+
+```sqlite
+-- users 테이블의 전체 데이터 개수
+SELECT COUNT(*) FROM users;
+
+-- 30살 이상인 사람들의 평균 나이
+SELECT AVG(age) FROM users WHERE age>=30;
+```
+
+<br>
+
+#### 2.3 LIKE
+
+> 패턴 일치를 기반으로 데이터를 조회하는 방법
+
+- SQLite는 패턴 구성을 위한 2개의 wildcards를 제공
+  - % : 0개 이상의 문자 (해당 자리에 문자열이 있을 수도, 없을 수도 있다)
+    - 2% : 2로 시작
+    - %2 : 2로 끝
+    - %2% : 중간에 2
+  - _ : 임의의 단일 문자 (반드시 이자리에 한개의 문자가 존재해야한다)
+    - _2% : 앞에 한자리가 있고 두번째가 2인 값
+    - 1___: 1로 시작하고 총 4자리인 값
+    - 2__%: 2로 시작하고 적어도 3자리인 값 
+
+```sqlite
+-- 20대인 사람
+SELECT * FROM users WHERE age LIKE '2_';
+-- 지역번호가 02인 사람
+SELECT * FROM users where phone LIKE '02-%';
+```
+
+<br>
+
+#### 2.4 ORDER BY
+
+> 정렬
+
+- ASC - 오름차순(default)
+- DESC - 내림차순
+
+```sqlite
+-- 나이 내림차순으로 정렬하고 상위 10개만 
+SELECT * FROM users ORDER BY age DESC LIMIT 10;
+-- 나이 순, 성 순으로 오름차순 정렬하고 상위 10개
+SELECT * FROM users ORDER by age, last_name LIMIT 10;
+```
+
+<br>
+
+#### 2.5 GROUP BY
+
+> 행 집합에서 요약 행 집합을 만듦
+
+- 문장에 where절이 포함된 경우 반드시 where 절 뒤에 작성해야 함
+
+```sqlite
+-- 나이별로 몇 명이 있는지
+SELECT COUNT(*) as age_count, age FROM users GROUP BY age;
+```
+
+<br>
+
+#### 2.6 ALTER TABLE
+
+- table 이름 변경
+
+```sqlite
+ALTER TABLE articles RENAME TO news;
+```
+
+- 테이블에 새로운 column 추가
+
+```sqlite
+ALTER TABLE news ADD COLUMN created_at TEXT NOT NULL;
+--ERROR: Cannot add a NOT NULL column with default value NULL
+-- 새롭게 열을 추가하려면 1. NOT NULL 하지않기 혹은 2. default값 설정
+
+--1번 방법
+ALTER TABLE news ADD COLUMN created_at TEXT ;
+
+--2번 방법
+ALTER TABLE news ADD COLUMN subtitle TEXT NOT NULL DEFAULT '소제목';
+```
+
+- column 이름 수정(new in sqlite 3.25.0)
+
+```sqlite
+ALTER TABLE table_name 
+RENAME COLUMN current_name TO new_name;
+```
+
+- drop column(new in sqlite 3.35.0)
+
+```sqlite
+ALTER TABLE news DROP COLUMN created_at;
 ```
 
