@@ -84,7 +84,7 @@
 
    => 쿼리문 작성하고 드래그 or ; 뒤에서 우클릭 해서 실행한뒤, 새로고침 해줘야 반영됨
 
-```sqlite
+```sql
 -- SQLite
 
 -- 테이블 전체 조회
@@ -113,7 +113,7 @@ address TEXT
 
 > Create
 
-```sqlite
+```sql
 -- SQLite
 
 -- 일부분 데이터만 입력할 때에는 col지정 해줘야함 
@@ -141,7 +141,7 @@ INSERT INTO classmates VALUES
 
 > READ(SELECT)
 
-```sqlite
+```sql
 -- rowid까지 같이 조회할때
 SELECT rowid, name FROM classmates;
 
@@ -157,14 +157,14 @@ SELECT DISTINCT age FROM classmates;
 
 > UPDATE
 
-```sqlite
+```sql
 -- rowid가 5인 데이터의 name과 address 수정
 UPDATE classmates SET name='홍길동', address='제주도' WHERE rowid=5;
 ```
 
 > DELETE
 
-```sqlite
+```sql
 -- rowid가 5인 데이터(행) 삭제
 DELETE FROM classmates WHERE rowid=5;
 ```
@@ -179,7 +179,7 @@ DELETE FROM classmates WHERE rowid=5;
   - COUNT, AVG, MAX, MIN, SUM ...
   - 해당 컬럼이 INTEGER일 때만 사용 가능
 
-```sqlite
+```sql
 -- users 테이블의 전체 데이터 개수
 SELECT COUNT(*) FROM users;
 
@@ -203,7 +203,7 @@ SELECT AVG(age) FROM users WHERE age>=30;
     - 1___: 1로 시작하고 총 4자리인 값
     - 2__%: 2로 시작하고 적어도 3자리인 값 
 
-```sqlite
+```sql
 -- 20대인 사람
 SELECT * FROM users WHERE age LIKE '2_';
 -- 지역번호가 02인 사람
@@ -219,7 +219,7 @@ SELECT * FROM users where phone LIKE '02-%';
 - ASC - 오름차순(default)
 - DESC - 내림차순
 
-```sqlite
+```sql
 -- 나이 내림차순으로 정렬하고 상위 10개만 
 SELECT * FROM users ORDER BY age DESC LIMIT 10;
 -- 나이 순, 성 순으로 오름차순 정렬하고 상위 10개
@@ -234,7 +234,7 @@ SELECT * FROM users ORDER by age, last_name LIMIT 10;
 
 - 문장에 where절이 포함된 경우 반드시 where 절 뒤에 작성해야 함
 
-```sqlite
+```sql
 -- 나이별로 몇 명이 있는지
 SELECT COUNT(*) as age_count, age FROM users GROUP BY age;
 ```
@@ -245,13 +245,13 @@ SELECT COUNT(*) as age_count, age FROM users GROUP BY age;
 
 - table 이름 변경
 
-```sqlite
+```sql
 ALTER TABLE articles RENAME TO news;
 ```
 
 - 테이블에 새로운 column 추가
 
-```sqlite
+```sql
 ALTER TABLE news ADD COLUMN created_at TEXT NOT NULL;
 --ERROR: Cannot add a NOT NULL column with default value NULL
 -- 새롭게 열을 추가하려면 1. NOT NULL 하지않기 혹은 2. default값 설정
@@ -265,14 +265,14 @@ ALTER TABLE news ADD COLUMN subtitle TEXT NOT NULL DEFAULT '소제목';
 
 - column 이름 수정(new in sqlite 3.25.0)
 
-```sqlite
+```sql
 ALTER TABLE table_name 
 RENAME COLUMN current_name TO new_name;
 ```
 
 - drop column(new in sqlite 3.35.0)
 
-```sqlite
+```sql
 ALTER TABLE news DROP COLUMN created_at;
 ```
 
