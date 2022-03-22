@@ -14,9 +14,11 @@ T(n)  = T(n-1) + 1/n
 
 ​		 < $1+ \int_{1}^{n}{1/xdx}$
 
-​		= 1 + logn
+​		= 1 + ln(n)
 
- 		= O(logn)
+​		= 1 + log(n)/log(e)
+
+​		= O(logn)	
 
 > 기초수식 1.
 >
