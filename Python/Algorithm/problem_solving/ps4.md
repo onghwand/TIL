@@ -94,6 +94,8 @@ for tc in range(1, T+1):
 
 ### 2115. 벌꿀채취
 
+> 250ms
+
 ```python
 def f(tmp,M,C):
     global maxV
@@ -144,6 +146,57 @@ for tc in range(1,T+1):
 
     print(f'#{tc} {ans}')
 ```
+
+> 백트래킹 하면 더 빠를 줄 알았는데 왜 시간이 더걸리지
+>
+> 301ms
+
+```python
+def ff(i,s,rs,sq,rsq):
+    global M,C,maxV
+    if i == M:
+        if s <= C and sq > maxV:
+            maxV = sq
+    elif s > C or sq + rsq <= maxV: # C를 넘었거나 나머지의 제곱합을 더해도 max를 넘지 못할경우
+        return
+    else:
+        ff(i+1,s+tmp[i],rs-tmp[i],sq+tmp[i]**2,rsq-tmp[i]**2)
+        ff(i+1,s,rs-tmp[i],sq,rsq-tmp[i]**2)
+
+
+T = int(input())
+for tc in range(1,T+1):
+    N,M,C = map(int, input().split())
+    arr = [list(map(int, input().split())) for _ in range(N)]
+    lst = [[0]*(N-M+1) for i in range(N)]
+
+    for i in range(N):
+        for j in range(N-M+1):
+            tmp = arr[i][j:j+M]
+            if sum(tmp) <= C:
+                lst[i][j] = sum(map(lambda x:x**2, tmp))
+            else:
+                maxV = 0
+                ff(0,0,sum(tmp),0,sum(map(lambda x:x**2, tmp)))
+                lst[i][j] = maxV
+
+    ans = 0
+    for i in range(N):
+        for j in range(N-M+1):
+            ttmp = lst[i][j]
+            for k in range(N):
+                for l in range(N-M+1):
+                    if (i==k and abs(j-l) <=M-1) or (i,j) == (k,l) :
+                        continue
+                    ttmp += lst[k][l]
+                    if ttmp > ans:
+                        ans = ttmp
+                    ttmp -= lst[k][l]
+
+    print(f'#{tc} {ans}')
+```
+
+
 
 ### 1249. 보급로
 
