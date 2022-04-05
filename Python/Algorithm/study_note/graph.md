@@ -186,7 +186,7 @@ edge = []
 for _ in range(E):
     u,v,w = map(int, input().split())
     edge.append([w,u,v])
-edge.sor()
+edge.sort()
 rep = [i for i in range(V+1)]
 N = V+1
 cnt = 0
