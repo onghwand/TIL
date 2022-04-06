@@ -183,7 +183,7 @@ class ArticleForm(forms.ModelForm):
 
 ### 4. Rendering fields manually
 
-![image-20220406164151619](Django Form.assets/image-20220406164151619.png)
+![image-20220406164151619](Django_Form.assets/image-20220406164151619.png)
 
 ```django
 {% extends 'base.html' %}
