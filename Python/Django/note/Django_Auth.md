@@ -104,8 +104,11 @@ def logout(request):
 from django.contrib.auth.decorators import login_required
 
 @login_required
+def create(request):
+    pass
+    
 def login(request):
-    ...
+    pass
     return redirect(request.GET.get('next') or 'articles:index')
 	# 데코레이터에 의해 로그인 창이 연결되고 로그인 되면 next에 의해 원래 가려던 페이지로 연결
     # 반드시 login.html의 form의 action값을 비워줘야함
