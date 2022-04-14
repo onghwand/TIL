@@ -178,7 +178,7 @@ class User(AbstarctUser):
 > settings.py
 
 ```python
-AUTH_USER_MODEL = 'acoounts.User'
+AUTH_USER_MODEL = 'accounts.User'
 ```
 
 > accounts/admin.py
