@@ -260,7 +260,7 @@ class Article(models.Model):
 ### 4. User - Comment (1:N)
 
 ```python
-from django.contf import settings
+from django.conf import settings
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=model.CASCADE)
