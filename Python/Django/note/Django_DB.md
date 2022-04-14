@@ -95,7 +95,7 @@ def detail(request, pk):
 > articles/views.py
 
 ```python
-def comments_create(request.pk):
+def comments_create(request, pk):
     article = get_object_or_404(Article, pk=pk)
     comment_form = CommentForm(request.POST)
     if comment_form.is_valid():
