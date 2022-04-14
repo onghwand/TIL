@@ -24,7 +24,7 @@ class Comment(models.Model):
     # 꼭 makemigrations, migrate
 ```
 
-- CASCADE : 부모 객체가 삭되 됐을 때 이를 참조하는 객체도 삭제
+- CASCADE : 부모 객체가 삭제 됐을 때 이를 참조하는 객체도 삭제
 
 > articles/admin.py
 
