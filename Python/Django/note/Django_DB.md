@@ -231,7 +231,7 @@ class CustomUserCreationForm(UserCreationForm):
 > 위 Article - Comment 과정과 동일
 
 ```python
-from django.contrib import settings
+from django.conf import settings
 
 class Article(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=model.CASCADE)
@@ -260,7 +260,7 @@ class Article(models.Model):
 ### 4. User - Comment (1:N)
 
 ```python
-from django.contrib import settings
+from django.contf import settings
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=model.CASCADE)
