@@ -28,3 +28,59 @@ def solution(id_list, report, k):
     return cnt
 ```
 
+### 신규 아이디 추천
+
+> 정규 표현식 쓰는 법 외워야겠다고 느낀 문제
+>
+> [정규 표현식](https://wikidocs.net/4308)
+
+```python
+def solution(new_id):
+    # 1
+    new_id = new_id.lower()
+    # 2
+    answer = ''
+    for a in new_id:
+        if a.isdigit() or a.isalpha() or a in ['-','_','.']:
+            answer += a
+    # 3
+    new_id = ''
+    for a in answer:
+        if len(new_id)>=1 and new_id[-1] == '.' and a == '.':
+            continue
+        else:
+            new_id += a
+    # 4
+    new_id = new_id.strip('.')
+    # 5
+    if len(new_id) == 0:
+        new_id = 'a'
+    # 6
+    elif len(new_id) >= 16:
+        new_id = new_id[:15]
+        new_id = new_id.rstrip('.')
+    # 7  
+    if len(new_id) <= 2:
+        while len(new_id) < 3:
+            new_id += new_id[-1]
+
+    return new_id
+```
+
+> 다른 사람 풀이
+
+```python
+import re
+
+def solution(new_id):
+    st = new_id
+    st = st.lower()
+    st = re.sub('[^a-z0-9\-_.]', '', st)
+    st = re.sub('\.+', '.', st)
+    st = re.sub('^[.]|[.]$', '', st)
+    st = 'a' if len(st) == 0 else st[:15]
+    st = re.sub('^[.]|[.]$', '', st)
+    st = st if len(st) > 2 else st + "".join([st[-1] for i in range(3-len(st))])
+    return st
+```
+
