@@ -28,6 +28,8 @@ def solution(id_list, report, k):
     return cnt
 ```
 
+<br>
+
 ### 신규 아이디 추천
 
 > 정규 표현식 쓰는 법 외워야겠다고 느낀 문제
@@ -82,5 +84,94 @@ def solution(new_id):
     st = re.sub('^[.]|[.]$', '', st)
     st = st if len(st) > 2 else st + "".join([st[-1] for i in range(3-len(st))])
     return st
+```
+
+<br>
+
+### 크레인 인형뽑기 게임
+
+> 인형 터질 때마다 answer += 2를 해야하는데 +1 해놓고 pop때문에 시간 걸리는건줄 알고 index로 다시 풀었다.. 결과적으로 둘다 풀림 => 심지어 pop이 더빠르다
+
+- index 연산
+
+| 테스트 1 〉  | 통과 (0.02ms, 10.1MB) |
+| ------------ | --------------------- |
+| 테스트 2 〉  | 통과 (0.02ms, 10.3MB) |
+| 테스트 3 〉  | 통과 (0.03ms, 10.2MB) |
+| 테스트 4 〉  | 통과 (2.23ms, 10.2MB) |
+| 테스트 5 〉  | 통과 (0.02ms, 10.3MB) |
+| 테스트 6 〉  | 통과 (0.02ms, 10.3MB) |
+| 테스트 7 〉  | 통과 (0.11ms, 10.2MB) |
+| 테스트 8 〉  | 통과 (0.53ms, 10.2MB) |
+| 테스트 9 〉  | 통과 (0.24ms, 10.2MB) |
+| 테스트 10 〉 | 통과 (0.53ms, 10.2MB) |
+| 테스트 11 〉 | 통과 (1.13ms, 10.2MB) |
+
+```python
+def solution(board, moves):
+    answer = 0
+    N = len(board)
+    stack = [0]*(N*N)
+    cur = 0
+    
+    for move in moves:
+        j = move-1
+        for i in range(N):
+            if board[i][j] != 0:
+                q = board[i][j]
+                board[i][j] = 0
+                break
+        else:
+            continue
+                
+        if cur != 0 and stack[cur-1] == q:
+            #stack[cur-1]=0
+            cur -= 1
+            answer += 2
+        else:
+            stack[cur] = q
+            cur += 1
+            
+    return answer
+```
+
+- pop 메서드
+
+| 테스트 1 〉  | 통과 (0.01ms, 10.3MB) |
+| ------------ | --------------------- |
+| 테스트 2 〉  | 통과 (0.02ms, 10.2MB) |
+| 테스트 3 〉  | 통과 (0.02ms, 10.2MB) |
+| 테스트 4 〉  | 통과 (1.08ms, 10.2MB) |
+| 테스트 5 〉  | 통과 (0.02ms, 10.3MB) |
+| 테스트 6 〉  | 통과 (0.02ms, 10.2MB) |
+| 테스트 7 〉  | 통과 (0.06ms, 10.3MB) |
+| 테스트 8 〉  | 통과 (0.55ms, 10.3MB) |
+| 테스트 9 〉  | 통과 (0.24ms, 10.2MB) |
+| 테스트 10 〉 | 통과 (0.51ms, 10.3MB) |
+| 테스트 11 〉 | 통과 (0.61ms, 10.2MB) |
+
+```python
+def solution(board, moves):
+    answer = 0
+    N = len(board)
+    stack = []
+    
+    for move in moves:
+        j = move-1
+        for i in range(N):
+            if board[i][j] != 0:
+                q = board[i][j]
+                board[i][j] = 0
+                break
+        else:
+            continue
+                
+        if len(stack)>0 and stack[-1] == q:
+            stack.pop()
+            answer += 2
+        else:
+            stack.append(q)
+            
+    return answer
 ```
 
