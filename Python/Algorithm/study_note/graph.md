@@ -96,10 +96,33 @@ def bfs(s,V):
 - 대표자: 집합에 속한 하나의 특정 멤버를 통해 각 집합들을 구분
 
 - 표현법: 연결 리스트, 트리
+
 - 상호배타 집합 예
   - Make-Set(x) : x를 대표원소로 하는 집합을 만든다
+
+    ```python
+    def MakeSet(x):
+        p[x] = x
+    ```
+
   - Union(x,y) : x집합과 y집합을 합치고 x를 대표원소로 선택
+
+    ```python
+    def FindSet(x):
+        if x == p[x]:
+            return x
+        else:
+            return FindSet(p[x])
+    ```
+
   - Find-Set(y) : y가 속한 원소의 대표원소를 반환
+
+    ```python
+    def Union(x,y):
+        p[FindSet(y)] = FindSet(x)
+    ```
+
+    
 
 - 트리 표현
 
@@ -195,7 +218,7 @@ for w,v,u in edge:
     if find_set(v) != find_set(u): #순환이 형성되면 안됨
         cnt += 1
         union(u,v)
-        total += 2
+        total += 1
         if cnt == N-1:
             break
 print(total)
