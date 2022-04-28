@@ -25,13 +25,7 @@
       let hour = now.getHours()
       let minute = now.getMinutes()
       let second = now.getSeconds()
-      
-      let noon 
-      if (hour < 12) {
-        noon = '오전'
-      } else {
-        noon = '오후'
-      }
+      let noon = hour < 12 ? '오전' : '오후'
       timeDiv.innerText = `${hour <=12 ? `${noon} ${hour<10? `0${hour}`: hour}` : `${noon} ${hour%12 < 10? `0${hour%12}`: hour%12 }` }:${minute < 10? `0${minute}` : minute}:${second < 10? `0${second}` : second}`
     }
 
