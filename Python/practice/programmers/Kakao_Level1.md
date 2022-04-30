@@ -175,3 +175,27 @@ def solution(board, moves):
     return answer
 ```
 
+<br>
+
+### 숫자 문자열과 영단어
+
+```python
+en=('zero','one','two','three','four','five','six','seven','eight','nine')
+num=(str(i) for i in range(10))
+dic=dict(zip(en,num))
+def solution(s):    
+    ans=''
+    word=''
+    
+    for x in s:
+        if x.isdigit(): 
+            ans += x
+        else:
+            word += x
+            if word in en:
+                ans += dic[word]
+                word=''
+    
+    return int(ans)
+```
+
