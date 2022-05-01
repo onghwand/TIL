@@ -48,5 +48,30 @@ def solution(fees, records):
 
 <br>
 
+### k진수에서 소수 개수 구하기
+
+> swea에 이상한 소수 문제 많아서 이것도 에라토스테네스 체 써야하나 고민했는데 좀 비효율적으로 짜도 풀린듯
+
+```python
+def solution(n, k):
+    s = ''
+    while n > 0:
+        s = str(n % k) + s
+        n //= k
+
+    nums = s.split('0')
+    
+    cnt = 0
+    for num in nums:
+        if len(num) > 0 and int(num) > 1:
+            n = int(num)
+            for i in range(2,int(n**(1/2))+1):
+                if n % i == 0:
+                    break
+            else:
+                cnt+=1
+    return cnt
+```
+
 
 
