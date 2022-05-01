@@ -50,8 +50,6 @@ def solution(fees, records):
 
 ### k진수에서 소수 개수 구하기
 
-> swea에 이상한 소수 문제 많아서 이것도 에라토스테네스 체 써야하나 고민했는데 좀 비효율적으로 짜도 풀린듯
-
 ```python
 def solution(n, k):
     s = ''
