@@ -255,5 +255,44 @@ def solution(places):
     return answer
 ```
 
+<br>
 
+### 튜플
+
+> 오늘 카카오 인턴 코테에서 벽을 느꼈다. 연습으로 극복이 가능한건지 의문이다. 그냥 태생적으로 불가능한걸수도
+
+```python
+def solution(s):
+    answer = []
+    s=s[1:-1]
+    stack = []
+    tmp = []
+    number = ''
+    for n in s:
+        if n == ',':
+            if pre == '}':
+                continue
+            tmp.append(int(number))
+            number = ''
+        elif n == '}':
+            tmp.append(int(number))
+            stack.append(tmp)
+            number = ''
+            tmp = []
+        elif n == '{':
+            continue
+        else:
+            number += n
+        pre = n
+            
+    stack.sort(key=lambda x: len(x))
+    
+    for arr in stack:
+        for num in arr:
+            if num not in answer:
+                answer.append(num)
+                break  
+    
+    return answer
+```
 
