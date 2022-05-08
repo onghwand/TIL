@@ -296,3 +296,29 @@ def solution(s):
     return answer
 ```
 
+<br>
+
+### 캐시
+
+```python
+from collections import deque
+def solution(cacheSize, cities):
+    cache = deque()
+    time = 0
+    cities = list(map(lambda x: x.lower(), cities))  
+    
+    if cacheSize == 0:
+        return 5*len(cities)
+    
+    for city in cities:
+        if city not in cache:
+            if len(cache) == cacheSize:
+                cache.popleft()
+            time += 5
+        else:
+            time += 1
+            cache.remove(city)       
+        cache.append(city) 
+    return time
+```
+
