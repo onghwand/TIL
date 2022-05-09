@@ -237,3 +237,86 @@ $ vue add router # plug in 설치, commit 여부 Yes, History mode 사용여부 
 > History mode
 
 - 브라우저의 히스토리는 남기지만 실제 페이지는 이동하지 않는 기능을 지원
+
+#### 5.1. Named Routes
+
+- 이름을 가지는 라우트
+- 명명된 경로로 이동하려면 객체를 vue-router 컴포넌트 요소의 prop에 전달
+
+```vue
+<script>
+const routes = [
+	{
+        path: '/',
+        name: 'home',
+        component: HomeView,
+    }
+]
+</script>
+```
+
+```vue
+<template>
+  <div id="app">
+      <nav>
+    	<router-link :to="{ name: 'home' }">HOME</router-link>
+      </nav>
+  </div>
+</template>
+```
+
+#### 5.2. 프로그래밍 방식 네비게이션
+
+```javascript
+// literal string path
+router.push('home')
+
+// object
+router.push({ path: 'home' })
+
+// named route
+router.push({ name: 'user', params: {userId: '123' }})
+
+// with query, resulting in /register?plan=private
+router.push({ path: 'register', query: { plan: 'private' }})
+```
+
+> 사용 예
+
+```vue
+<template>
+  <button @click="moveToHome">Home으로 이동</button>
+</template>
+
+<script>
+...
+methods: {
+    moveToHome() {
+        this.$router.push({name: 'home' })
+    }
+}
+...
+</script>
+```
+
+#### 5.3. Dynamic Route Matching
+
+- 동적 인자 전달(Django의 Variable Routing)
+
+```javascript
+const routes = [
+    {
+        path: '/user/:userId',
+        ...
+    }
+]
+```
+
+- 동적 인자는 콜론으로 시작
+- 컴포넌트에서 this.$route.params로 접근
+
+|              pattern               |     matched path      |              $route.params              |
+| :--------------------------------: | :-------------------: | :-------------------------------------: |
+|          /user/:userName           |      /user/john       |           { username: 'john'}           |
+| /user/:userName/article/:articleId | /user/john/article/12 | {username: 'john', <br />articleId: 12} |
+
