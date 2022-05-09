@@ -322,3 +322,35 @@ def solution(cacheSize, cities):
     return time
 ```
 
+<br>
+
+### n진수 게임
+
+> 다른 풀이를 봐도 창의적인 풀이는 따로 없는 것 같다. 비슷비슷
+
+```python
+def solution(n, t, m, p):
+    s = '0'
+    L = p + m*t
+    i = 1
+    res = ''
+    while len(s) <= L:
+        tmp = ''
+        q = i
+        
+        while q>0:
+            q, r= divmod(q, n)
+            if r<10:
+                tmp = str(r) + tmp
+            else:
+                tmp = hex(r)[2:].upper() + tmp
+    
+        s += str(tmp)
+        i += 1
+        
+    for i in range(p-1,t*m+p-1,m):
+        res += s[i]
+    
+    return res
+```
+
