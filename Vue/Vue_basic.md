@@ -105,7 +105,7 @@
 > message값이 보여짐
 
 ```html
-<p v-text:'message'></p>
+<p v-text='message'></p>
 
 data : {
 	message:'Hello',
@@ -117,8 +117,8 @@ data : {
 > true이면 보여짐
 
 ```html
-<p v-show:'isTrue'>true</p>
-<p v-show:'isFalse'>false</p>
+<p v-show='isTrue'>true</p>
+<p v-show='isFalse'>false</p>
 
 data : {
 	isTrue: true,
