@@ -354,3 +354,68 @@ def solution(n, t, m, p):
     return res
 ```
 
+<br>
+
+### [3차] 방금그곡
+
+> 최종프로젝트를 하느라 알고리즘 문제를 안푼지 거의 2주가 된 것 같다. 그래도 주말에 계속 코테를 봐와서 어색하진 않았다. 
+>
+> 1차 시도 왜 틀리는지 모르겠다.
+
+```python
+def solution(m, musicinfos):
+    answer = '(None)'
+    max_min = -1
+    for music in musicinfos:
+        start, end, title, part = music.split(',')
+        start_hour, start_min = map(int, start.split(':'))
+        end_hour, end_min = map(int, end.split(':'))
+        playing_min = (end_hour - start_hour)*60 - start_min + end_min 
+        # print(playing_min)
+        L = len(part)
+        q, r = divmod(playing_min, L)
+        played = part*q + part[:r]
+        #print(played)
+        M = len(m)
+        for i in range(len(played)-M+1):
+            if played[i:i+M] == m and played[i:i+M+1] != m+'#':
+                #print(played[i:i+M],played[i:i+M+1])
+                if max_min < playing_min:
+                    answer = title
+                    max_min = playing_min
+        
+    return answer
+```
+
+> 2차 시도
+>
+> 카카오 공식 해답보고 치환해서 풀었는데도 틀려서 보니까 계속 'C#' 같은 음을 'C', '#' 두 개의 음으로 처리하고 있었다. 최대한 위에서 치환 처리를 해놓고 푸니 풀렸다.
+
+```python
+def solution(m, musicinfos):
+    sub = {'C#':'c', 'D#':'d', 'F#':'f', 'G#':'g', 'A#':'a'}
+    answer = '(None)'
+    max_min = -1
+    for music in musicinfos:
+        start, end, title, part = music.split(',')
+        start_hour, start_min = map(int, start.split(':'))
+        end_hour, end_min = map(int, end.split(':'))
+        playing_min = (end_hour - start_hour)*60 - start_min + end_min 
+        
+        for k in sub.keys():
+            m = m.replace(k, sub[k])
+            part = part.replace(k, sub[k])
+            
+        L = len(part)
+        q, r = divmod(playing_min, L)
+        played = part*q + part[:r]
+        M = len(m)
+        
+        if m in played:
+            if max_min < playing_min:
+                answer = title
+                max_min = playing_min
+        
+    return answer
+```
+
