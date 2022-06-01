@@ -419,3 +419,106 @@ def solution(m, musicinfos):
     return answer
 ```
 
+<br>
+
+### [1차] 프렌즈4블록
+
+> 1차 시도, 고등학교때부터 느꼈던 거지만 나는 생각이 진짜 짧다 테케를 다 통과해버리면 뭐가 틀렸는지 찾기가 너무 힘들다
+
+```python
+def solution(m, n, board):
+    answer = 0
+    for i in range(len(board)):
+        board[i] = list(board[i])
+    
+    # 겹쳐도 깨지니까 일단 set에 터질 좌표 모았음
+    while 1:
+        points = set()
+        for i in range(m-1):
+            for j in range(n-1):
+                if board[i][j] != ' ' and board[i][j] == board[i+1][j] == board[i][j+1] == board[i+1][j+1]:
+                    points.add((i,j))
+                    points.add((i+1,j))
+                    points.add((i,j+1))
+                    points.add((i+1,j+1))
+        
+        # 만약에 터질 좌표가 없으면 그만
+        if len(points) == 0:
+            break
+        
+        # 터질 좌표가 있으면 개수 세
+        answer += len(points)
+        
+        # 터질 좌표 없애야 하니까 0으로 바꿔놔
+        for i,j in points:
+            board[i][j] = 0
+        
+        # for b in board:
+        #     print(*b)
+        
+        # 열을 순회하면서 0으로 바꿔놨던거 위에꺼로 메꿔주면서 빈공간으로 바꿔 
+        for j in range(n):
+            zeros = 0  
+            start = -1
+            for i in range(m):
+                if board[i][j] == ' ':
+                    start = i
+                if board[i][j] == 0:
+                    board[i][j] = board[i-1][j]
+                    zeros += 1
+            
+            for l in range(start+1, start+1+zeros):
+                board[l][j] = ' '
+        
+#         for b in board:
+#             print(*b)
+        
+#         print(answer)
+                    
+              
+    return answer
+```
+
+> 2차 시도, 친구가 뭐가 틀렸는지 찾아줬다. 0일때 위에거 하나만 내리면 안되고, 다내려야한다.	
+
+```python
+def solution(m, n, board):
+    answer = 0
+    for i in range(len(board)):
+        board[i] = list(board[i])
+    
+    while 1:
+        points = set()
+        for i in range(m-1):
+            for j in range(n-1):
+                if board[i][j] != ' ' and board[i][j] == board[i+1][j] == board[i][j+1] == board[i+1][j+1]:
+                    points.add((i,j))
+                    points.add((i+1,j))
+                    points.add((i,j+1))
+                    points.add((i+1,j+1))
+                    
+        if len(points) == 0:
+            break
+            
+        answer += len(points)
+        
+        for i,j in points:
+            board[i][j] = 0
+        
+        for j in range(n):
+            zeros = 0  
+            start = -1
+            for i in range(m):
+                if board[i][j] == ' ':
+                    start = i
+                if board[i][j] == 0:
+                    for k in range(i,0,-1):
+                        board[k][j] = board[k-1][j]
+                    zeros += 1
+            
+            for l in range(start+1, start+1+zeros):
+                board[l][j] = ' '
+               
+    return answer
+```
+
