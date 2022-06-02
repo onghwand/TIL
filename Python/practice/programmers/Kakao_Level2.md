@@ -522,3 +522,34 @@ def solution(m, n, board):
     return answer
 ```
 
+<br>
+
+### [3차] 파일명 정렬
+
+> EASY
+
+```python
+def solution(files):
+    answer = []
+    filtered = []
+    for k in range(len(files)):
+        front, *tail = files[k].split('.')
+        head = ''
+        number = ''
+        for i in range(len(front)):
+            if front[i].isdigit():
+                number += front[i]
+            else:
+                if len(number) != 0:
+                    break
+                head += front[i].lower()
+        filtered.append([head,number,k])
+    
+    filtered = sorted(filtered, key=lambda x: (x[0],int(x[1]),int(x[2])))
+    
+    for item in filtered:
+        answer.append(files[item[2]])
+    
+    return answer
+```
+
