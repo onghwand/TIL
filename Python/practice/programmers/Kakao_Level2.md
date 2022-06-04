@@ -553,3 +553,42 @@ def solution(files):
     return answer
 ```
 
+<br>
+
+### [3차] 압축
+
+> 문자열 끝에 도달했을때가 살짝 헷갈렸다.
+
+```python
+def solution(msg):
+    dic = [0]
+    answer = []
+    for i in range(65, 91):
+        dic.append(chr(i))
+
+    i = 0
+    while 1:
+        j = 2
+        while msg[i:i + j] in dic:
+            if i + j >= len(msg):
+                break
+            j += 1
+        if i+j >= len(msg):
+            final = msg[i:i + j]
+            last = msg[i:i + j - 1]
+            break
+        dic.append(msg[i:i+j])
+        answer.append(dic.index(msg[i:i+j-1]))
+        
+        i = i+j-1
+
+    if final not in dic:
+        dic.append(last)
+        answer.append(dic.index(last))
+        answer.append(dic.index(msg[-1]))
+    else:
+        answer.append(dic.index(final))
+        
+    return answer
+```
+
