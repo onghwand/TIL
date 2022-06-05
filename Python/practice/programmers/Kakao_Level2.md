@@ -592,3 +592,39 @@ def solution(msg):
     return answer
 ```
 
+<br>
+
+### 후보키
+
+> [참고](https://velog.io/@sem/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-LEVEL2-%ED%9B%84%EB%B3%B4%ED%82%A4-Python)
+>
+> issubset 메서드를 처음 알았다. 부분집합이 있는지 없는지 확인할때 유용할것같다.
+
+```python
+from itertools import combinations
+def solution(relation):
+    answer=0
+    rows = len(relation)
+    cols = len(relation[0])
+    
+    comb = []
+    for i in range(1, cols+1):
+        comb.extend(combinations(range(cols),i))
+    
+    unique = []
+    for com in comb:
+        tmp = [tuple(item[key] for key in com) for item in relation]
+        
+        if len(set(tmp)) == rows:
+            put = True
+            
+            for x in unique:
+                if set(x).issubset(set(com)):
+                    put = False
+                    break
+            if put:
+                unique.append(com)
+                
+    return len(unique)
+```
+
