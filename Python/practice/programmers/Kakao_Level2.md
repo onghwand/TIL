@@ -628,3 +628,81 @@ def solution(relation):
     return len(unique)
 ```
 
+<br>
+
+### 순위 검색
+
+> 효율성 테스트 통과 못함
+
+```python
+def solution(info, query):
+    answer = []
+    
+    for q in query:
+        cnt = 0 
+        lang, job, level, food = map(lambda x: x.strip(), q.split('and'))
+        food, score=food.split()
+        for inf in info:
+            lang1, job1, level1, food1, score1 = inf.split()
+
+            if lang in (lang1, '-') and job in (job1, '-') and level in (level1, '-') and food in (food1, '-') and int(score1) >= int(score):
+                cnt+=1
+        answer.append(cnt)            
+        
+    return answer
+```
+
+> [참고](https://velog.io/@dogcu/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EC%88%9C%EC%9C%84-%EA%B2%80%EC%83%89)
+>
+> 라이브러리를 진짜 잘써야한다.
+
+- bisect_left(a, x)
+  - 정렬된 a에 x를 삽입할 위치를 리턴해준다. x가 a에 이미 있으면 기존 항목의 앞(왼쪽) 위치를 반환한다.
+  - 이 문제에서는 query로 주어진 score 이상 개수를 구하는데 썼다.
+- defaultdict
+  - defaultdict(list) 라고하면 value값이 list로 설정된다.
+  - dic['a'].append(1) 하면 'a':[1]이 바로 생성됨.
+
+```python
+from itertools import combinations
+from collections import defaultdict
+from bisect import bisect_left
+
+def solution(info, query):
+    answer = []
+    dic = defaultdict(list)
+    
+    for inf in info:
+        inf = inf.split()
+        condition = inf[:-1]
+        score = int(inf[-1])
+        for i in range(5):
+            case = list(combinations([0,1,2,3], i))
+            for c in case:
+                tmp = condition.copy()
+                for idx in c:
+                    tmp[idx] = '-'
+                
+                key = ''.join(tmp)
+                dic[key].append(score)
+    # print(dic)         
+    for v in dic.values():
+        v.sort()
+    # print(dic)
+    
+    for q in query:
+        q = q.replace("and ", "").split()
+        key = ''.join(q[:-1])
+        score = int(q[-1])
+        # print(key, score)
+        cnt = 0
+        if key in dic:
+            target = dic[key]
+            idx = bisect_left(target, score)
+            # print(target, idx)
+            cnt = len(target) - idx
+        answer.append(cnt)
+        
+    return answer
+```
+
