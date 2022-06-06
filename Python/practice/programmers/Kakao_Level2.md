@@ -594,7 +594,7 @@ def solution(msg):
 
 <br>
 
-### 후보키
+### [다시풀기]후보키
 
 > [참고](https://velog.io/@sem/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-LEVEL2-%ED%9B%84%EB%B3%B4%ED%82%A4-Python)
 >
@@ -630,7 +630,7 @@ def solution(relation):
 
 <br>
 
-### 순위 검색
+### [다시풀기]순위 검색
 
 > 효율성 테스트 통과 못함
 
@@ -703,6 +703,31 @@ def solution(info, query):
             cnt = len(target) - idx
         answer.append(cnt)
         
+    return answer
+```
+
+<br>
+
+### 오픈채팅방
+
+> 생각보다 쉬운문제였는데 괜히 복잡하게 풀다가 오래걸렸다.
+
+```python
+def solution(record):
+    answer = []
+    names = {}
+    for re in record:
+        status, user_id, *username = re.split()
+        if status == 'Enter' or status == 'Change':
+            names[user_id] = username[0]
+    
+    for re in record:
+        status, user_id, *username = re.split()
+        if status == 'Enter':
+            answer.append(f'{names[user_id]}님이 들어왔습니다.')
+        elif status == 'Leave':
+            answer.append(f'{names[user_id]}님이 나갔습니다.')
+                
     return answer
 ```
 
