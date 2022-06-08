@@ -731,3 +731,104 @@ def solution(record):
     return answer
 ```
 
+<br>
+
+### 괄호 변환
+
+```python
+def is_correct(p):
+    stack = []
+    for i in range(len(p)):
+        if p[i] == '(':
+            stack.append(p[i])
+        else:
+            if stack:
+                stack.pop()
+            else:
+                return False
+    else:
+        return True
+    
+def f(p):
+    cnt = 0
+    if len(p) == 0:
+        return p
+    
+    for i in range(len(p)):
+        if p[i] == '(':
+            cnt += 1
+        elif p[i] == ')':
+            cnt -= 1
+        if cnt == 0:
+            break
+    u, v = p[:i+1], p[i+1:]
+    
+    if is_correct(u):
+        return u + f(v)
+    else:
+        w = u[1:-1]
+        x = ''
+        for a in w:
+            if a == '(':
+                x += ')'
+            else:
+                x += '('      
+        return '('+f(v)+')'+x
+        
+def solution(p):
+    answer = ''
+    
+    if is_correct(p):
+        return p
+    else:
+        answer = f(p)
+    
+    return answer
+```
+
+<br>
+
+### 수식 최대화
+
+```python
+from itertools import permutations
+
+def cal(pre, post, oper):
+    if oper == '+':
+        return pre+post
+    elif oper == '-':
+        return pre-post
+    elif oper == '*':
+        return pre*post
+    
+def solution(expression):
+    num = ''
+    arr = []
+    op = set()
+    for a in expression:
+        if a.isdigit():
+            num += a
+        else:
+            arr.append(int(num))
+            num = ''
+            arr.append(a)
+            op.add(a)
+    arr.append(int(num))
+    permu = list(permutations(op))
+    
+    maxV = 0
+    for p in permu:
+        lst = [x for x in arr]
+        for oper in p:
+            i = 0
+            while i < len(lst):
+                if lst[i] == oper:
+                    lst[i-1:i+2] = [cal(lst[i-1],lst[i+1],oper)]
+                    i -= 1
+                i += 1
+        if maxV < abs(lst[0]):
+            maxV = abs(lst[0])       
+    
+    return maxV
+```
+
