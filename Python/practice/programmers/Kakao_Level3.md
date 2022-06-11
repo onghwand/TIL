@@ -459,3 +459,51 @@ def solution(stones, k):
     return start   
 ```
 
+<br>
+
+### 매칭점수
+
+> 1차 시도
+
+```python
+def solution(word, pages):
+    urls = []
+    for page in pages:
+        url = ''
+        for i in range(len(page)):
+            if page[i:i+8] == 'content=':
+                j = i+8
+                while page[j] != '>':
+                    url += page[j]
+                    j += 1
+                urls.append(url[:-1])
+                break
+ 
+    bases = []
+    links = []
+    for page in pages:
+        page = page.lower()
+        word = word.lower()
+        cnt = 0
+        for i in range(len(page)):
+            if page[i:i+len(word)] == word and not page[i-1].isalpha() and not page[i+len(word)].isalpha():
+                cnt += 1
+        bases.append(cnt)    
+        links.append(page.count('</a>'))
+        
+    scores = [x for x in bases]  
+    for j in range(len(pages)):  
+        for i in range(len(urls)):
+            if i != j and urls[i] in pages[j]:
+                scores[i] += bases[j] / links[j]
+                
+    idx = -1
+    maxV = 0
+    for k in range(len(scores)):
+        if scores[k] > maxV:
+            maxV = scores[k]
+            idx = k
+            
+    return idx
+```
+
