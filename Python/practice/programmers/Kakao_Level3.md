@@ -461,6 +461,45 @@ def solution(stones, k):
 
 <br>
 
+### [1차] 추석 트래픽
+
+> 어려운 문제가 아니었는데 괜히 쫄아서 구글링했다. level3와서는 왜 구글없이는 못풀지
+>
+> [참고](https://velog.io/@mrbartrns/%ED%8C%8C%EC%9D%B4%EC%8D%AC-1%EC%B0%A8%EC%B6%94%EC%84%9D-%ED%8A%B8%EB%9E%98%ED%94%BD-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EB%A0%88%EB%B2%A83)
+
+```python
+def get_time(time):
+    hour, minute, sec = time.split(':')
+    sec, mili = map(int, sec.split('.'))
+    return (int(hour)*3600 + int(minute)*60 + sec)*1000 + mili
+    
+def start_time(time, duration):
+    duration = int(float(duration[:-1])*1000)
+    return get_time(time) - duration
+
+def solution(lines):
+    answer = 0
+    ends = []
+    starts =[]
+    for line in lines:
+        t = line.split()
+        ends.append(get_time(t[1])) 
+        starts.append(start_time(t[1], t[2]))
+    
+    for i in range(len(lines)):
+        cnt = 1
+        
+        for j in range(i+1, len(lines)):
+            if ends[i] > starts[j]-999:
+                cnt += 1
+                
+        answer = max(cnt, answer)
+        
+    return answer
+```
+
+<br>
+
 ### 매칭점수
 
 > 1차 시도
