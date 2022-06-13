@@ -461,63 +461,41 @@ def solution(stones, k):
 
 <br>
 
-### [1차] 셔틀버스
+### [1차] 추석 트래픽
 
-> 생각보다 고려해야할 경우의 수가 많아서 문제풀면서 처음으로 직접 테스트케이스 추가하면서 디버깅했다.
+> 어려운 문제가 아니었는데 괜히 쫄아서 구글링했다. level3와서는 왜 구글없이는 못풀지
 >
-> 추가한 TC
->
-> ```
-> 테스트 7
-> 입력값 〉2, 10, 2, ["08:59", "08:59", "08:59", "09:00", "23:59"]
-> 기댓값 〉"08:59"
-> 실행 결과 〉테스트를 통과하였습니다.
-> 테스트 8
-> 입력값 〉1, 1, 1, ["09:00", "23:59"]
-> 기댓값 〉"08:59"
-> 실행 결과 〉테스트를 통과하였습니다.
-> ```
+> [참고](https://velog.io/@mrbartrns/%ED%8C%8C%EC%9D%B4%EC%8D%AC-1%EC%B0%A8%EC%B6%94%EC%84%9D-%ED%8A%B8%EB%9E%98%ED%94%BD-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EB%A0%88%EB%B2%A83)
 
 ```python
-def get_time(t):
-    q, r = divmod(t,60)  
-    if q < 10:
-        q = f'0{q}'
-    else:
-        q = str(q)
-    if r < 10:
-        r = f'0{r}'
-    else:
-        r = str(r)
-    return f'{q}:{r}'
+def get_time(time):
+    hour, minute, sec = time.split(':')
+    sec, mili = map(int, sec.split('.'))
+    return (int(hour)*3600 + int(minute)*60 + sec)*1000 + mili
     
+def start_time(time, duration):
+    duration = int(float(duration[:-1])*1000)
+    return get_time(time) - duration
+
+def solution(lines):
+    answer = 0
+    ends = []
+    starts =[]
+    for line in lines:
+        t = line.split()
+        ends.append(get_time(t[1])) 
+        starts.append(start_time(t[1], t[2]))
     
-def solution(n, t, m, timetable):
-    answer = ''
-    cnt = 0
-    timetable = sorted(list(map(lambda x: int(x.split(':')[0])*60 + int(x.split(':')[1]), timetable)))
-    
-    i = 0
-    s = 540
-    
-    for j in range(n):
-        res = m
-        if j == n-1 and res == 1:
-            return min(get_time(timetable[i]-1), get_time(s))
-        for k in range(i, min(i+m,len(timetable))):
-            if timetable[k] > s:
-                i = k
-                break
-            res -= 1
-            if j == n-1 and res == 1:
-                if k+1 < len(timetable):
-                    return min(get_time(timetable[k+1]-1),get_time(s))
-                return get_time(s)  
-        else:
-            i = k+1
-        s += t
-    
-    return get_time(s-t)                 
+    for i in range(len(lines)):
+        cnt = 1
+        
+        for j in range(i+1, len(lines)):
+            if ends[i] > starts[j]-999:
+                cnt += 1
+                
+        answer = max(cnt, answer)
+        
+    return answer
 ```
 
 <br>
