@@ -461,6 +461,67 @@ def solution(stones, k):
 
 <br>
 
+### [1차] 셔틀버스
+
+> 생각보다 고려해야할 경우의 수가 많아서 문제풀면서 처음으로 직접 테스트케이스 추가하면서 디버깅했다.
+>
+> 추가한 TC
+>
+> ```
+> 테스트 7
+> 입력값 〉2, 10, 2, ["08:59", "08:59", "08:59", "09:00", "23:59"]
+> 기댓값 〉"08:59"
+> 실행 결과 〉테스트를 통과하였습니다.
+> 테스트 8
+> 입력값 〉1, 1, 1, ["09:00", "23:59"]
+> 기댓값 〉"08:59"
+> 실행 결과 〉테스트를 통과하였습니다.
+> ```
+
+```python
+def get_time(t):
+    q, r = divmod(t,60)  
+    if q < 10:
+        q = f'0{q}'
+    else:
+        q = str(q)
+    if r < 10:
+        r = f'0{r}'
+    else:
+        r = str(r)
+    return f'{q}:{r}'
+    
+    
+def solution(n, t, m, timetable):
+    answer = ''
+    cnt = 0
+    timetable = sorted(list(map(lambda x: int(x.split(':')[0])*60 + int(x.split(':')[1]), timetable)))
+    
+    i = 0
+    s = 540
+    
+    for j in range(n):
+        res = m
+        if j == n-1 and res == 1:
+            return min(get_time(timetable[i]-1), get_time(s))
+        for k in range(i, min(i+m,len(timetable))):
+            if timetable[k] > s:
+                i = k
+                break
+            res -= 1
+            if j == n-1 and res == 1:
+                if k+1 < len(timetable):
+                    return min(get_time(timetable[k+1]-1),get_time(s))
+                return get_time(s)  
+        else:
+            i = k+1
+        s += t
+    
+    return get_time(s-t)                 
+```
+
+<br>
+
 ### 매칭점수
 
 > 1차 시도
