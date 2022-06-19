@@ -561,6 +561,177 @@ def solution(n, t, m, timetable):
 
 <br>
 
+### 표 편집
+
+> [Linked List](https://kjhoon0330.tistory.com/entry/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%ED%91%9C-%ED%8E%B8%EC%A7%91-Python)
+
+```python
+def solution(n,k,cmd):
+    cur = k
+    table = { i:[i-1,i+1] for i in range(n)}
+    table[0] = [None, 1]
+    table[n-1] = [n-2, None]
+    
+    answer = ['O'] * n
+    stack = []
+    for c in cmd:
+        if c == 'C':
+            answer[cur] = 'X'
+            prev, nxt = table[cur]
+            stack.append([prev,cur,nxt])
+            if nxt == None:
+                cur = table[cur][0]
+            else:
+                cur = table[cur][1]
+            if prev == None:
+                table[nxt][0] = None
+            elif nxt == None:
+                table[prev][1] = None
+            else:
+                table[prev][1] = nxt
+                table[nxt][0] = prev
+                
+        elif c == 'Z':
+            prev, now, nxt = stack.pop()
+            answer[now] = 'O'
+            if prev == None:
+                table[nxt][0] = now
+            elif nxt == None:
+                table[prev][1] = now
+            else:
+                table[prev][1] = now
+                table[nxt][0] = now
+                
+        else:
+            c1, c2 = c.split()
+            c2 = int(c2)
+            if c1 == 'D':
+                for _ in range(c2):
+                    cur = table[cur][1]
+            else:
+                for _ in range(c2):
+                    cur = table[cur][0]
+ 
+    return ''.join(answer)
+```
+
+<br>
+
+### 광고삽입
+
+> 1차 시도, 시간초과
+
+```python
+def sec(time):
+    hour, minute, sec = map(int,time.split(':'))
+    return hour*3600+ minute*60 + sec
+
+def clock(s):
+    hour, r = divmod(s,3600)
+    minute, sec = divmod(r,60)
+    hour = f'0{hour}' if hour < 10 else str(hour)
+    minute = f'0{minute}' if minute < 10 else str(minute)
+    sec = f'0{sec}' if sec < 10 else str(sec)
+    return f'{hour}:{minute}:{sec}'
+
+def solution(play_time, adv_time, logs):
+    answer = ''
+    adv = sec(adv_time)
+    play = sec(play_time)
+    d = []
+    for log in logs:
+        start, end = map(lambda x : sec(x), log.split('-'))
+        
+        d.append([start, 1])
+        d.append([end, -1])
+    d=sorted(d)
+    for i in range(len(d)):
+        if i == 0:
+            continue
+        else:
+            d[i][1] = d[i-1][1] + d[i][1]
+    
+    d = [[0,0]] + d
+    # print(d)
+    cumul = []
+    s = 0
+    for i in range(1,len(d)):
+        s += (d[i][0]-d[i-1][0])*d[i-1][1]
+        cumul.append(s)
+    # print(cumul)
+    max_p = 0
+    max_t = 0
+    for s in range(play-adv+1):
+        e = s+adv
+        for j in range(len(d)):
+            if s < d[j][0]:
+                ns = cumul[j-2] + (s-d[j-1][0])*d[j-1][1]
+                break
+        for j in range(len(d)):
+            if e < d[j][0]:
+                ne = cumul[j-2] + (e-d[j-1][0])*d[j-1][1]
+                break
+        else:
+            ne = cumul[len(d)-2] + (e-d[len(d)-1][0])*d[len(d)-1][1]
+                
+        if max_p < ne-ns:
+            max_p = ne-ns
+            max_t = s
+        
+    return clock(max_t)
+```
+
+> [+1-1](https://dev-note-97.tistory.com/156)
+
+```python
+def sec(time):
+    hour, minute, sec = map(int,time.split(':'))
+    
+    return hour*3600+ minute*60 + sec
+
+def clock(s):
+    hour, r = divmod(s,3600)
+    minute, sec = divmod(r,60)
+    hour = f'0{hour}' if hour < 10 else str(hour)
+    minute = f'0{minute}' if minute < 10 else str(minute)
+    sec = f'0{sec}' if sec < 10 else str(sec)
+    return f'{hour}:{minute}:{sec}'
+
+def solution(play_time, adv_time, logs):
+    answer = ''
+    adv = sec(adv_time)
+    play = sec(play_time)
+    times = [0 for _ in range(play+1)]
+    for log in logs:
+        start, end = map(lambda x : sec(x), log.split('-'))
+        times[start] += 1
+        times[end] -= 1
+    
+    # 초당 시청자수 누적합(두번해야지 누적합이 구해짐)
+    for i in range(1, len(times)):
+        times[i] = times[i] + times[i-1]
+    for i in range(1, len(times)):
+        times[i] = times[i] + times[i-1]
+    
+    max_t = 0
+    max_p = 0
+    for i in range(adv-1, len(times)):
+        if i >= adv:
+            if max_p < times[i] - times[i-adv]:
+                max_p = times[i] - times[i-adv]
+                max_t = i-adv+1
+        else:
+            if max_p < times[i] :
+                max_p = times[i] 
+                max_t = i-adv+1
+        
+    return clock(max_t)
+```
+
+
+
+<br>
+
 ### 매칭점수
 
 > 1차 시도
