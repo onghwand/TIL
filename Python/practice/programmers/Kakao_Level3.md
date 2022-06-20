@@ -732,7 +732,7 @@ def solution(play_time, adv_time, logs):
 
 <br>
 
-### 매칭점수
+### [다시풀기]매칭점수
 
 > 1차 시도
 
@@ -776,5 +776,239 @@ def solution(word, pages):
             idx = k
             
     return idx
+```
+
+> [정규표현식](https://velog.io/@ckstn0778/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-42893%EB%B2%88-%EB%A7%A4%EC%B9%AD-%EC%A0%90%EC%88%98-X-1-Python)
+>
+> \S+ : 공백이 아닌 문자가 연속으로 등장하는 것과 매칭
+>
+> ()로 묶인게 하나의 매칭이 됨
+
+```python
+url = re.search('<meta property="og:url" content="(\S+)"',page)
+print(url.groups())
+print(url.group(0))
+print(url.group(1))
+
+
+('https://careers.kakao.com/interview/list',) # groups()
+<meta property="og:url" content="https://careers.kakao.com/interview/list" # group(0)
+https://careers.kakao.com/interview/list # group(1)
+```
+
+```python
+import re
+def solution(word, pages):
+    webpage = []
+    webpageName = []
+    webpageGraph = {}
+    
+    for page in pages:
+        url = re.search('<meta property="og:url" content="(\S+)"',page).group(1)
+        basicScore = 0
+        for f in re.findall('[a-z]+', page.lower()):
+            if f == word.lower():
+                basicScore += 1
+        exiosLink = re.findall('<a href="(https://[\S]+)"',page)
+        
+        for link in exiosLink:
+            if link not in webpageGraph.keys():
+                webpageGraph[link] = [url]
+            else:
+                webpageGraph[link].append(url)
+                
+        webpageName.append(url)
+        webpage.append([url, basicScore, len(exiosLink)])
+    
+    maxV = 0
+    result = 0
+    for i in range(len(webpage)):
+        url = webpage[i][0]
+        score = webpage[i][1]
+        
+        if url in webpageGraph.keys():
+            for link in webpageGraph[url]:
+                a, b = webpage[webpageName.index(link)][1:3]
+                score += (a / b)
+                
+        if maxV < score:
+            maxV = score
+            result = i
+    
+    return result
+```
+
+<br>
+
+### 자물쇠와 열쇠
+
+> 1차 시도, 디버깅할 엄두도 안난다. 너무 생각없이 코드 짠거같다.
+
+```python
+def up(arr):
+    return arr[1:3] + [[0]*len(arr[0])]
+def down(arr):
+    return [[0]*len(arr[0])] + arr[:2]  
+def left(arr):
+    result = [[0]*len(arr) for _ in range(len(arr))]
+    for i in range(len(arr)):
+        for j in range(len(arr[0])):
+            if j == len(arr[0])-1:
+                result[i][j] = 0
+            else:
+                result[i][j] = arr[i][j+1]
+    return result
+def right(arr):
+    result = [[0]*len(arr) for _ in range(len(arr))]
+    for i in range(len(arr)):
+        for j in range(len(arr[0])-1, -1, -1):
+            if j == 0:
+                result[i][j] = 0
+            else:
+                result[i][j] = arr[i][j-1]
+    return result
+def rotate(arr):
+    n = len(arr)
+    m = len(arr[0])
+
+    result = [[0]* n for _ in range(m)]
+
+    for i in range(n):
+        for j in range(m):
+            result[j][n-i-1] = arr[i][j]
+    return result
+
+def find_key(lock,n,m,cnt):
+    lst = []
+    for i in range(n-m+1):
+        for j in range(n-m+1):
+            tmp = lock[i:i+m][j:j+m]
+            ccnt = 0
+            for k in range(m):
+                for l in range(m):
+                    if tmp[k][l] == 1:
+                        ccnt += 1
+            if cnt == ccnt:
+                lst.append(tmp)
+    if lst:
+        return lst
+    else:
+        return False
+
+def solution(key, lock):
+    m = len(key)
+    n = len(lock)
+    
+    cnt = 0
+    for i in range(n):
+        for j in range(n):
+            if lock[i][j] == 0:
+                lock[i][j] = 1
+                cnt += 1
+            else:
+                lock[i][j] = 0
+                
+    small = find_key(lock,n,m,cnt)
+    if small == False:
+        return False
+    
+    for i in range(4):
+        rotated = rotate(key) if i == 0 else rotate(rotated)
+        if rotated in small:
+            return True
+        for j in range(m-1):
+            changed = up(rotated) if j == 0 else up(changed)
+            if changed in small:
+                return True
+            for k in range(m-1):
+                c = right(changed) if k == 0 else right(c)
+                if c in small:
+                    return True 
+            for k in range(m-1):
+                c = left(changed) if k == 0 else left(c)
+                if c in small:
+                    return True
+        for j in range(m-1):
+            changed = down(rotated) if j == 0 else down(changed)
+            if changed in small:
+                return True
+            for k in range(m-1):
+                c = right(changed) if k == 0 else right(c)
+                if c in small:
+                    return True
+            for k in range(m-1):
+                c = left(changed) if k == 0 else left(c)
+                if c in small:
+                    return True
+        for j in range(m-1):
+            changed = left(rotated) if j == 0 else left(changed)
+            if changed in small:
+                return True
+            for k in range(m-1):
+                c = up(changed) if k == 0 else up(c)
+                if c in small:
+                    return True
+            for k in range(m-1):
+                c = down(changed) if k == 0 else down(c)
+                if c in small:
+                    return True
+        for j in range(m-1):
+            changed = right(rotated) if j == 0 else right(changed)
+            if changed in small:
+                return True
+            for k in range(m-1):
+                c = up(changed) if k == 0 else up(c)
+                if c in small:
+                    return True
+            for k in range(m-1):
+                c = down(changed) if k == 0 else down(c)
+                if c in small:
+                    return True
+    return False
+```
+
+> [배열 확장](https://velog.io/@tjdud0123/%EC%9E%90%EB%AC%BC%EC%87%A0%EC%99%80-%EC%97%B4%EC%87%A0-2020-%EC%B9%B4%EC%B9%B4%EC%98%A4-%EA%B3%B5%EC%B1%84-python)
+>
+> 2m+n크기의 배열을 만들고 중앙에 자물쇠 배치 0,0부터 끝까지 순회하면서 맞으면 true, 동서남북으로 실행
+>
+> - 90도 회전할때 list(zip(*arr[::-1])) 하면 된다.. 
+
+```python
+def attach(i,j,m,arr,key):
+    for k in range(i, i+m):
+        for l in range(j, j+m):
+            if key[k-i][l-j] == 1:
+                arr[k][l] += 1
+def detach(i,j,m,arr,key):
+    for k in range(i, i+m):
+        for l in range(j, j+m):
+            if key[k-i][l-j] == 1:
+                arr[k][l] -= 1
+def rotate(arr):
+    return list(zip(*arr[::-1]))
+def check(m,n,arr):
+    for i in range(m,m+n):
+        for j in range(m,m+n):
+            if arr[i][j] != 1:
+                return False
+    return True
+
+def solution(key, lock):
+    m, n = len(key), len(lock)
+    arr = [[0]*(2*m+n) for _ in range(2*m+n)]
+    
+    for i in range(m, m+n):
+        for j in range(m, m+n):
+            arr[i][j] = lock[i-m][j-m]
+    
+    for k in range(4):
+        key = rotate(key)
+        for i in range(m+n+1):
+            for j in range(m+n+1):
+                attach(i,j,m,arr,key)
+                if check(m,n,arr) == True:
+                    return True
+                detach(i,j,m,arr,key)
+    return False 
 ```
 
