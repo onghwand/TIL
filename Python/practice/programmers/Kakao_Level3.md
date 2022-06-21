@@ -1012,3 +1012,63 @@ def solution(key, lock):
     return False 
 ```
 
+<br>
+
+### 외벽 점검
+
+> [참고](https://velog.io/@tjdud0123/%EC%99%B8%EB%B2%BD-%EC%A0%90%EA%B2%80-2020-%EC%B9%B4%EC%B9%B4%EC%98%A4-%EA%B3%B5%EC%B1%84-python), 비교적 오래 걸림
+
+```python
+from itertools import permutations
+def solution(n, weak, dist):
+    L = len(weak)
+    cand = []
+    weaks = weak + [w+n for w in weak]
+    
+    for i, start in enumerate(weak):
+        for friends in permutations(dist):
+            cnt = 1
+            position = start
+            for friend in friends:
+                position += friend
+                if position < weaks[i+L-1]:
+                    cnt += 1
+                    position = [w for w in weaks[i+1:i+L] if w > position][0]
+                else:
+                    cand.append(cnt)
+                    break
+    return min(cand) if cand else -1
+```
+
+> [프로그래머스 다른 사람의 풀이](https://programmers.co.kr/learn/courses/30/lessons/60062/solution_groups?language=python3)
+>
+> 가장 많이 움직일 수 있는 사람 순으로 모든 시작점을 돌면서 돌아본다. 만약에 부족하다면 남은 부분을 deque에 넣어놓고 다음 사람 돌아보고 반복
+
+```python
+from collections import deque
+
+def solution(n, weak, dist):
+    dist.sort(reverse=True)
+    q = deque([weak])
+    visited = set()
+    visited.add(tuple(weak))
+    for i in range(len(dist)):
+        d = dist[i]
+        for _ in range(len(q)):
+            current = q.popleft()
+            for p in current:
+                l = p
+                r = (p + d) % n
+                if l < r:
+                    temp = tuple(filter(lambda x: x < l or x > r, current))
+                else:
+                    temp = tuple(filter(lambda x: x < l and x > r, current))
+                
+                if len(temp) == 0:
+                    return (i + 1)
+                elif temp not in visited:
+                    visited.add(temp)
+                    q.append(list(temp))
+    return -1
+```
+
