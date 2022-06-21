@@ -1,3 +1,8 @@
+## Level3
+
+- 8문제 정도 남았다. level3정도 되니까 혼자 생각해서 풀기엔 버거웠고 거의 대부분을 구글 해답에 의존해서 풀었다. 한번 다 풀고 다시 백지상태에서 혼자 끝까지 푸는 연습을 할 예정이다.
+- level3는 level1 수준의 쉬운문제에 효율성을 추가하여 누적합, 투포인터, 이진탐색 등을 쓰지 않으면 통과되지 않는 문제들도 종종 있었다. 물론 문제 자체가 어려운 것도 많았다. 
+
 ### 불량 사용자
 
 > 제일 싫어하는 상황이 나왔다. 거의 디버깅 불가능이다 이건
@@ -1070,5 +1075,39 @@ def solution(n, weak, dist):
                     visited.add(temp)
                     q.append(list(temp))
     return -1
+```
+
+<br>
+
+### 파괴되지 않은 건물
+
+> 혹시나 하고 배열 다 순회하면서 갱신했지만 역시나 
+>
+> [2차원 누적합](https://kimjingo.tistory.com/155) 
+
+```python
+def solution(board, skill):
+    N, M = len(board), len(board[0])
+    cumul = [[0]*(M+1) for _ in range(N+1)]
+    
+    for sk in skill:
+        cumul[sk[1]][sk[2]] -= sk[5] if sk[0] == 1 else -sk[5]
+        cumul[sk[1]][sk[4]+1] += sk[5] if sk[0] == 1 else -sk[5]
+        cumul[sk[3]+1][sk[2]] += sk[5] if sk[0] == 1 else -sk[5]
+        cumul[sk[3]+1][sk[4]+1] -= sk[5] if sk[0] == 1 else -sk[5]
+    
+    for i in range(N):
+        for j in range(M-1):
+            cumul[i][j+1] += cumul[i][j]
+    
+    for j in range(M):
+        for i in range(N-1):
+            cumul[i+1][j] += cumul[i][j]
+    cnt = 0
+    for i in range(N):
+        for j in range(M):
+            if board[i][j] + cumul[i][j] > 0:
+                cnt += 1
+    return cnt
 ```
 
