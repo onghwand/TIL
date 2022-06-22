@@ -1111,3 +1111,53 @@ def solution(board, skill):
     return cnt
 ```
 
+<br>
+
+### 경주로 건설
+
+- 단순 bfs로 풀었을 때 반례
+
+|      |      | 23                     | 21   |
+| ---- | ---- | ---------------------- | ---- |
+| 26   | 27   | 28(여기서 이게 선택됨) |      |
+|      |      | 34(여기서 역전)        |      |
+
+|      |      | 23                  | 21   |
+| ---- | ---- | ------------------- | ---- |
+| 26   | 27   | 29(이게 버려지는데) |      |
+|      |      | 30(사실 이게 최선)  |      |
+
+> 비용 차이가 500 이상이면 다다음칸에서 역전이 일어날수 없어서 고려할 필요없지만 차이가 400이하라면 일단 큐에 넣고 다시 평가해야한다.
+
+```python
+from collections import deque
+def solution(board):
+    n = len(board)
+    points = deque() # i,j,direct,cost
+    points.append((0,0,-1,0))
+    v = [[-1]*n for _ in range(n)]
+    
+    answer = -1
+    while points:
+        i,j,d,c = points.popleft()
+        if (i,j) == (n-1,n-1) and (answer == -1 or answer > c):
+            answer = c
+        
+        neighbors = [(i,j-1), (i,j+1), (i-1,j), (i+1,j)]
+        for direction, (ni,nj) in enumerate(neighbors):
+            if ni <= -1 or ni >= n or nj <= -1 or nj >= n:
+                continue
+
+            if board[ni][nj]:
+                continue
+
+            cost = c + (100 if d==direction or d==-1 else 600)
+            if v[ni][nj] != -1 and v[ni][nj] < cost-400:
+                continue
+            
+            points.append((ni,nj,direction,cost))
+            v[ni][nj] = cost
+    
+    return answer
+```
+
