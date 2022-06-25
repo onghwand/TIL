@@ -1,3 +1,8 @@
+## Level3
+
+- 8문제 정도 남았다. level3정도 되니까 혼자 생각해서 풀기엔 버거웠고 거의 대부분을 구글 해답에 의존해서 풀었다. 한번 다 풀고 다시 백지상태에서 혼자 끝까지 푸는 연습을 할 예정이다.
+- level3는 level1 수준의 쉬운문제에 효율성을 추가하여 누적합, 투포인터, 이진탐색 등을 쓰지 않으면 통과되지 않는 문제들도 종종 있었다. 물론 문제 자체가 어려운 것도 많았다. 
+
 ### 불량 사용자
 
 > 제일 싫어하는 상황이 나왔다. 거의 디버깅 불가능이다 이건
@@ -1016,9 +1021,9 @@ def solution(key, lock):
 
 ### 외벽 점검
 
-> [참고](https://velog.io/@tjdud0123/외벽-점검-2020-카카오-공채-python), 비교적 오래 걸림
+> [참고](https://velog.io/@tjdud0123/%EC%99%B8%EB%B2%BD-%EC%A0%90%EA%B2%80-2020-%EC%B9%B4%EC%B9%B4%EC%98%A4-%EA%B3%B5%EC%B1%84-python), 비교적 오래 걸림
 
-```
+```python
 from itertools import permutations
 def solution(n, weak, dist):
     L = len(weak)
@@ -1072,13 +1077,13 @@ def solution(n, weak, dist):
     return -1
 ```
 
-
+<br>
 
 ### 파괴되지 않은 건물
 
-> 혹시나 하고 배열 다 순회하면서 갱신했지만 역시나
+> 혹시나 하고 배열 다 순회하면서 갱신했지만 역시나 
 >
-> [2차원 누적합](https://kimjingo.tistory.com/155)
+> [2차원 누적합](https://kimjingo.tistory.com/155) 
 
 ```python
 def solution(board, skill):
@@ -1106,7 +1111,7 @@ def solution(board, skill):
     return cnt
 ```
 
-
+<br>
 
 ### 경주로 건설
 
@@ -1156,11 +1161,11 @@ def solution(board):
     return answer
 ```
 
-
+<br>
 
 ### 기둥과 보 설치
 
-> 오랜만에 혼자 힘으로 풀었다, 설치는 쉬웠는데 삭제가 좀 어려웠다.
+> 오랜만에 혼자 힘으로 풀었다, 설치는 쉬웠는데 삭제가 좀 어려웠다. 
 >
 > 삭제는 어떤 기둥이나 보를 삭제했을 때, 영향을 받을 수 있는 기둥과 보(최대6개)가 다 안정적인지 확인해주는 함수를 따로 만들어서 확인했다.
 
@@ -1218,3 +1223,4 @@ def solution(n, build_frame):
                 
     return answer
 ```
+
