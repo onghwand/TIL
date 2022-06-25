@@ -1012,3 +1012,209 @@ def solution(key, lock):
     return False 
 ```
 
+<br>
+
+### 외벽 점검
+
+> [참고](https://velog.io/@tjdud0123/외벽-점검-2020-카카오-공채-python), 비교적 오래 걸림
+
+```
+from itertools import permutations
+def solution(n, weak, dist):
+    L = len(weak)
+    cand = []
+    weaks = weak + [w+n for w in weak]
+    
+    for i, start in enumerate(weak):
+        for friends in permutations(dist):
+            cnt = 1
+            position = start
+            for friend in friends:
+                position += friend
+                if position < weaks[i+L-1]:
+                    cnt += 1
+                    position = [w for w in weaks[i+1:i+L] if w > position][0]
+                else:
+                    cand.append(cnt)
+                    break
+    return min(cand) if cand else -1
+```
+
+> [프로그래머스 다른 사람의 풀이](https://programmers.co.kr/learn/courses/30/lessons/60062/solution_groups?language=python3)
+>
+> 가장 많이 움직일 수 있는 사람 순으로 모든 시작점을 돌면서 돌아본다. 만약에 부족하다면 남은 부분을 deque에 넣어놓고 다음 사람 돌아보고 반복
+
+```python
+from collections import deque
+
+def solution(n, weak, dist):
+    dist.sort(reverse=True)
+    q = deque([weak])
+    visited = set()
+    visited.add(tuple(weak))
+    for i in range(len(dist)):
+        d = dist[i]
+        for _ in range(len(q)):
+            current = q.popleft()
+            for p in current:
+                l = p
+                r = (p + d) % n
+                if l < r:
+                    temp = tuple(filter(lambda x: x < l or x > r, current))
+                else:
+                    temp = tuple(filter(lambda x: x < l and x > r, current))
+                
+                if len(temp) == 0:
+                    return (i + 1)
+                elif temp not in visited:
+                    visited.add(temp)
+                    q.append(list(temp))
+    return -1
+```
+
+
+
+### 파괴되지 않은 건물
+
+> 혹시나 하고 배열 다 순회하면서 갱신했지만 역시나
+>
+> [2차원 누적합](https://kimjingo.tistory.com/155)
+
+```python
+def solution(board, skill):
+    N, M = len(board), len(board[0])
+    cumul = [[0]*(M+1) for _ in range(N+1)]
+    
+    for sk in skill:
+        cumul[sk[1]][sk[2]] -= sk[5] if sk[0] == 1 else -sk[5]
+        cumul[sk[1]][sk[4]+1] += sk[5] if sk[0] == 1 else -sk[5]
+        cumul[sk[3]+1][sk[2]] += sk[5] if sk[0] == 1 else -sk[5]
+        cumul[sk[3]+1][sk[4]+1] -= sk[5] if sk[0] == 1 else -sk[5]
+    
+    for i in range(N):
+        for j in range(M-1):
+            cumul[i][j+1] += cumul[i][j]
+    
+    for j in range(M):
+        for i in range(N-1):
+            cumul[i+1][j] += cumul[i][j]
+    cnt = 0
+    for i in range(N):
+        for j in range(M):
+            if board[i][j] + cumul[i][j] > 0:
+                cnt += 1
+    return cnt
+```
+
+
+
+### 경주로 건설
+
+- 단순 bfs로 풀었을 때 반례
+
+|      |      | 23                     | 21   |
+| ---- | ---- | ---------------------- | ---- |
+| 26   | 27   | 28(여기서 이게 선택됨) |      |
+|      |      | 34(여기서 역전)        |      |
+
+|      |      | 23                  | 21   |
+| ---- | ---- | ------------------- | ---- |
+| 26   | 27   | 29(이게 버려지는데) |      |
+|      |      | 30(사실 이게 최선)  |      |
+
+> 비용 차이가 500 이상이면 다다음칸에서 역전이 일어날수 없어서 고려할 필요없지만 차이가 400이하라면 일단 큐에 넣고 다시 평가해야한다.
+
+```python
+from collections import deque
+def solution(board):
+    n = len(board)
+    points = deque() # i,j,direct,cost
+    points.append((0,0,-1,0))
+    v = [[-1]*n for _ in range(n)]
+    
+    answer = -1
+    while points:
+        i,j,d,c = points.popleft()
+        if (i,j) == (n-1,n-1) and (answer == -1 or answer > c):
+            answer = c
+        
+        neighbors = [(i,j-1), (i,j+1), (i-1,j), (i+1,j)]
+        for direction, (ni,nj) in enumerate(neighbors):
+            if ni <= -1 or ni >= n or nj <= -1 or nj >= n:
+                continue
+
+            if board[ni][nj]:
+                continue
+
+            cost = c + (100 if d==direction or d==-1 else 600)
+            if v[ni][nj] != -1 and v[ni][nj] < cost-400:
+                continue
+            
+            points.append((ni,nj,direction,cost))
+            v[ni][nj] = cost
+    
+    return answer
+```
+
+
+
+### 기둥과 보 설치
+
+> 오랜만에 혼자 힘으로 풀었다, 설치는 쉬웠는데 삭제가 좀 어려웠다.
+>
+> 삭제는 어떤 기둥이나 보를 삭제했을 때, 영향을 받을 수 있는 기둥과 보(최대6개)가 다 안정적인지 확인해주는 함수를 따로 만들어서 확인했다.
+
+```python
+def bo_safe(x,y,cols,rows):
+    if (x,y) not in rows:
+        return True
+    if (x-1,y) in rows and (x+1,y) in rows:
+        return True
+    if (x,y-1) in cols or (x+1,y-1) in cols:
+        return True
+    return False
+
+def gi_safe(x,y,cols,rows):
+    if (x,y) not in cols:
+        return True
+    if y == 0 or (x,y-1) in cols or (x-1,y) in rows or (x,y) in rows:
+        return True
+    return False
+
+def solution(n, build_frame):
+    answer = set()
+    cols = set()
+    rows = set()
+    for x,y,a,b in build_frame:
+        if b == 1:
+            if a == 0:
+                if y == 0 or (x,y-1) in cols or (x-1,y) in rows or (x,y) in rows:
+                    cols.add((x,y))
+                    answer.add((x,y,a))
+            elif a == 1:
+                if ((x-1,y) in rows and (x+1,y) in rows) or ((x,y-1) in cols or (x+1,y-1) in cols):
+                    rows.add((x,y))
+                    answer.add((x,y,a))
+        elif b == 0:
+            if (x,y,a) in answer:
+                if a == 0: 
+                    cols.remove((x,y))    
+                    answer.remove((x,y,a))
+                    if gi_safe(x,y+1,cols,rows) and gi_safe(x,y-1,cols,rows) and bo_safe(x-1,y+1,cols,rows) and bo_safe(x,y+1,cols,rows) and bo_safe(x-1,y,cols,rows) and bo_safe(x,y,cols,rows):
+                        continue
+                    else:
+                        cols.add((x,y))    
+                        answer.add((x,y,a))
+                elif a == 1:
+                    rows.remove((x,y))
+                    answer.remove((x,y,a))
+                    if gi_safe(x,y,cols,rows) and gi_safe(x+1,y,cols,rows) and bo_safe(x-1,y,cols,rows) and bo_safe(x+1,y,cols,rows) and gi_safe(x,y-1,cols,rows) and gi_safe(x+1,y-1,cols,rows):
+                        continue
+                    else:
+                        rows.add((x,y))
+                        answer.add((x,y,a))
+                    
+    answer = sorted(answer, key = lambda x: (x[0],x[1],x[2]))   
+                
+    return answer
+```
