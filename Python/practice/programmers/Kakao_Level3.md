@@ -1224,3 +1224,52 @@ def solution(n, build_frame):
     return answer
 ```
 
+<br>
+
+### 블록 이동하기
+
+> [참고](https://velog.io/@tjdud0123/%EB%B8%94%EB%A1%9D-%EC%9D%B4%EB%8F%99%ED%95%98%EA%B8%B0-2020-%EC%B9%B4%EC%B9%B4%EC%98%A4-%EA%B3%B5%EC%B1%84-python)
+
+```python
+from collections import deque
+def possible(cur1, cur2, arr):
+    cand = []
+    for di,dj in [[0,1],[0,-1],[1,0],[-1,0]]:
+        nxt1 = (cur1[0]+di, cur1[1]+dj)
+        nxt2 = (cur2[0]+di, cur2[1]+dj)
+        if arr[nxt1[0]][nxt1[1]] == 0 and arr[nxt2[0]][nxt2[1]] == 0: 
+            cand.append((nxt1,nxt2))
+            
+    if cur1[0] == cur2[0]: # 가로
+        for d in [-1,1]:
+            if arr[cur1[0]+d][cur1[1]] == 0 and arr[cur2[0]+d][cur2[1]] == 0:
+                cand.append((cur1,(cur1[0]+d, cur1[1])))
+                cand.append((cur2,(cur2[0]+d, cur2[1])))
+    else: #세로
+        for d in [-1,1]:
+            if arr[cur1[0]][cur1[1]+d] == 0 and arr[cur2[0]][cur2[1]+d] == 0:
+                cand.append(((cur1[0],cur1[1]+d),cur1))
+                cand.append(((cur2[0],cur2[1]+d),cur2))
+        
+    return cand
+    
+def solution(board):
+    n = len(board)
+    arr = [[1]*(n+2) for _ in range(n+2)]
+    for i in range(n):
+        for j in range(n):
+            arr[i+1][j+1]=board[i][j]
+    
+    q = deque([((1,1),(1,2),0)])
+    confirm = set([((1,1),(1,2))])
+    
+    while q:
+        cur1, cur2, cnt = q.popleft()
+        if cur1 == (n,n) or cur2 == (n,n):
+            return cnt
+        for nxt in possible(cur1,cur2,arr):           
+            if nxt not in confirm:
+                confirm.add(nxt)
+                q.append([*nxt,cnt+1])
+```
+
