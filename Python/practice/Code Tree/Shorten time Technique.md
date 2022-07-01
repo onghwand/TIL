@@ -19,3 +19,24 @@ for i in range(1, len(arr)):
 print(answer)
 ```
 
+## Two Pointer
+
+> 가장 짧은 부분합
+
+```python
+n, s = map(int, input().split())
+arr = [0] + list(map(int, input().split()))
+j = 0
+sumV = 0
+ans = n
+for i in range(1,n+1):
+    while  j+1 <= n and sumV < s :
+        sumV += arr[j+1]
+        j += 1
+    if sumV < s:
+        break
+    ans = min(ans, j-i+1)
+    sumV -= arr[i]
+print(ans) if ans != n else print(-1)
+```
+
