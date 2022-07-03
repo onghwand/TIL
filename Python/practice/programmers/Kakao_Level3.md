@@ -1341,3 +1341,87 @@ def solution(board, aloc, bloc):
     return solve(aloc[0], aloc[1], bloc[0], bloc[1])
 ```
 
+<br>
+
+### 양과 늑대
+
+> [풀이1](https://kjhoon0330.tistory.com/entry/%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4-%EC%96%91%EA%B3%BC-%EB%8A%91%EB%8C%80-Python)
+
+```python
+answer = 1
+def get_can_go(i,prev,graph):
+    can_go = [x for x in prev if x!=i]
+    for j in range(len(graph)):
+        if graph[i][j] == 1:
+            can_go.append(j)
+    return can_go
+
+def f(i,s,w,prev,graph,info):
+    global answer
+    can_go = get_can_go(i,prev,graph)
+    
+    if s == w or len(can_go) == 0:
+        if answer < s:
+            answer = s
+        return
+    
+    for edge in can_go:
+        if info[edge] == 1:
+            f(edge,s,w+1,can_go,graph,info)
+        else:
+            f(edge,s+1,w,can_go,graph,info)
+            
+def solution(info, edges):
+    graph = [[0]*len(info) for _ in range(len(info))]
+    
+    for i,j in edges:
+        graph[i][j] = 1
+    
+    f(0,1,0,[0],graph, info)
+    
+    return answer
+```
+
+> [풀이2](https://kimjingo.tistory.com/154)
+
+```python
+from collections import deque, defaultdict
+from copy import deepcopy
+
+is_wolf = []
+num2edges = defaultdict(list)
+max_sheep = 0
+
+def f(cur, used, nsheep, nwolf, can_go):
+    global max_sheep
+    
+    if used[cur]:
+        return
+    used[cur] = True
+    
+    if is_wolf[cur]:
+        nwolf += 1
+    else:
+        nsheep += 1
+        max_sheep = max(max_sheep, nsheep)
+    
+    if nsheep <= nwolf:
+        return
+    
+    can_go.extend(num2edges[cur])
+    for nxt in can_go:
+        f(nxt, deepcopy(used), nsheep, nwolf, can_go=[x for x in can_go if x != nxt and not used[x]])
+
+def solution(info, edges):
+    global is_wolf, numb2edges, max_sheep
+    is_wolf = info
+    used = [False]*len(info)
+    
+    for start, to in edges:
+        num2edges[start].append(to)
+        
+    f(0,used,0,0,[])
+    
+    return max_sheep
+```
+
