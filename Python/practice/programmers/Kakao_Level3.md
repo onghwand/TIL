@@ -1425,3 +1425,121 @@ def solution(info, edges):
     return max_sheep
 ```
 
+<br>
+
+### 카드 짝 맞추기
+
+> 3시간이나 풀었는데 테케 1개를 계속 못잡는다.. 테스트7
+>
+> 카드 짝을 맞출때, 2개의 카드중 어떤 것을 먼저 선택하느냐에 따라 달라지고, 가는 방법도 2가지이다. 모든 경우를 다 생각한거같은데 한개가 걸린다
+
+```python
+from itertools import permutations
+from copy import deepcopy
+minV = 10000000
+def solution(board, r, c):
+    dc = {}
+    for i in range(4):
+        for j in range(4):
+            if board[i][j]:
+                dc[board[i][j]] = dc.get(board[i][j], []) + [(i,j)]
+    per=list(permutations(dc.keys()))
+    
+    def cal(ax,ay,bx,by,v):
+        cnt = ccnt = 0
+        if ax==bx and ay != by:
+            for key in dc.keys():
+                if v[key] == 0:
+                    for e in dc[key]:
+                        if e[0] == ax and min(ay,by) < e[1] < max(ay,by):
+                            cnt += 1
+            return 1 + cnt
+        elif ax!=bx and ay == by:
+            for key in dc.keys():
+                if v[key] == 0:
+                    for e in dc[key]:
+                        if e[1] == ay and min(ax,bx) < e[0] < max(ax,bx):
+                            cnt += 1
+            return 1 + cnt
+        elif ax!=bx and ay!=by:
+            if abs(ax-bx) == 1 and abs(ay-by) == 1:
+                return 2
+            
+            elif abs(ax-bx) == 1:
+                for key in dc.keys():
+                    if v[key] == 0:
+                        for e in dc[key]:
+                            if e[0] == bx and min(ay,by) < e[1] < max(ay,by):
+                                cnt += 1
+                            if e[0] == ax and min(ay,by) < e[1] < max(ay,by):
+                                ccnt += 1
+                return min(2 + cnt, 2+ccnt)
+            elif abs(ay-by) == 1:
+                for key in dc.keys():
+                    if v[key] == 0:
+                        for e in dc[key]:
+                            if e[1] == by and min(ax,bx) < e[0] < max(ax,bx):
+                                cnt += 1
+                            if e[1] == ay and min(ax,bx) < e[0] < max(ax,bx):
+                                ccnt += 1
+                return min(2 + cnt, 2+ccnt)
+            else: # x좌표와 y좌표 차이가 2이상일 경우
+                check1 = check2 = 0
+                for key in dc.keys():
+                    if v[key] == 0:
+                        for e in dc[key]:
+                            if e == (ax,by):
+                                check1 = 1
+                            if e == (bx,ay):
+                                check2 = 1
+                            if (e[0] == ax and min(ay,by) < e[1] < max(ay,by)) or (e[1] == by and min(ax,bx) < e[0] < max(ax,bx)):
+                                cnt += 1
+                            if (e[0] == bx and min(ay,by) < e[1] < max(ay,by)) or (e[1] == ay and min(ax,bx) < e[0] < max(ax,bx)):
+                                ccnt += 1
+                cal1 = 2+cnt if check1 == 1 else 3+cnt
+                cal2 = 2+ccnt if check2 == 1 else 3+ccnt
+                if (bx==0 or bx==3) and (by==0 or by==3):
+                    cal3 = 2+ccnt
+                    cal4 = 2+cnt
+                elif bx==0 or bx==3:
+                    cal3 = 2+ccnt
+                    cal4 = 3+cnt
+                elif by==0 or by==3:
+                    cal3 = 3+ccnt
+                    cal4 = 2+cnt
+                else:
+                    cal3 = 3+ccnt
+                    cal4 = 3+cnt
+                cal5 = 3 + min(cnt, ccnt)
+                return min(cal1, cal2, cal3, cal4, cal5)
+            
+        elif ax==bx and ay==by:
+            return 0
+    
+    def f(i,seq,r,c,cnt):
+        global minV
+        if i == len(seq):
+            if cnt < minV:
+                minV = cnt
+            return 
+        elif cnt >= minV:
+            return
+        
+        prev, post = dc[seq[i]]
+        prev_first = cal(r,c,prev[0],prev[1],v) + cal(prev[0],prev[1],post[0],post[1],v) + 2
+        post_first = cal(r,c,post[0],post[1],v) + cal(post[0],post[1],prev[0],prev[1],v) + 2
+        
+        v[seq[i]] = 1
+        f(i+1,seq,post[0],post[1],cnt+prev_first)
+        f(i+1,seq,prev[0],prev[1],cnt+post_first)
+        v[seq[i]] = 0
+        
+    for p in per:
+        v = [0]*(len(dc.keys())+1)
+        f(0,p,r,c,0)
+  
+    return minV
+```
+
+
+
