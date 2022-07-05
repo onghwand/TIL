@@ -1541,5 +1541,131 @@ def solution(board, r, c):
     return minV
 ```
 
+<br>
 
+### 길찾기 게임
+
+> 망한 내풀이
+
+```python
+def solution(nodeinfo):
+    answer = [[]]
+    dc = {}
+    levels = {}
+    
+    for i in range(len(nodeinfo)):
+        dc[str(nodeinfo[i])] = i+1
+        levels[nodeinfo[i][1]] = levels.get(nodeinfo[i][1], []) + [nodeinfo[i][0]]
+        
+    for k in levels.keys():
+        levels[k].sort()
+    
+    nodeinfo = sorted(nodeinfo, key=lambda x: (-x[1],x[0]))
+    a = sorted(nodeinfo, key=lambda x: (x[0],x[1]))
+    arr1 = [0]*(len(nodeinfo)+1)
+    arr2 = [0]*(len(nodeinfo)+1)
+    
+    prev = nodeinfo[0][1]
+    cur = nodeinfo[0][1]
+    for j in range(len(nodeinfo)):
+        if cur != nodeinfo[j][1]:
+            prev = cur
+            cur = nodeinfo[j][1]
+        for k in range(len(levels[prev])):
+            if nodeinfo[j][0] < levels[prev][k]:
+                if k == 0:
+                    arr1[dc[f'[{levels[prev][k]}, {prev}]']] = dc[str(nodeinfo[j])]
+                    break
+                elif k > 0 :
+                    if abs(levels[prev][k-1]-nodeinfo[j][0]) < abs(levels[prev][k]-nodeinfo[j][0]):
+                        arr2[dc[f'[{levels[prev][k-1]}, {prev}]']] = dc[str(nodeinfo[j])]
+                        break
+                    else:
+                        arr1[dc[f'[{levels[prev][k]}, {prev}]']] = dc[str(nodeinfo[j])]
+                        break
+        else:
+            arr2[dc[f'[{levels[prev][k]}, {prev}]']] = dc[str(nodeinfo[j])] 
+        
+    preorder = []
+    def pre(p):
+        if p == 0:
+            return
+        else:
+            preorder.append(p)
+            pre(arr1[p])
+            pre(arr2[p])
+    pre(dc[str(nodeinfo[0])])
+    
+    postorder = []
+    def post(p):
+        if p == 0:
+            return
+        else: 
+            postorder.append(p)
+            post(arr2[p])
+            post(arr1[p])
+    post(dc[str(nodeinfo[0])])
+
+    return [preorder,postorder[::-1]]
+```
+
+> [참고](https://wiselog.tistory.com/103)
+
+```python
+import sys
+sys.setrecursionlimit(10**6)
+
+def preorder(arrY, arrX, answer):
+    node = arrY[0]
+    idx = arrX.index(node)
+    arrY1 = []
+    arrY2 = []
+    
+    for i in range(1, len(arrY)):
+        if node[0] > arrY[i][0]:
+            arrY1.append(arrY[i]) # 왼쪽
+        else:
+            arrY2.append(arrY[i]) # 오른쪽
+    
+    answer.append(node[2])
+    if len(arrY1) > 0:
+        preorder(arrY1, arrX[:idx], answer)
+    if len(arrY2) > 0:
+        preorder(arrY2, arrX[idx + 1:], answer)
+    return
+
+def postorder(arrY, arrX, answer):
+    node = arrY[0]
+    idx = arrX.index(node)
+    arrY1 = []
+    arrY2 = []
+    
+    for i in range(1, len(arrY)):
+        if node[0] > arrY[i][0]:
+            arrY1.append(arrY[i])
+        else:
+            arrY2.append(arrY[i])
+    
+    if len(arrY1) > 0:
+        postorder(arrY1, arrX[:idx], answer)
+    if len(arrY2) > 0:
+        postorder(arrY2, arrX[idx + 1:], answer)
+    answer.append(node[2])
+    return
+
+def solution(nodeinfo):
+    preanswer = []
+    postanswer = []
+    
+    for i in range(len(nodeinfo)):
+        nodeinfo[i].append(i+1)
+    
+    arrY = sorted(nodeinfo, key = lambda x : (-x[1], x[0])) # y큰거부터 x작은거부터
+    arrX = sorted(nodeinfo) # x작은거부터 
+    
+    preorder(arrY, arrX, preanswer)
+    postorder(arrY, arrX, postanswer)
+    
+    return [preanswer, postanswer]
+```
 
