@@ -37,3 +37,42 @@ for i in range(2,n+1):
 
 ```
 
+> 각 정점까지의 최단 경로
+
+```python
+import heapq
+import sys
+INF = sys.maxsize
+
+n,m = map(int, input().split())
+k = int(input())
+graph = [[] for _ in range(n+1)]
+for _ in range(m):
+    i, j, d = map(int, input().split())
+    graph[i].append((j,d))
+    graph[j].append((i,d))
+
+dist = [INF]*(n+1)
+dist[k] = 0
+pq = []
+heapq.heappush(pq, (0,k))
+
+while pq:
+    min_dist, min_idx = heapq.heappop(pq)
+
+    if dist[min_idx] != min_dist:
+        continue
+    
+    for target_index, target_dist in graph[min_idx]:
+        new_dist = target_dist + dist[min_idx]
+        if dist[target_index] > new_dist:
+            dist[target_index] = new_dist
+            heapq.heappush(pq, (new_dist, target_index))
+
+for i in range(1, n+1):
+    if dist[i] == INF:
+        print(-1)
+    else:
+        print(dist[i])
+```
+
