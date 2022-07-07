@@ -76,3 +76,34 @@ for i in range(1, n+1):
         print(dist[i])
 ```
 
+> 가장 오래 걸리는 학생2
+
+```python
+import heapq
+import sys
+INF = sys.maxsize
+
+N, M = map(int, input().split())
+graph = [[] for _ in range(N+1)]
+for _ in range(M):
+    i, j, d = map(int, input().split())
+    graph[j].append((i,d))
+# print(graph)
+dist = [INF]*(N+1)
+pq = []
+dist[N] = 0
+heapq.heappush(pq, (0,N))
+while pq:
+    min_dist, min_idx = heapq.heappop(pq)
+
+    if dist[min_idx] != min_dist:
+        continue
+    
+    for idx,dis in graph[min_idx]:
+        nxt_dist = dist[min_idx] + dis
+        if dist[idx] > nxt_dist:
+            dist[idx] = nxt_dist
+            heapq.heappush(pq, (nxt_dist, idx))
+print(max(dist[1:]))
+```
+
