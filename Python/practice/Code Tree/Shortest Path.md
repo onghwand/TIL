@@ -107,3 +107,49 @@ while pq:
 print(max(dist[1:]))
 ```
 
+> 최단거리 경로
+
+```python
+import heapq
+import sys
+INF = sys.maxsize
+
+n,m=map(int,input().split())
+graph = [[] for _ in range(n+1)]
+for _ in range(m):
+    i,j,d = map(int, input().split())
+    graph[i].append((j,d))
+    graph[j].append((i,d))
+A,B=map(int,input().split())
+
+dist = [INF]*(n+1)
+dist[A] = 0
+
+path = [0]*(n+1)
+pq = []
+heapq.heappush(pq,(0,A))
+while pq:
+    min_dist, min_idx = heapq.heappop(pq)
+
+    if dist[min_idx] != min_dist:
+        continue
+    
+    for target_idx, target_dist in graph[min_idx]:
+        new_dist = dist[min_idx] + target_dist
+        if new_dist < dist[target_idx]:
+            dist[target_idx] = new_dist
+            heapq.heappush(pq, (new_dist, target_idx))
+            path[target_idx] = min_idx
+            
+x = B
+vertices = []
+vertices.append(x)
+
+while x != A:
+    x = path[x]
+    vertices.append(x)
+
+print(dist[B])
+print(*vertices[::-1])
+```
+
