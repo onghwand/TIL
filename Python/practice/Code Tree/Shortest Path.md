@@ -153,3 +153,49 @@ print(dist[B])
 print(*vertices[::-1])
 ```
 
+> 사전순으로 가장 앞선 최단거리 경로
+
+```python
+import heapq
+import sys
+
+INF = sys.maxsize
+n,m=map(int, input().split())
+q = []
+graph = [[] for _ in range(n+1)]
+for _ in range(m):
+    x,y,z = map(int, input().split())
+    graph[x].append((y,z))
+    graph[y].append((x,z))
+
+A,B=map(int, input().split())
+
+dist = [INF]*(n+1)
+dist[A] = 0
+heapq.heappush(q, (0,A))
+path = [0]*(n+1)
+while q:
+    min_dist, min_idx = heapq.heappop(q)
+
+    if min_dist != dist[min_idx]:
+        continue
+
+    for cur_idx, cur_dist in graph[min_idx]:
+        nxt_dist = dist[min_idx] + cur_dist
+        if dist[cur_idx] >= nxt_dist:
+            dist[cur_idx] = nxt_dist
+            heapq.heappush(q, (nxt_dist, cur_idx))
+            if path[cur_idx] < min_idx:
+                path[cur_idx] = min_idx
+
+x = B
+vertices=[]
+vertices.append(B)
+
+while x!=A:
+    x = path[x]
+    vertices.append(x)
+print(dist[B])
+print(*vertices[::-1])
+```
+
