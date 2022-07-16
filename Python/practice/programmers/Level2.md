@@ -97,3 +97,39 @@ def solution(maps):
     return f(0,0,n,m,maps,v)
 ```
 
+### 배달
+
+```python
+import heapq
+import sys
+
+def solution(N, road, K):
+    INF = sys.maxsize
+    answer = 0
+    graph = [[] for _ in range(N+1)]
+    for x,y,z in road:
+        graph[x].append((y,z))
+        graph[y].append((x,z))
+        
+    dist = [INF]*(N+1)
+    dist[1] = 0
+    q = []
+    heapq.heappush(q, (0,1))
+    while q:
+        min_dist, min_idx = heapq.heappop(q)
+        
+        if dist[min_idx] != min_dist:
+            continue
+        
+        for cur_idx, cur_dist in graph[min_idx]:
+            if dist[cur_idx] > cur_dist + min_dist:
+                dist[cur_idx] = cur_dist + min_dist
+                heapq.heappush(q, (dist[cur_idx], cur_idx))
+    cnt = 0
+    for d in dist:
+        if d <= K:
+            cnt +=1
+
+    return cnt
+```
+
