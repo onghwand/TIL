@@ -133,3 +133,21 @@ def solution(N, road, K):
     return cnt
 ```
 
+### H-Index
+
+```python
+def solution(citations):
+    n = len(citations)
+    H = -1
+    
+    for i in range(n+1):
+        cnt = 0
+        for j in range(n):
+            if citations[j] >= i:
+                cnt += 1
+        if cnt >= i:
+            H = i
+    
+    return H
+```
+
