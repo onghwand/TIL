@@ -151,3 +151,33 @@ def solution(citations):
     return H
 ```
 
+### 삼각 달팽이
+
+```python
+def solution(n):
+    answer = []
+    for i in range(n):
+        answer.append([0]*(i+1))
+    
+    N = n*(n+1)//2
+    di = [1,0,-1]
+    dj = [0,1,-1]
+    si = sj = mode = 0
+    for i in range(1, N+1):
+        
+        answer[si][sj] = i
+        si, sj = si+di[mode], sj+dj[mode]
+        if 0<=si<n and 0<=sj<=si and answer[si][sj] == 0 :
+            continue
+        
+        si, sj = si-di[mode], sj-dj[mode]
+        mode = (mode+1)%3
+        si, sj = si+di[mode], sj+dj[mode]
+        
+    ans = []
+    for a in answer:
+        ans.extend(a)
+    
+    return ans
+```
+
