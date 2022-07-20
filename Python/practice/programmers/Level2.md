@@ -181,3 +181,32 @@ def solution(n):
     return ans
 ```
 
+### 전력망을 둘로 나누기
+
+```python
+def solution(n, wires):
+    minV = n
+    for i in range(len(wires)):
+        tmp = wires[:i] + wires[i+1:]
+        
+        graph = [[] for _ in range(n+1)]
+        for x,y in tmp:
+            graph[x].append(y)
+            graph[y].append(x)
+        
+        v = [0]*(n+1)
+        q = [1]
+        while q:
+            i = q.pop(0)
+            for j in graph[i]:
+                if v[j] == 0:
+                    v[j] = 1
+                    q.append(j)
+        
+        cnt = abs(v.count(1)-(v.count(0)-1))
+        if cnt < minV:
+            minV = cnt
+        
+    return minV
+```
+
