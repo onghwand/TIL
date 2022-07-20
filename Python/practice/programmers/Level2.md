@@ -210,3 +210,17 @@ def solution(n, wires):
     return minV
 ```
 
+### 이진 변환 반복하기
+
+```python
+def solution(s):
+    cnt = loop = 0
+    while s != '1':
+        loop += 1
+        zeros, ones = s.count('0'), s.count('1')
+        cnt += zeros
+        s = bin(ones)[2:]
+        
+    return [loop, cnt]
+```
+
