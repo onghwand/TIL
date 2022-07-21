@@ -224,3 +224,14 @@ def solution(s):
     return [loop, cnt]
 ```
 
+### n^2 배열 자르기
+
+```python
+def solution(n, left, right):
+    arr = []
+    for i in range(left, right+1):
+        q,r = divmod(i,n)
+        arr.append(max(q,r)+1)
+    return arr
+```
+
