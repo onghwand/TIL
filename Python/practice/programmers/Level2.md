@@ -235,3 +235,25 @@ def solution(n, left, right):
     return arr
 ```
 
+### 숫자 블록
+
+```python
+def solution(begin, end):
+    answer = []
+    arr = []
+    for i in range(begin, end+1):
+        if i <=1:
+            arr.append(0)
+        else:
+            for k in range(2, int(i**(1/2))+1):
+                if i%k == 0:
+                    if i//k > 10**7:
+                        continue
+                    arr.append(i//k)
+                    break
+            else:
+                arr.append(1)
+                    
+    return arr
+```
+
