@@ -257,3 +257,49 @@ def solution(begin, end):
     return arr
 ```
 
+### N-Queen
+
+```python
+def can_go(i,j,qs):
+    for qi,qj in qs:
+        if abs(qi-i) == abs(qj-j):
+            return False
+    return True
+
+cnt = 0
+def f(i,n,v,qs):
+    global cnt
+    if i == n:
+        cnt += 1
+        return
+    for j in range(n):
+        if v[j] == 0 and can_go(i,j,qs):
+            v[j] = 1
+            qs.append((i,j))
+            f(i+1,n,v,qs)
+            qs.pop()
+            v[j] = 0
+    
+    
+def solution(n):
+    v=[0]*n 
+    f(0,n,v,[])
+    return cnt
+```
+
+### 2 x n 타일링
+
+```python
+def solution(n):
+    arr = [0]*(n+1)
+    for i in range(1,n+1):
+        if i == 1:
+            arr[i] = 1
+        elif i == 2:
+            arr[i] = 2
+        else:
+            arr[i] = (arr[i-1]+arr[i-2])%1000000007
+    
+    return arr[n]
+```
+
