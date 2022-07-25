@@ -303,3 +303,20 @@ def solution(n):
     return arr[n]
 ```
 
+### 하노이의 탑
+
+```python
+def solution(n):
+    arr = []
+    def hanoi(n,start, mid, end):
+        if n == 1:
+            arr.append([start, end])
+            return 
+        hanoi(n-1,start, end, mid)
+        arr.append([start,end])
+        hanoi(n-1,mid,start,end)
+    hanoi(n,1,2,3)
+    
+    return arr
+```
+
