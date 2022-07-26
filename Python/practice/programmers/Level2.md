@@ -320,3 +320,26 @@ def solution(n):
     return arr
 ```
 
+### 쿼드압축 후 개수 세기
+
+```python
+def solution(arr):
+    answer = [0,0]
+    def compress(i,j,l):
+        start = arr[i][j]
+        for a in range(l):
+            for b in range(l):
+                if arr[i+a][j+b] != arr[i][j]:
+                    l //= 2
+                    compress(i+l,j+l,l)
+                    compress(i,j+l,l)
+                    compress(i+l,j,l)
+                    compress(i,j,l)
+                    return
+        answer[start] += 1
+    
+    compress(0,0,len(arr))
+        
+    return answer
+```
+
