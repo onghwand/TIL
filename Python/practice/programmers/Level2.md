@@ -343,3 +343,35 @@ def solution(arr):
     return answer
 ```
 
+### 모음사전
+
+```python
+def solution(word):
+    answer = 0
+    words = []
+    alps = ['A','E','I','O','U']
+    s=''
+    for a in alps:
+        s += a
+        words.append(s)
+        for e in alps:
+            s += e
+            words.append(s)
+            for i in alps:
+                s += i
+                words.append(s) 
+                for o in alps:
+                    s += o
+                    words.append(s)
+                    for u in alps:
+                        s += u
+                        words.append(s)
+                        s = s[:4]
+                    s=s[:3]
+                s=s[:2]
+            s=s[:1]
+        s=''
+        
+    return words.index(word)+1
+```
+
