@@ -343,3 +343,73 @@ def solution(arr):
     return answer
 ```
 
+### 모음사전
+
+```python
+def solution(word):
+    answer = 0
+    words = []
+    alps = ['A','E','I','O','U']
+    s=''
+    for a in alps:
+        s += a
+        words.append(s)
+        for e in alps:
+            s += e
+            words.append(s)
+            for i in alps:
+                s += i
+                words.append(s) 
+                for o in alps:
+                    s += o
+                    words.append(s)
+                    for u in alps:
+                        s += u
+                        words.append(s)
+                        s = s[:4]
+                    s=s[:3]
+                s=s[:2]
+            s=s[:1]
+        s=''
+ 
+    return words.index(word)+1
+```
+
+### 교점에 별 만들기
+
+```python
+def solution(line):
+    p = []
+    maxx = maxy = -1000
+    minx = miny = 1000
+    for i in range(len(line)):
+        a,b,e = line[i]
+        for j in range(i+1,len(line)):
+            c,d,f = line[j]
+            if a*d - b*c !=0:
+                x = (b*f - e*d) / (a*d - b*c)
+                y = (e*c - a*f) / (a*d - b*c)
+                if x.is_integer() and y.is_integer():
+                    x, y = int(x), int(y)
+                    # if x > maxx:
+                    #     maxx = x
+                    # if y > maxy:
+                    #     maxy = y
+                    # if x < minx:
+                    #     minx = x
+                    # if y < miny:
+                    #     miny = y
+                    p.append((x,y))
+    minx, maxx, miny, maxy = min(p)[0],max(p)[0],min(p,key = lambda x: x[1])[1],max(p,key = lambda x: x[1])[1]
+    arr = [['.']*(maxx-minx+1) for _ in range(maxy-miny+1)]
+    
+    for x,y in p:
+        arr[maxy-y][x-minx] = '*'
+        
+    lst = []
+    for a in arr:
+        lst.append(''.join(a))
+    
+    return lst
+```
+
