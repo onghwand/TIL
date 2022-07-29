@@ -413,3 +413,25 @@ def solution(line):
     return lst
 ```
 
+### 다리를 지나는 트럭
+
+```python
+from collections import deque
+
+def solution(bridge_length, weight, truck_weights):
+    answer = 0
+    bridge = deque(0 for _ in range(bridge_length))
+    truck_weights.reverse()
+    while bridge:
+        answer += 1
+        bridge.popleft()
+        
+        if truck_weights:
+            if sum(bridge) + truck_weights[-1] <= weight:
+                bridge.append(truck_weights.pop())
+            else:
+                bridge.append(0)
+            
+    return answer
+```
+
