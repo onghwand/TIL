@@ -84,3 +84,19 @@ def solution(n, edge):
     return cnt
 ```
 
+### 정수 삼각형
+
+```python
+def solution(triangle):
+    L = len(triangle)
+    arr = [[0]*(i+1) for i in range(L)]
+    arr[0][0] = triangle[0][0]
+        
+    for i in range(L-1):
+        for j in range(len(triangle[i])):
+            arr[i+1][j] = max(arr[i+1][j], arr[i][j]+triangle[i+1][j])
+            arr[i+1][j+1] = max(arr[i+1][j+1], arr[i][j]+triangle[i+1][j+1])
+        
+    return max(arr[-1])
+```
+
