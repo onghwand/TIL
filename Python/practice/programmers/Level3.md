@@ -100,3 +100,35 @@ def solution(triangle):
     return max(arr[-1])
 ```
 
+### 네트워크
+
+```python
+def solution(n, computers):
+    answer = 0
+    graph = [[] for _ in range(n)]
+    for i in range(len(computers)):
+        for j in range(len(computers[i])):
+            if i==j:
+                continue
+            else:
+                if computers[i][j] == 1:
+                    graph[i].append(j)
+    
+    v = [0]*n
+    cnt = 0
+    for i in range(n):
+        if v[i] != 0:
+            continue
+        else:
+            cnt += 1
+            q = [i]
+            while q:
+                p = q.pop(0)
+                for x in graph[p]:
+                    if v[x] == 0:
+                        v[x] = 1
+                        q.append(x)
+        
+    return cnt
+```
+
