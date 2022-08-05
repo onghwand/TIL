@@ -132,3 +132,31 @@ def solution(n, computers):
     return cnt
 ```
 
+### 이중우선순위큐
+
+```python
+import heapq
+def solution(operations):
+    answer = [0,0]
+    minheap = [] 
+    maxheap = []
+    for op in operations:
+        o, n = op.split()
+        if o == 'I':
+            heapq.heappush(minheap, int(n))
+            heapq.heappush(maxheap, -int(n))
+        else:
+            if maxheap:
+                if n == '1':
+                    maxV = heapq.heappop(maxheap)
+                    minheap.remove(-maxV)
+                else:
+                    minV = heapq.heappop(minheap)
+                    maxheap.remove(-minV)
+   
+    if len(maxheap)==0:
+        return [0,0]
+    else:
+        return [-heapq.heappop(maxheap),heapq.heappop(minheap)]
+```
+
