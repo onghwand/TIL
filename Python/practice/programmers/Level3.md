@@ -160,3 +160,29 @@ def solution(operations):
         return [-heapq.heappop(maxheap),heapq.heappop(minheap)]
 ```
 
+### 베스트앨범
+
+```python
+def solution(genres, plays):
+    answer = []
+    dic = {}
+    total = {}
+    for i in range(len(genres)):
+        dic[genres[i]] = dic.get(genres[i], []) + [(plays[i],i)]
+        total[genres[i]] = total.get(genres[i], 0 ) + plays[i]
+    
+    for k in dic.keys():
+        dic[k] = sorted(dic[k],key=lambda x: (-x[0],x[1]))
+    
+    totals = []
+    for k,v in total.items():
+        totals.append((v,k))
+    totals = sorted(totals, reverse=True)
+
+    for num, genre in totals:
+        for n, song in dic[genre][:2]:
+            answer.append(song)
+            
+    return answer
+```
+
