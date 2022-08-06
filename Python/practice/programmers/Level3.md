@@ -186,3 +186,35 @@ def solution(genres, plays):
     return answer
 ```
 
+### 단어변환
+
+```python
+def dif(word, new):
+    cnt = 0
+    for i in range(len(word)):
+        if word[i] != new[i]:
+            cnt += 1
+    return cnt
+
+def solution(begin, target, words):
+    minV = len(words)+1
+    v = [0]*len(words)
+    
+    def dfs(begin, target, cnt):
+        nonlocal minV
+        if begin == target:
+            if minV > cnt:
+                minV = cnt
+            return 
+        for i in range(len(words)):
+            if v[i] == 0 and dif(words[i], begin) == 1:
+                v[i] = 1
+                dfs(words[i], target, cnt+1)
+                v[i] = 0
+    dfs(begin, target, 0)
+   
+    if minV == len(words) + 1:
+        return 0
+    return minV
+```
+
