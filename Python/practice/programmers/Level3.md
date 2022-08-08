@@ -218,3 +218,24 @@ def solution(begin, target, words):
     return minV
 ```
 
+### 단속카메라
+
+```python
+def solution(routes):
+    answer = 0
+    routes = sorted(routes, key=lambda x: x[1])
+    v = [0]*len(routes)
+    i = 0
+    camera = -30001
+    while i < len(routes):
+        inn, out = routes[i]
+        if inn <= camera <= out :
+            i+=1
+            continue
+        camera = out
+        answer +=1
+        i+=1
+        
+    return answer
+```
+
