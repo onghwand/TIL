@@ -239,3 +239,27 @@ def solution(routes):
     return answer
 ```
 
+### 기지국 설치
+
+```python
+def solution(n, stations, w):
+    answer = 0
+    cur = 1
+    for st in stations:
+        s, e = st-w, st+w
+        diff = max(s - cur,0)
+        q,r = divmod(diff,2*w+1)
+        if r==0:
+            answer += q
+        else:
+            answer += q+1   
+        cur = e+1 
+    diff = max(n+1-cur,0) 
+    q,r = divmod(diff,2*w+1)
+    if r==0:
+        answer += q
+    else:
+        answer += q+1 
+    return answer
+```
+
