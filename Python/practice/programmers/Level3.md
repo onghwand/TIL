@@ -263,3 +263,28 @@ def solution(n, stations, w):
     return answer
 ```
 
+### 디스크 컨트롤러
+
+```python
+import heapq
+def solution(jobs):
+    answer=now=i=0
+    start= -1
+    heap = []
+    
+    while i < len(jobs):
+        for x,y in jobs:
+            if start < x <= now:
+                heapq.heappush(heap, (y,x))
+        if heap:
+            y,x = heapq.heappop(heap)
+            start = now
+            now += y
+            answer += now - x
+            i += 1
+        else:
+            now += 1
+    
+    return answer // len(jobs)
+```
+
