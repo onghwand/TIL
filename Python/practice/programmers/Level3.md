@@ -288,3 +288,42 @@ def solution(jobs):
     return answer // len(jobs)
 ```
 
+### 110 옮기기
+
+```python
+from collections import deque
+def solution(s):
+    answer = []
+    
+    for num in s:
+        stack = []
+        cnt = 0
+        for n in num:
+            if n == '0' and len(stack) > 1 and stack[-2:] == ['1','1']:
+                cnt += 1
+                stack.pop()
+                stack.pop()
+            else:
+                stack.append(n)
+        
+        if cnt == 0:
+            answer.append(num)
+        else:
+            new = deque()
+
+            while stack:
+                if stack[-1] == '1':
+                    new.append(stack.pop())
+                else:
+                    break
+            for i in range(cnt):
+                new.appendleft('0')
+                new.appendleft('1')
+                new.appendleft('1')
+            while stack:
+                new.appendleft(stack.pop())
+            answer.append(''.join(new))
+                       
+    return answer
+```
+
