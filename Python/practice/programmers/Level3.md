@@ -397,3 +397,20 @@ def solution(n, cores):
                 return i+1
 ```
 
+### 최적의 행렬 곱셈
+
+```python
+def solution(sizes):
+    dp = [[0]*len(sizes) for _ in range(len(sizes))]
+    
+    for gap in range(1, len(sizes)):
+        for s in range(0, len(sizes)-gap):
+            e = s+gap
+            arr = []
+            for m in range(s,e):
+                arr.append(dp[s][m]+dp[m+1][e]+sizes[s][0]*sizes[m][1]*sizes[e][1])
+            dp[s][e] = min(arr)
+        
+    return dp[0][-1]
+```
+
