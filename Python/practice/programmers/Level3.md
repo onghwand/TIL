@@ -414,3 +414,28 @@ def solution(sizes):
     return dp[0][-1]
 ```
 
+### 다단계 칫솔 판매
+
+```python
+def solution(enroll, referral, seller, amount):
+    answer = [0]*len(enroll)
+    amount = list(map(lambda x: x*100, amount))
+    
+    idx = {}
+    for i in range(len(enroll)):
+        idx[enroll[i]] = i
+    
+    for i in range(len(seller)):
+        name, income = seller[i], amount[i]
+        while name != '-':
+            if int(income*0.1) >= 1:
+                answer[idx[name]] += income - int(income*0.1)
+                income = int(income*0.1)
+                name = referral[idx[name]]
+            else:
+                answer[idx[name]] += income
+                break
+    
+    return answer
+```
+
