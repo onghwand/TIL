@@ -81,3 +81,167 @@ def f(n):
 print(f(n))
 ```
 
+### RGB거리
+
+```python
+N = int(input())
+arr = []
+for i in range(N):
+    arr.append(list(map(int, input().split())))
+
+for i in range(1,N):
+    arr[i][0] = min(arr[i-1][1],arr[i-1][2]) + arr[i][0]
+    arr[i][1] = min(arr[i - 1][0], arr[i - 1][2]) + arr[i][1]
+    arr[i][2] = min(arr[i - 1][0], arr[i - 1][1]) + arr[i][2]
+
+print(min(arr[N-1]))
+```
+
+### 계단 오르기
+
+```python
+N = int(input())
+arr = []
+for _ in range(N):
+    arr.append(int(input()))
+
+dp = [0]*N
+
+for i in range(N):
+    if i == 0:
+        dp[i] = arr[i]
+    elif i == 1:
+        dp[i] = arr[i] + dp[i-1]
+    elif i==2:
+        dp[i] = max(arr[i]+arr[i-2], arr[i]+arr[i-1])
+    else:
+        dp[i] = max(arr[i] + dp[i-2],arr[i]+arr[i-1]+dp[i-3])
+print(dp[N-1])
+```
+
+### 가장 긴 증가하는 부분 수열
+
+```python
+N = int(input())
+arr = list(map(int, input().split()))
+
+dp = [1]*N
+for i in range(1,N):
+    for j in range(i):
+        if arr[j] < arr[i]:
+            dp[i] = max(dp[i], dp[j]+1)
+
+print(max(dp))
+```
+
+### 정수 삼각형
+
+```python
+N = int(input())
+arr = []
+dp = [[0]*(i+1) for i in range(N)]
+for i in range(N):
+    arr.append(list(map(int, input().split())))
+
+dp[0][0] = arr[0][0]
+
+for i in range(N-1):
+    for j in range(i+1):
+        dp[i+1][j] = max(arr[i+1][j] + dp[i][j], dp[i+1][j])
+        dp[i+1][j+1] = max(arr[i+1][j+1] + dp[i][j], dp[i+1][j+1])
+
+print(max(dp[N-1]))
+```
+
+### 연속합
+
+```python
+N = int(input())
+arr = list(map(int, input().split()))
+
+dp =[0]*N
+dp[0] = arr[0]
+
+for i in range(1,N):
+    dp[i] = max(dp[i-1]+arr[i], arr[i])
+
+print(max(dp))
+```
+
+### 포도주 시식
+
+```python
+N = int(input())
+arr = []
+
+for _ in range(N):
+    arr.append(int(input()))
+
+dp = [0]*N
+
+for i in range(N):
+    if i == 0:
+        dp[i] = arr[i]
+    elif i == 1:
+        dp[i] = arr[i] + arr[i-1]
+    elif i == 2:
+        dp[i] = max(arr[i] + arr[i-1] , arr[i] + arr[i-2], dp[i-1])
+    else:
+        dp[i] = max(arr[i]+dp[i-2], arr[i]+arr[i-1]+dp[i-3], dp[i-1])
+
+print(max(dp))
+```
+
+### 파도반 수열
+
+```python
+N = int(input())
+for _ in range(N):
+    n = int(input())
+    dp = [0]*n
+    for i in range(n):
+        if i in [0,1,2]:
+            dp[i] = 1
+        else:
+            dp[i] = dp[i-2]+dp[i-3]
+    print(dp[n-1])
+```
+
+### 피보나치 수 2
+
+```python
+N = int(input())
+fibo = [0]*(N+1)
+for i in range(N+1):
+    if i == 0:
+        fibo[i] = 0
+    elif i in [1,2]:
+        fibo[i] = 1
+    else:
+        fibo[i] = fibo[i-1]+fibo[i-2]
+print(fibo[N])
+```
+
+### 쉬운 계단 수
+
+```python
+N = int(input())
+
+dp = [[0]*10 for _ in range(N+1)]
+for i in range(1, 10):
+    dp[1][i] = 1
+
+MOD = 1000000000
+
+for i in range(2, N+1):
+    for j in range(10):
+        if j == 0:
+            dp[i][j] = dp[i-1][1]
+        elif j == 9:
+            dp[i][j] = dp[i-1][8]
+        else:
+            dp[i][j] = dp[i-1][j-1] + dp[i-1][j+1]
+
+print(sum(dp[N]) % MOD)
+```
+
