@@ -245,3 +245,38 @@ for i in range(2, N+1):
 print(sum(dp[N]) % MOD)
 ```
 
+### 2xn 타일링2
+
+```python
+n = int(input())
+
+dp = [0]*(n+1)
+
+for i in range(1,n+1):
+    if i==1:
+        dp[i] = 1
+    elif i==2:
+        dp[i] = 3
+    else:
+        dp[i] = dp[i-2]*2 + dp[i-1]
+
+print(dp[n]%10007)
+```
+
+### 이친수
+
+```python
+n = int(input())
+
+dp = [0]*(n+1)
+
+for i in range(n+1):
+    if i in [0,1,2]:
+        dp[i] = 1
+    else:
+        for j in range(2,i+1):
+            dp[i] += dp[i-j]
+
+print(dp[n])
+```
+
