@@ -298,3 +298,20 @@ for i in range(1,N+1):
 print(dp[N])
 ```
 
+### 카드 구매하기
+
+```python
+N = int(input())
+dp = [0]*(N+1)
+arr = list(map(int, input().split()))
+
+for i in range(len(arr)):
+    dp[i+1] = arr[i]
+
+for i in range(1,N+1):
+    for j in range(1,i):
+        dp[i] = max(dp[i], dp[j]+dp[i-j])
+
+print(dp[N])
+```
+
