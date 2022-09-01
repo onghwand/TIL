@@ -334,3 +334,19 @@ for i in range(t):
   print(max(s[0][n - 1], s[1][n - 1]))
 ```
 
+### 오르막 수
+
+```python
+N = int(input())
+
+dp = [[0]*10 for _ in range(N)]
+
+for i in range(N):
+    for j in range(10):
+        if i == 0 :
+            dp[i][j] = 1
+        else:
+            for k in range(j,10):
+                dp[i][j] += dp[i-1][k]
+
+print(sum(dp[N-1])%10007)
