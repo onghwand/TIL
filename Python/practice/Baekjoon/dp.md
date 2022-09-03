@@ -350,3 +350,30 @@ for i in range(N):
                 dp[i][j] += dp[i-1][k]
 
 print(sum(dp[N-1])%10007)
+
+```
+
+### 가장 긴 바이토닉 부분 수열
+
+```python
+N = int(input())
+arr =list(map(int, input().split()))
+
+left = [0]*N
+right = [0]*N
+
+for i in range(N):
+    for j in range(i):
+        if arr[j] < arr[i]:
+            left[i] = max(left[i], left[j]+1)
+        if arr[-j-1] < arr[-i-1]:
+            right[-i-1] = max(right[-i-1], right[-j-1]+1)
+
+maxV = 0
+for k in range(N):
+    if maxV < left[k] + right[k]+1:
+        maxV = left[k]+right[k]+1
+print(maxV)
+
+```
+
