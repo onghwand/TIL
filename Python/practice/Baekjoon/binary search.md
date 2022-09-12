@@ -123,3 +123,134 @@ while left <= right:
 print(right)
 ```
 
+### 예산
+
+```python
+n = int(input())
+arr =list(map(int, input().split()))
+m = int(input())
+
+l = 1
+r = max(arr)
+while l<=r:
+    mid = (l+r)//2
+
+    cnt = 0
+    for a in arr:
+        if a>mid:
+            cnt += mid
+        else:
+            cnt += a
+
+    if cnt == m:
+        print(mid)
+        break
+    elif cnt > m:
+        r = mid - 1
+    else:
+        l = mid + 1
+else:
+    print(r)
+```
+
+### 두 용액
+
+```python
+import sys
+INF = sys.maxsize
+
+n = int(input())
+arr =sorted(list(map(int, input().split())))
+
+if arr[0] > 0:
+    ans= [arr[0],arr[1]]
+elif arr[-1] <0:
+    ans=[arr[-2],arr[-1]]
+else:
+    l,r = 0,n-1
+    v = INF
+    while l<r:
+        ll, rr =arr[l], arr[r]
+
+        if abs(ll+rr)<v:
+            v = abs(ll+rr)
+            ans = [ll,rr]
+
+        if ll+rr < 0:
+            l+=1
+        elif ll+rr > 0:
+            r-=1
+        else:
+            break
+print(*ans)
+```
+
+### K번째 수
+
+```python
+n,k = int(input()), int(input())
+
+l,r =1,k
+
+while l<=r:
+    mid = (l+r)//2
+
+    cnt = 0
+    for i in range(1,n+1):
+        cnt += min(mid//i, n)
+
+    if cnt >= k:
+        r = mid - 1
+    else:
+        l = mid + 1
+print(l)
+```
+
+### 중량제한
+
+```python
+from collections import deque
+import sys
+
+input = sys.stdin.readline
+def bfs(limit):
+    v[s] = 1
+    q = deque()
+    q.append(s)
+    while q:
+        nxt = q.popleft()
+        if nxt == e:
+            return True
+        for ni,nw in graph[nxt]:
+            if v[ni] == 0 and nw >= limit:
+                q.append(ni)
+                v[ni] = 1
+    return False
+
+
+n,m = map(int,input().split())
+graph = [[] for _ in range(n+1)]
+
+for _ in range(m):
+    a,b,c = map(int, input().split())
+    graph[a].append([b,c])
+    graph[b].append([a,c])
+
+
+s,e = map(int, input().split())
+l,r = 1, 1000000000
+while l<=r:
+    mid = (l+r)//2
+    v = [0]*(n+1)
+    if bfs(mid):
+        l = mid + 1
+    else:
+        r = mid - 1
+
+print(r)
+```
+
+
+
+
+
