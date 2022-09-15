@@ -250,7 +250,43 @@ while l<=r:
 print(r)
 ```
 
+### 기타 레슨
 
+```python
+N, M = map(int, input().split())
+arr = list(map(int, input().split()))
+
+l,r = 0, sum(arr)
+ans = sum(arr)
+while l<=r:
+    mid = (l+r)//2
+
+    if mid < max(arr):
+        l = mid + 1
+        continue
+
+    cnt = 0 
+    total = 0 
+    i = 0 
+    while i < N :
+        if total + arr[i] <= mid:
+            total += arr[i]
+        else:
+            cnt += 1
+            total = arr[i]
+        i += 1
+    cnt += 1 
+
+
+    if cnt > M:
+        l = mid + 1
+    elif cnt == M:
+        ans = mid
+        r = mid - 1
+    else:
+        r = mid - 1
+print(l)
+```
 
 
 
