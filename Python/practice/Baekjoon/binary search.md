@@ -288,5 +288,19 @@ while l<=r:
 print(l)
 ```
 
+### 반도체 설계
 
+```python
+from bisect import bisect_left
+n = int(input())
+connect = list(map(int, input().split()))
+line = []
+
+for x in connect:
+    if not line or line[-1]<x:
+        line.append(x)
+    else:
+        line[bisect_left(line,x)] = x
+print(len(line))
+```
 
