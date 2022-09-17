@@ -288,28 +288,19 @@ while l<=r:
 print(l)
 ```
 
-### 입국심사
+### 반도체 설계
 
 ```python
-N,M = map(int,input().split())
-arr = []
-for _ in range(N):
-    arr.append(int(input()))
+from bisect import bisect_left
+n = int(input())
+connect = list(map(int, input().split()))
+line = []
 
-l, r = 1, M*max(arr)
-while l<=r:
-    mid = (l+r)//2
-
-    cnt = 0
-    for i in range(N):
-        cnt += mid//arr[i]
-
-    if cnt >= M:
-        r = mid - 1
+for x in connect:
+    if not line or line[-1]<x:
+        line.append(x)
     else:
-        l = mid + 1
-print(l)
+        line[bisect_left(line,x)] = x
+print(len(line))
 ```
-
-
 
