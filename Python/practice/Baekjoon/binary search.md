@@ -304,3 +304,26 @@ for x in connect:
 print(len(line))
 ```
 
+### 입국심사
+
+```python
+N,M = map(int,input().split())
+arr = []
+for _ in range(N):
+    arr.append(int(input()))
+
+l, r = 1, M*max(arr)
+while l<=r:
+    mid = (l+r)//2
+
+    cnt = 0
+    for i in range(N):
+        cnt += mid//arr[i]
+
+    if cnt >= M:
+        r = mid - 1
+    else:
+        l = mid + 1
+print(l)
+```
+
