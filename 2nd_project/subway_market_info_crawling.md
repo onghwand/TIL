@@ -107,7 +107,7 @@ df = pd.DataFrame((zip(subway_store_names, subway_addresses,subway_phone_numbers
 df.head(n=10)
 ```
 
-![image-20220918180456525](서브웨이 매장정보 크롤링.assets/image-20220918180456525.png)
+![image-20220918180456525](subway_market_info_crawling.assets/image-20220918180456525.png)
 
 ```python
 df.to_csv('C:\\Users\\donghwan\\Desktop\\df.csv',sep=',',na_rep='NaN') 
