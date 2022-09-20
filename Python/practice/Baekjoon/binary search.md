@@ -327,3 +327,30 @@ while l<=r:
 print(l)
 ```
 
+### 좋다
+
+```python
+n = int(input())
+lst = sorted(list(map(int, input().split())))
+cnt = 0
+for i in range(n):
+    l,r=0,n-1
+    while l<r:
+        if l==i:
+            l+=1
+            continue
+        elif r==i:
+            r-=1
+            continue
+        tot = lst[l] + lst[r]
+        if tot == lst[i]:
+            cnt += 1
+            break
+        elif tot > lst[i]:
+            r-=1
+        else:
+            l+=1
+
+print(cnt)
+```
+
