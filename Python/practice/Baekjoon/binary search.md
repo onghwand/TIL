@@ -354,3 +354,22 @@ for i in range(n):
 print(cnt)
 ```
 
+### 꼬인 전깃줄
+
+```python
+from bisect import bisect_left
+n = int(input())
+arr = list(map(int, input().split()))
+lst = []
+
+for i in range(n):
+    k = bisect_left(lst,arr[i])
+
+    if lst and k < len(lst):
+        lst[k] = arr[i]
+    else:
+        lst.append(arr[i])
+
+print(n-len(lst))
+```
+
