@@ -1,3 +1,47 @@
+### 트리 순회
+
+```python
+n = int(input())
+dc = {}
+for _ in range(n):
+    a,b,c = input().split()
+    dc[a] = [b,c]
+pre=''
+ino=''
+post=''
+
+def preorder(root):
+    global pre
+    pre+=root
+    if dc[root][0] != '.':
+        preorder(dc[root][0])
+    if dc[root][1] != '.':
+        preorder(dc[root][1])
+
+def inorder(root):
+    global ino
+    if dc[root][0] != '.':
+        inorder(dc[root][0])
+    ino += root
+    if dc[root][1] != '.':
+        inorder(dc[root][1])
+
+def postorder(root):
+    global post
+    if dc[root][0] != '.':
+        postorder(dc[root][0])
+    if dc[root][1] != '.':
+        postorder(dc[root][1])
+    post += root
+
+preorder('A')
+inorder('A')
+postorder('A')
+print(pre)
+print(ino)
+print(post)
+```
+
 ### 트리의 부모 찾기
 
 ```python
@@ -26,5 +70,42 @@ while q:
 
 for k in range(2,n+1):
     print(v[k])
+```
+
+### 트리의 지름
+
+```python
+from collections import deque
+
+n = int(input())
+graph = [[] for _ in range(n+1)]
+for _ in range(n-1):
+    a,b,c = map(int, input().split())
+    graph[a].append([b,c])
+    graph[b].append([a,c])
+
+def bfs(s,w):
+    q = deque()
+    q.append((s,w))
+    maxV = maxI = 0
+    while q:
+        cs,cw = q.popleft()
+        for ns,nw in graph[cs]:
+            if dist[ns] == -1:
+                dist[ns] = cw+nw
+                if dist[ns] > maxV:
+                    maxV = dist[ns]
+                    maxI = ns
+                q.append((ns,cw+nw))
+    return maxV,maxI
+
+
+dist = [-1]*(n+1)
+dist[1]=0
+maxV,maxI = bfs(1,0)
+dist = [-1]*(n+1)
+dist[maxI]=0
+maxV,maxI = bfs(maxI,0)
+print(maxV)
 ```
 
