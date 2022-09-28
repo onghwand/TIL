@@ -109,3 +109,24 @@ maxV,maxI = bfs(maxI,0)
 print(maxV)
 ```
 
+### 트리
+
+```python
+N = int(input())
+arr = list(map(int, input().split()))
+k = int(input())
+
+def dfs(k):
+    arr[k] = -2
+    for i in range(len(arr)):
+        if arr[i] == k:
+            dfs(i)
+dfs(k)
+cnt = 0
+for i in range(len(arr)):
+    if arr[i] != -2 and i not in arr:
+        cnt += 1
+print(cnt)
+
+```
+
