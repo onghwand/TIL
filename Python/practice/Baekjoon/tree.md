@@ -130,3 +130,38 @@ print(cnt)
 
 ```
 
+### 이진 검색 트리
+
+```python
+import sys
+sys.setrecursionlimit(10**6)
+preorder = []
+def postorder(start,end):
+    if start >= end:
+        return
+
+    root = preorder[start]
+    if root >= preorder[end-1]:
+        postorder(start+1,end)
+        print(root)
+        return
+    idx = 0
+    for i in range(start+1, end):
+        if preorder[i] > root:
+            idx = i
+            break
+
+    postorder(start+1,idx)
+    postorder(idx,end)
+    print(root)
+
+
+while 1:
+    try:
+        preorder.append(int(input()))
+    except:
+        break
+print(preorder)
+postorder(0,len(preorder))
+```
+
