@@ -130,3 +130,24 @@ print(cnt)
 
 ```
 
+### 전화번호 목록
+
+```python
+t = int(input())
+def check(arr,n):
+    for i in range(n-1):
+        if arr[i+1].startswith(arr[i]):
+                return 'NO'
+    return 'YES'
+
+for _ in range(t):
+    n = int(input())
+    arr = []
+    for i in range(n):
+        arr.append(input())
+    
+    arr.sort()
+    print(check(arr,n))
+
+```
+
