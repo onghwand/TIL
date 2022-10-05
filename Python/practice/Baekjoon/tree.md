@@ -133,6 +133,9 @@ print(cnt)
 ### 이진 검색 트리
 
 ```python
+
+
+```python
 import sys
 sys.setrecursionlimit(10**6)
 preorder = []
@@ -163,6 +166,28 @@ while 1:
         break
 print(preorder)
 postorder(0,len(preorder))
+>>>>>>> ad3991f7a105f13ca4f88b6ea78a6cb68e3f674a
+```
+
+### 전화번호 목록
+
+```python
+t = int(input())
+def check(arr,n):
+    for i in range(n-1):
+        if arr[i+1].startswith(arr[i]):
+                return 'NO'
+    return 'YES'
+
+for _ in range(t):
+    n = int(input())
+    arr = []
+    for i in range(n):
+        arr.append(input())
+    
+    arr.sort()
+    print(check(arr,n))
+
 ```
 
 
