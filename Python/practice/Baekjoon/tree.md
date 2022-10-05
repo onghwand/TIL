@@ -133,9 +133,6 @@ print(cnt)
 ### 이진 검색 트리
 
 ```python
-
-
-```python
 import sys
 sys.setrecursionlimit(10**6)
 preorder = []
@@ -166,7 +163,6 @@ while 1:
         break
 print(preorder)
 postorder(0,len(preorder))
->>>>>>> ad3991f7a105f13ca4f88b6ea78a6cb68e3f674a
 ```
 
 ### 전화번호 목록
