@@ -186,5 +186,34 @@ for _ in range(t):
 
 ```
 
+### 트리의 순회
 
+```python
+import sys
+input = sys.stdin.readline
+sys.setrecursionlimit(10 ** 5)
+
+n = int(input())
+inorder = list(map(int, input().split()))
+postorder = list(map(int, input().split()))
+
+def find_root(inS, inE, postS, postE):
+    # print(inS, inE, postS, postE)
+    if (inS > inE) or (postS > postE):
+        return
+
+    root = postorder[postE]
+    idx = inorder.index(root)
+    print(root, end=' ')
+
+    find_root(inS, idx-1, postS, postS+idx-inS-1)
+    find_root(idx+1, inE, postS+idx-inS, postE-1)
+
+find_root(0,n-1,0,n-1)
+
+# testcase
+# 12
+# 7 3 8 1 9 4 10 0 11 5 2 6
+# 7 8 3 9 10 4 1 11 5 6 2 0
+```
 
