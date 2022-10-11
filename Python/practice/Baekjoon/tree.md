@@ -217,3 +217,54 @@ find_root(0,n-1,0,n-1)
 # 7 8 3 9 10 4 1 11 5 6 2 0
 ```
 
+### LCA
+
+```python
+from collections import deque
+N = int(input())
+graph = [[] for _ in range(N+1)]
+for _ in range(N-1):
+    x,y = map(int, input().split())
+    graph[x].append(y)
+    graph[y].append(x)
+
+tree = [0]*(N+1)
+depth = [0]*(N+1)
+q = deque()
+q.append(1)
+tree[1] = 1
+depth[1] = 1
+while q:
+    k = q.popleft()
+    for i in graph[k]:
+        if tree[i] == 0:
+            tree[i] = k
+            depth[i] = depth[k] + 1
+            q.append(i)
+# print(tree)
+# print(depth)
+
+arr = []
+M = int(input())
+for _ in range(M):
+    arr.append(list(map(int,input().split())))
+# print(arr)
+
+def find_common(x,y):
+    if depth[x] == depth[y]:
+        while x != y:
+            x, y = tree[x], tree[y]
+        return x
+    elif depth[x] > depth[y]:
+        while depth[x] != depth[y]:
+            x = tree[x]
+        return find_common(x,y)
+    else:
+        while depth[x] != depth[y]:
+            y = tree[y]
+        return find_common(x,y)
+
+for x,y in arr:
+    print(find_common(x,y))
+```
+
