@@ -268,3 +268,54 @@ for x,y in arr:
     print(find_common(x,y))
 ```
 
+### 트리
+
+```python
+def find(x):
+    while x != p[x]:
+        x = p[x]
+    return x
+
+def union(x,y):
+    p[find(y)] = x
+    
+case = 0
+while 1:
+    n, m = map(int, input().split())
+    if (n,m) == (0,0):
+        break
+
+    # graph = [[] for _ in range(n+1)]
+    p = [x for x in range(n + 1)]
+    cycle = []
+    for _ in range(m):
+        x,y = map(int, input().split())
+        p1 = find(x)
+        p2 = find(y)
+        if p1 != p2:
+            union(x,y)
+        else:
+            cycle.append(x)
+
+    group = set()
+    for c in cycle:
+        group.add(find(c))
+
+    answer = 0
+    for i in range(1,n+1):
+        if find(i) in group:
+            continue
+        answer += 1
+        group.add(find(i))
+
+    case += 1
+    if answer == 0:
+        print(f"Case {case}: No trees." )
+    elif answer == 1:
+        print(f"Case {case}: There is one tree.")
+    else:
+        print(f"Case {case}: A forest of {answer} trees.")
+```
+
+
+
