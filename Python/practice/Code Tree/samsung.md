@@ -123,3 +123,173 @@ for _ in range(m): # m년동안
 print(total)
 ```
 
+### 꼬리잡기놀이
+
+```python
+n,m,k = map(int, input().split())
+arr = []
+for _ in range(n):
+    arr.append(list(map(int, input().split())))
+
+def make_team(i,j,arr,v,team): # 시계방향으로 길을 구하기위해 dfs
+    for di,dj in [[0,1],[0,-1],[1,0],[-1,0]]:
+        ni,nj = i+di,j+dj
+        if 0<=ni<n and 0<=nj<n and v[ni][nj]==0 and arr[ni][nj] > 0:
+            v[ni][nj] = 1
+            team.append([ni,nj])
+            make_team(ni,nj,arr,v,team)
+
+
+def get_direction(teams,arr): # 현재 움직이는 방향 구하기
+    direction = []
+    for team in teams:
+        partial = []
+        for i,j in team:
+            partial.append(arr[i][j])
+        direction.append(partial)
+
+    return direction
+
+def move(direction,arr,teams,clock): # 움직이기
+    # 시계/반시계 체크하고 움직여야함
+    for t in range(len(direction)):
+        team = direction[t]
+        clockwise = False
+        idx = team.index(1)
+        if idx == len(team)-1 and team[0] in [3,4]:
+            clockwise = True
+        elif idx != len(team)-1 and team[idx+1] in [3,4]:
+            clockwise = True
+
+        clock[t] = clockwise
+
+        if clockwise: # 시계
+            last = team[-1]
+            for i in range(len(team)-2,-1,-1): # 시계
+                team[i+1] = team[i]
+            team[0] = last
+        else: # 반시계
+            first = team[0]
+            for i in range(1,len(team)):
+                team[i-1] = team[i]
+            team[-1] = first
+
+    for i in range(len(teams)):
+        for j in range(len(teams[i])):
+            si,sj = teams[i][j]
+            arr[si][sj] = direction[i][j]
+
+def find_team(teams, position, direction,clock):
+    for i in range(len(teams)):
+        for j in range(len(teams[i])):
+            if position == teams[i][j]:
+                idx = direction[i].index(1)
+                # print(teams[i], idx, j, direction[i], position, clock[i])
+                if clock[i]: # 시계방향이면
+                    if idx > j:
+                        num = idx - j + 1
+                    elif idx == j:
+                        num = 1
+                    else:
+                        num = len(direction[i]) - (j - idx -1) # 2, 4
+                    return i, num
+                else:
+                    if idx > j:
+                        num = len(direction[i]) - (idx - j - 1)
+                    elif idx == j:
+                        num = 1
+                    else:
+                        num = j - idx + 1
+                    return i, num
+    return -1, -1
+
+def change_direction(idx,direction,arr, teams):
+    for i in range(len(direction[idx])):
+        if direction[idx][i] == 1:
+            direction[idx][i] = 3
+            si,sj = teams[idx][i]
+            arr[si][sj] = 3
+        elif direction[idx][i] == 3:
+            direction[idx][i] = 1
+            si, sj = teams[idx][i]
+            arr[si][sj] = 1
+
+def throw(arr, mode, sub, direction, teams):
+    if mode == 0: # 서쪽에서 날라옴
+        for j in range(n):
+            if arr[sub][j] in [1,2,3]:
+                idx, num = find_team(teams,[sub,j], direction,clock)
+                if idx == -1:
+                    return
+                score[idx] += num**2
+                change_direction(idx,direction,arr, teams)
+                return
+    elif mode == 1:
+        for j in range(n):
+            if arr[n-j-1][sub] in [1,2,3]:
+                idx, num = find_team(teams,[n-j-1,sub], direction,clock)
+                # print(num)
+                if idx == -1:
+                    return
+                score[idx] += num**2
+                change_direction(idx,direction,arr, teams)
+                return
+    elif mode == 2:
+        for j in range(n):
+            if arr[n-sub-1][n-j-1] in [1,2,3]:
+                idx, num = find_team(teams,[n-sub-1,n-j-1], direction,clock)
+                if idx == -1:
+                    return
+                score[idx] += num**2
+                change_direction(idx,direction,arr, teams)
+                return
+    elif mode == 3:
+        for j in range(n):
+            if arr[j][n-sub-1] in [1,2,3]:
+                idx, num = find_team(teams,[j,n-sub-1], direction,clock)
+                if idx == -1:
+                    return
+                score[idx] += num**2
+                change_direction(idx,direction,arr, teams)
+                return
+
+teams = [] # 팀의 이동 선
+score = [0]*m # 각 팀의 점수
+clock = [0]*m # 각 팀의 방향 => True:시계 False:반시계 xxxxx
+
+v = [[0]*n for _ in range(n)]
+for i in range(n):
+    for j in range(n):
+        if v[i][j] == 0 and arr[i][j] != 0:
+            team = [[i,j]]
+            v[i][j] = 1
+            make_team(i, j, arr, v, team)
+            teams.append(team)
+
+# print(teams)
+
+direction = get_direction(teams,arr) # 1 뒤에 4가 있다면 시계방향 + 1이 마지막에 있다면 0번째꺼 확인
+# print(direction)
+# for a in arr:
+    # print(*a)
+
+for rounds in range(k):
+    # print('---------',rounds,'--------')
+    move(direction,arr,teams,clock)
+    # print(direction)
+    # for a in arr:
+    #     print(*a)
+    # print(clock)
+
+    # sub = rounds % n**2
+    mode, sub = divmod(rounds ,n)
+    mode = mode % 4
+    # print(mode,sub)
+    throw(arr, mode, sub, direction, teams)
+    # print(direction)
+    # print(score)
+    # for a in arr:
+    #     print(*a)
+print(sum(score))
+```
+
