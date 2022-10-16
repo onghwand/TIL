@@ -293,3 +293,140 @@ for rounds in range(k):
 print(sum(score))
 ```
 
+### 예술성
+
+```python
+from collections import deque
+n = int(input())
+arr = []
+for _ in range(n):
+    arr.append(list(map(int, input().split())))
+
+def make_group(i,j,n,arr,v):
+    group = []
+    q = deque()
+    q.append([i,j])
+    group.append([i,j])
+    v[i][j]=1
+    while q:
+        si,sj = q.popleft()
+        for di,dj in [[0,1],[0,-1],[1,0],[-1,0]]:
+            ni,nj = si+di,sj+dj
+            if 0<=ni<n and 0<=nj<n and v[ni][nj]==0 and arr[ni][nj] == arr[i][j]:
+                v[ni][nj] = 1
+                group.append([ni,nj])
+                q.append([ni,nj])
+    return group
+
+def get_adjacent(groups):
+    adjacent = [] # 그룹1, 그룹2, 변의수
+    for i in range(len(groups)-1):
+        for j in range(i+1,len(groups)):
+            cnt = 0
+            for ni,nj in groups[i]:
+                for mi,mj in groups[j]:
+                    if [mi-ni, mj-nj] in [[0,1],[0,-1],[1,0],[-1,0]]:
+                        cnt += 1
+            adjacent.append([i,j,cnt])
+
+    return adjacent
+
+def get_score(groups, adjacent, arr):
+    score = 0
+    for g1,g2,cnt in adjacent:
+        if cnt == 0: # 맞닿은 변의수가 0이면 pass
+            continue
+        ai,aj = groups[g1][0]
+        bi,bj = groups[g2][0]
+        score += (len(groups[g1])+len(groups[g2]))*arr[ai][aj]*arr[bi][bj]*cnt
+
+    return score
+
+def clockwise(lst,size):
+    rot = [[0]*size for _ in range(size)]
+    for r in range(size):
+        for c in range(size):
+            rot[c][size-r-1] = lst[r][c]
+    return rot
+
+
+
+def rotate(arr,n):
+    rotated = [[0]*n for _ in range(n)] # 재배치한 arr
+
+    # 십자
+    mid = n//2
+    rotated[mid][mid] = arr[mid][mid]
+    for i in range(1,mid+1):
+        rotated[mid][mid+i] = arr[mid+i][mid]
+        rotated[mid-i][mid] = arr[mid][mid+i]
+        rotated[mid][mid-i] = arr[mid-i][mid]
+        rotated[mid+i][mid] = arr[mid][mid-i]
+
+    # 그 외
+    p1 = [[0]*mid for _ in range(mid)] # 시계방향
+    for i in range(mid):
+        for j in range(mid):
+            p1[i][j] = arr[i][j]
+    p2 = [[0]*mid for _ in range(mid)]
+    for i in range(mid):
+        for j in range(mid+1,n):
+            p2[i][j-mid-1] = arr[i][j]
+    p3 = [[0]*mid for _ in range(mid)]
+    for i in range(mid+1,n):
+        for j in range(mid+1,n):
+            p3[i-mid-1][j-mid-1] = arr[i][j]
+    p4 = [[0]*mid for _ in range(mid)]
+    for i in range(mid+1,n):
+        for j in range(mid):
+            p4[i-mid-1][j] = arr[i][j]
+
+    p1,p2,p3,p4 = clockwise(p1,mid),clockwise(p2,mid),clockwise(p3,mid),clockwise(p4,mid)
+
+    # for p in p1:
+    #     print(*p)
+
+    for i in range(mid):
+        for j in range(mid):
+            rotated[i][j] = p1[i][j]
+    for i in range(mid):
+        for j in range(mid+1,n):
+            rotated[i][j] = p2[i][j-mid-1]
+    for i in range(mid+1,n):
+        for j in range(mid+1,n):
+            rotated[i][j] = p3[i-mid-1][j-mid-1]
+    for i in range(mid+1,n):
+        for j in range(mid):
+            rotated[i][j] = p4[i-mid-1][j]
+
+    # for r in rotated:
+    #     print(*r)
+
+    return rotated
+
+total = 0
+for _ in range(4):
+    # 1. 그룹나누기
+    groups = []
+    v = [[0]*n for _ in range(n)]
+    for i in range(n):
+        for j in range(n):
+            if v[i][j] == 0:
+                group = make_group(i,j,n,arr,v)
+                groups.append(group)
+
+    # 2. 인접한그룹과 맞닿은 변의 수 구하기
+    adjacent = get_adjacent(groups)
+    # print(adjacent)
+
+    # 3. 점수 계산
+    score = get_score(groups, adjacent, arr)
+    # print(score)
+
+    total += score
+
+    # 4. 회전
+    arr = rotate(arr,n)
+print(total)
+```
+
