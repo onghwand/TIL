@@ -317,5 +317,38 @@ while 1:
         print(f"Case {case}: A forest of {answer} trees.")
 ```
 
+### 개미굴
 
+```python
+N = int(input())
+arr = []
+maxV = 0
+for _ in range(N):
+    info = list(input().split())
+    if int(info[0]) > maxV:
+        maxV = int(info[0])
+    arr.append(info[1:])
+
+arr.sort()
+# print(arr)
+
+dash = '--'
+answer = []
+for i in range(N):
+    if i == 0:
+        for j in range(len(arr[i])):
+            answer.append(dash*j + arr[i][j])
+    else:
+        idx = 0
+        for j in range(len(arr[i])):
+            if arr[i-1][j] != arr[i][j] or len(arr[i-1]) <= j:
+                break
+            else:
+                idx = j + 1
+        for j in range(idx, len(arr[i])):
+            answer.append(dash*j + arr[i][j])
+
+for ans in answer:
+    print(ans)
+```
 
