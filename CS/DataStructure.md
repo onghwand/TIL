@@ -126,3 +126,7 @@
 
 
 > [멀티 프로세싱, 멀티 프로그래밍, 멀티 태스킹, 멀티 스레딩](https://sorjfkrh5078.tistory.com/56)
+
+> [멀티 프로그래밍과 멀티 태스킹 차이](https://luv-n-interest.tistory.com/430)
+
+> 멀티 태스킹 스케줄링 방식 종류
