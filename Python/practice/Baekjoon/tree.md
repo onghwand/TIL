@@ -352,3 +352,45 @@ for ans in answer:
     print(ans)
 ```
 
+### 노드사이의 거리
+
+```python
+import sys, heapq
+INF = sys.maxsize
+
+N, M =map(int, input().split())
+graph = [[] for _ in range(N+1)]
+for _ in range(N-1):
+    a,b,c = map(int, input().split())
+    graph[a].append([c,b])
+    graph[b].append([c,a])
+
+arr = []
+for _ in range(M):
+    arr.append(list(map(int,input().split())))
+
+def dijkstra(x,y):
+    dist = [INF]*(N+1)
+    dist[x] = 0
+
+    q = []
+    heapq.heappush(q, [0,x])
+    while q:
+        min_dist, min_idx = heapq.heappop(q)
+        if dist[min_idx] != min_dist:
+            continue
+
+        for cur_dist, cur_idx in graph[min_idx]:
+            tmp = cur_dist + min_dist
+            if dist[cur_idx] > tmp:
+                dist[cur_idx] = tmp
+                heapq.heappush(q, [tmp, cur_idx])
+
+    return dist[y]
+
+for x,y in arr:
+    print(dijkstra(x,y))
+```
+
+
+
