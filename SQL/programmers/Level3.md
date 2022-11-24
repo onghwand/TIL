@@ -59,3 +59,25 @@ where (FOOD_TYPE, FAVORITES) in (select FOOD_TYPE, max(FAVORITES)
 order by FOOD_TYPE DESC
 ```
 
+### 조건별로 분류하여 주문상태 출력하기
+
+> 풀이1
+
+```sql
+SELECT order_id, product_id, date_format(out_date, '%Y-%m-%d') as out_date,
+if(out_date <= '2022-05-01', '출고완료', if(out_date is null, '출고미정', '출고대기')) as 출고여부
+from food_order
+order by order_id
+```
+
+> 풀이2
+
+```sql
+SELECT order_id, product_id, date_format(out_date, '%Y-%m-%d') as out_date,
+case when datediff(out_date, '2022-05-01') <= 0 then '출고완료'
+when datediff(out_date, '2022-05-01') > 0 then '출고대기'
+else '출고미정' end as 출고여부
+from food_order
+order by order_id
+```
+
