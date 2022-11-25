@@ -36,4 +36,14 @@ WHERE I.SEX_UPON_INTAKE LIKE '%Intact%'
 AND (O.SEX_UPON_OUTCOME LIKE '%Spayed%' or O.SEX_UPON_OUTCOME LIKE '%Neutered%')
 ```
 
-### 
+### 주문량이 많은 아이스크림들 조회하기
+
+```sql
+SELECT j.flavor
+from first_half as f join 
+(select flavor, sum(total_order) as total_order from july group by flavor) as j
+on j.flavor = f.flavor
+order by (j.total_order+f.total_order) desc
+limit 3
+```
+
