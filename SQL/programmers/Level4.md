@@ -47,3 +47,15 @@ order by (j.total_order+f.total_order) desc
 limit 3
 ```
 
+### 식품분류별 가장 비싼 식품의 정보 조회하기
+
+```sql
+SELECT CATEGORY, PRICE AS MAX_PRICE, PRODUCT_NAME
+from food_product
+where (category, price) in (select category, max(price) 
+                            from food_product 
+                            group by category
+                            having category in ('과자', '국', '김치', '식용유'))
+order by price desc
+```
+
