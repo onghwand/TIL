@@ -59,3 +59,13 @@ where (category, price) in (select category, max(price)
 order by price desc
 ```
 
+### 5월 식품들의 총매출 조회하기
+
+```sql
+SELECT p.PRODUCT_ID, p.PRODUCT_NAME, sum(p.price*amount) as TOTAL_SALES
+from food_product as p join food_order as o on p.product_id=o.product_id
+where date_format(produce_date,'%y-%m') = '22-05'
+group by p.product_id
+order by TOTAL_SALES desc, p.PRODUCT_ID
+```
+
