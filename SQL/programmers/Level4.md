@@ -79,3 +79,16 @@ group by rest_id
 order by score desc, favorites desc
 ```
 
+### 년, 월, 성별 별 상품 구매 회원 수 구하기
+
+```sql
+SELECT date_format(sales_date,'%Y') as YEAR, 
+        MONTH(sales_date), 
+        GENDER,
+        count(distinct u.user_id) as USERS
+from user_info as u join online_sale as o on u.user_id=o.user_id
+where gender is not null
+group by YEAR, MONTH(sales_date), GENDER
+order by YEAR, MONTH(sales_date), GENDER
+```
+
