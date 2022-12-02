@@ -92,3 +92,14 @@ group by YEAR, MONTH(sales_date), GENDER
 order by YEAR, MONTH(sales_date), GENDER
 ```
 
+### 취소되지 않은 진료 예약 조회하기
+
+```sql
+SELECT apnt_no, pt_name, p.pt_no, mcdp_cd, dr_name, apnt_ymd
+from patient as p join (select apnt_no, dr_name, apnt_ymd, pt_no, apnt_cncl_yn, d.mcdp_cd
+                      from doctor as d join appointment as a on d.dr_id=a.mddr_id) as b
+                      on p.pt_no=b.pt_no
+where date_format(apnt_ymd,"%y-%m-%d")="22-04-13" and apnt_cncl_yn='N'
+order by apnt_ymd
+```
+
