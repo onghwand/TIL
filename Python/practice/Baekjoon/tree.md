@@ -437,3 +437,26 @@ for i in range(2,N+1):
 print(answer)
 ```
 
+
+
+### [13325 이진트리](https://t-anb.tistory.com/29)
+
+```python
+k = int(input())
+tree = [0,0]+list(map(int, input().split()))
+
+cumul = [x for x in tree]
+
+for i in range(len(tree)-1,1,-2):
+    cumul[i//2] = cumul[i//2] + max(cumul[i],cumul[i-1])
+
+for i in range(1,len(cumul)):
+    if i*2+1 <= len(cumul):
+        tree[i*2] += (cumul[i]-tree[i])-cumul[i*2]
+        tree[i*2+1] += (cumul[i]-tree[i])-cumul[i*2+1]
+        cumul[i * 2] += (cumul[i] - tree[i]) - cumul[i * 2]
+        cumul[i * 2 + 1] += (cumul[i] - tree[i]) - cumul[i * 2 + 1]
+
+print(sum(tree))
+```
+
