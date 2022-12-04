@@ -117,3 +117,46 @@ from (select date_format(sales_date,'%Y-%m-%d') as sales_date, product_id, user_
 order by sales_date, product_id, user_id
 ```
 
+### 그룹별 조건에 맞는 식당 목록 출력하기
+
+> 내 풀이는 뭔가 불필요한 서브쿼리를 많이 쓴 것 같다
+>
+> [참고](https://velog.io/@sheltonwon/SQL%EC%97%B0%EC%8A%B5-%EA%B7%B8%EB%A3%B9%EB%B3%84-%EC%A1%B0%EA%B1%B4%EC%97%90-%EB%A7%9E%EB%8A%94-%EC%8B%9D%EB%8B%B9-%EB%AA%A9%EB%A1%9D-%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0) => 지금까지는 순위 함수 없이도 간단하게 풀려서 생각을 못했다. 근데 순위 함수 써도 join을 두번이나 써야하는 복잡한 문제긴 하다.
+
+```sql
+select F.member_name, review_text, date_format(review_date, '%Y-%m-%d') as review_date
+from (select member_name
+    from (select max(count) as max_count
+        from (SELECT member_name, count(*) as count
+            from rest_review as r join member_profile as m on r.member_id=m.member_id
+            group by member_name) as A) as B
+        join
+        (SELECT member_name, count(*) as count
+            from rest_review as r join member_profile as m on r.member_id=m.member_id
+            group by member_name) as C
+        on C.count = B.max_count) as G
+    join
+    (select member_name, review_text, review_date
+    from member_profile as D join rest_review as E on D.member_id = E.member_id) as F
+    on F.member_name = G.member_name
+order by review_date, review_text
+```
+
+- rank() 로 개선
+
+```sql
+select member_name, review_text, date_format(review_date,'%Y-%m-%d') as review_date
+from rest_review A
+    join 
+    (select member_name, r.member_id, rank() over (order by cnt desc) as ranking
+    from (select *, count(*) as cnt
+        from rest_review
+        group by member_id) as r
+        join
+        member_profile as m 
+        on r.member_id=m.member_id) B
+    on A.member_id = B.member_id
+where B.ranking=1
+order by review_date
+```
+
