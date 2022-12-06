@@ -160,3 +160,17 @@ where B.ranking=1
 order by review_date
 ```
 
+### 상품을 구매한 회원 비율 구하기
+
+```sql
+select year
+    , month
+    , count(*) as puchased_users
+    , round(count(*)/(select count(*) from user_info where year(joined)=2021),1) as puchased_ratio
+from (select distinct year(sales_date) as year, month(sales_date) as month, u.user_id
+     from online_sale o
+     join user_info u on o.user_id=u.user_id and year(joined)=2021) A
+group by year, month
+order by year, month
+```
+
