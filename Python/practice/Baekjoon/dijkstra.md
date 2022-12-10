@@ -182,3 +182,124 @@ while q:
 print(dist[n-1][m-1])
 ```
 
+### 미확인 도착지
+
+> 각 지점마다 바로 전 지점 저장해놓고 dfs => 시간초과
+
+```python
+import sys
+import heapq
+
+INF = sys.maxsize
+input = sys.stdin.readline
+def dijkstra(k):
+    dist = [INF]*(n+1)
+    dist[k] = 0
+
+    q = []
+    heapq.heappush(q,[0,k])
+
+    trace = [0]*(n+1)
+    trace[k] = k
+    while q:
+        min_dist, min_idx = heapq.heappop(q)
+        if dist[min_idx] != min_dist:
+            continue
+
+        for cur_dist, cur_idx in graph[min_idx]:
+            dst = cur_dist + min_dist
+            if dst < dist[cur_idx]:
+                dist[cur_idx] = dst
+                heapq.heappush(q, [dst,cur_idx])
+                trace[cur_idx] = min_idx
+    return trace, dist
+
+def is_target(target, g, h, trace): # dfs로 g-h 경로 지나가는지 체크
+    passed = set()
+    while target != 2:
+        target = trace[target]
+        if target in [g,h]:
+            passed.add(target)
+
+        if passed == {g,h}:
+            return True
+    return False
+
+
+
+T = int(input())
+for tc in range(T):
+    n,m,t = map(int,input().split())
+    s,g,h = map(int, input().split())
+
+    graph = [[] for _ in range(n+1)]
+    for _ in range(m):
+        a,b,d = map(int,input().split())
+        graph[a].append([d,b])
+        graph[b].append([d,a])
+
+    trace, dist = dijkstra(s)
+    # print(trace, dist)
+
+    real_target = []
+    for _ in range(t):
+        target = int(input())
+        if is_target(target, g, h, trace):
+            real_target.append(target)
+
+    print(*sorted(real_target))
+```
+
+> 다익 3번, g-h 거친것과 거리같으면 ok
+
+```python
+import sys
+import heapq
+
+INF = sys.maxsize
+input = sys.stdin.readline
+def dijkstra(k):
+    dist = [INF]*(n+1)
+    dist[k] = 0
+
+    q = []
+    heapq.heappush(q,[0,k])
+
+    while q:
+        min_dist, min_idx = heapq.heappop(q)
+        if dist[min_idx] != min_dist:
+            continue
+
+        for cur_dist, cur_idx in graph[min_idx]:
+            dst = cur_dist + min_dist
+            if dst < dist[cur_idx]:
+                dist[cur_idx] = dst
+                heapq.heappush(q, [dst,cur_idx])
+             
+    return dist
+
+
+T = int(input())
+for tc in range(T):
+    n,m,t = map(int,input().split())
+    s,g,h = map(int, input().split())
+
+    graph = [[] for _ in range(n+1)]
+    for _ in range(m):
+        a,b,d = map(int,input().split())
+        graph[a].append([d,b])
+        graph[b].append([d,a])
+
+    start = dijkstra(s)
+    g_ = dijkstra(g)
+    h_ = dijkstra(h)
+
+    real_target = []
+    for _ in range(t):
+        target = int(input())
+        if start[g]+g_[h]+h_[target] == start[target] or start[h]+h_[g]+g_[target] == start[target]:
+            real_target.append(target)
+
+    print(*sorted(real_target))
+```
+
