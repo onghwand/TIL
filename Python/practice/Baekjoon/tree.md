@@ -460,3 +460,81 @@ for i in range(1,len(cumul)):
 print(sum(tree))
 ```
 
+
+
+### 1949 우수마을
+
+```python
+import sys
+sys.setrecursionlimit(10**6)
+
+N = int(input())
+tree = [0]+list(map(int, input().split()))
+v = [0]*(N+1)
+def dfs(i):
+    v[i] = 1
+    for city in graph[i]:
+        if v[city] == 0:
+            dfs(city)
+            dp[i][1] += dp[city][0]
+            dp[i][0] += max(dp[city][0], dp[city][1])
+
+dp = [[0,tree[i]] for i in range(N+1)]
+graph = [[] for _ in range(N+1)]
+for _ in range(N-1):
+    a,b = map(int, input().split())
+    graph[a].append(b)
+    graph[b].append(a)
+
+dfs(1)
+print(max(dp[1]))
+```
+
+
+
+### 19542 전단지돌리기
+
+```python
+import sys
+from collections import deque
+import sys
+sys.setrecursionlimit(10**6)
+n,s,d = map(int, input().split())
+graph = [[] for _ in range(n+1)]
+
+for _ in range(n-1):
+    a,b = map(int, input().split())
+    graph[a].append(b)
+    graph[b].append(a)
+
+def dfs(cur,pre):
+    v[cur] = 1
+    tree[cur] = pre
+    for nxt in graph[cur]:
+        if v[nxt] == 0:
+            dfs(nxt,cur)
+            deep[cur] = max(deep[nxt]+1, deep[cur])
+
+tree = [0]*(n+1)
+deep = [0]*(n+1)
+v = [0]*(n+1)
+dfs(s,0)
+tree[s]=s
+
+total = 0
+vi = [0]*(n+1)
+for i in range(1,n+1):
+    cnt = 0
+    if deep[i] == d:
+        nxt = i
+        while tree[nxt] != nxt:
+            if vi[nxt] == 0:
+                vi[nxt] = 1
+                cnt += 1
+            else:
+                break
+            nxt = tree[nxt]
+        total += cnt*2
+print(total)
+```
+
