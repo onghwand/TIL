@@ -392,8 +392,6 @@ for x,y in arr:
     print(dijkstra(x,y))
 ```
 
-
-
 ### 양 구출 작전
 
 > 문제를 잘못고른것같다.. 메모리 초과가 계속나는데 구글에 올라와있는 다른 해답들도 똑같이 메모리 초과가난다. 예제는 통과
@@ -437,8 +435,6 @@ for i in range(2,N+1):
 print(answer)
 ```
 
-
-
 ### [13325 이진트리](https://t-anb.tistory.com/29)
 
 ```python
@@ -459,8 +455,6 @@ for i in range(1,len(cumul)):
 
 print(sum(tree))
 ```
-
-
 
 ### 1949 우수마을
 
@@ -489,8 +483,6 @@ for _ in range(N-1):
 dfs(1)
 print(max(dp[1]))
 ```
-
-
 
 ### 19542 전단지돌리기
 
@@ -536,5 +528,65 @@ for i in range(1,n+1):
             nxt = tree[nxt]
         total += cnt*2
 print(total)
+```
+
+### 20364 부동산 다툼
+
+```python
+import sys
+input = sys.stdin.readline
+N, Q = map(int,input().split())
+sections = [0]*(N+1)
+for _ in range(Q):
+    x = int(input())
+    origin = x
+    last = 0
+
+    while x != 0:
+        if sections[x] == 1:
+            last = x
+        x //= 2
+    if last == 0:
+        sections[origin] = 1
+    print(last)
+```
+
+### 3584 가장 가까운 공통 조상
+
+```python
+T = int(input())
+
+def get_level(k):
+    lv = 0
+    while tree[k] != 0:
+        k = tree[k]
+        lv += 1
+    return lv
+
+
+for tc in range(T):
+    N = int(input())
+    tree = [0]*(N+1)
+    for _ in range(N-1):
+        a,b = map(int, input().split())
+        tree[b] = a
+
+    a,b = map(int,input().split())
+    lv_a, lv_b = get_level(a), get_level(b)
+
+    diff = abs(lv_a - lv_b)
+    if lv_a > lv_b:
+        for i in range(diff):
+            a = tree[a]
+            lv_a -= 1
+    elif lv_a < lv_b:
+        for i in range(diff):
+            b = tree[b]
+            lv_b -= 1
+    
+    while a != b:
+        a, b = tree[a], tree[b]
+
+    print(a)
 ```
 
