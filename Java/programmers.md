@@ -26,3 +26,21 @@ class Solution {
 }
 ```
 
+### 나머지가 1이 되는 수 찾기
+
+```java
+class Solution {
+    public int solution(int n) {
+        int answer = 1;
+        
+        while (answer < n) {
+            if (n%answer == 1) {
+                return answer;
+            }
+            answer ++;
+        }  
+        return answer;
+    }
+}
+```
+
