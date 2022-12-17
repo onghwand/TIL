@@ -68,3 +68,15 @@ class Solution {
 }
 ```
 
+### 부족한 금액 계산하기
+
+```java
+import java.lang.Math;
+class Solution {
+    public long solution(int price, int money, int count) {
+        long nCount = count*(count+1)/2;
+        return Math.max(nCount*price-money,0);
+    }
+}
+```
+
