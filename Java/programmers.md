@@ -102,3 +102,27 @@ class Solution {
 }
 ```
 
+### 최소직사각형
+
+```java
+import java.lang.Math;
+class Solution {
+    public int solution(int[][] sizes) {
+        
+        int maxV = 0;
+        int minMaxV = 0;
+        
+        for (int[] a: sizes) {
+            if (maxV < Math.max(a[0],a[1])) {
+                maxV = Math.max(a[0],a[1]);
+            }
+            
+            if (minMaxV < Math.min(a[0],a[1])) {
+                minMaxV = Math.min(a[0],a[1]);
+            }
+        }
+        return maxV*minMaxV;
+    }
+}
+```
+
