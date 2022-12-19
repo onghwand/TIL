@@ -126,3 +126,26 @@ class Solution {
 }
 ```
 
+### 삼총사
+
+```java
+class Solution {
+    public int solution(int[] number) {
+        int answer = 0;
+        
+        for (int n=0;n<number.length;n++) {
+            for (int m=n+1;m<number.length;m++) {
+                for (int l=m+1;l<number.length;l++) {
+                    if (number[n]+number[m]+number[l] == 0) {
+                        answer++;
+                    }
+                }
+            }
+        }
+        return answer;
+    }
+}
+```
+
+
+
