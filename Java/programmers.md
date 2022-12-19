@@ -102,23 +102,26 @@ class Solution {
 }
 ```
 
-### 삼총사
+### 최소직사각형
 
 ```java
+import java.lang.Math;
 class Solution {
-    public int solution(int[] number) {
-        int answer = 0;
+    public int solution(int[][] sizes) {
         
-        for (int n=0;n<number.length;n++) {
-            for (int m=n+1;m<number.length;m++) {
-                for (int l=m+1;l<number.length;l++) {
-                    if (number[n]+number[m]+number[l] == 0) {
-                        answer++;
-                    }
-                }
+        int maxV = 0;
+        int minMaxV = 0;
+        
+        for (int[] a: sizes) {
+            if (maxV < Math.max(a[0],a[1])) {
+                maxV = Math.max(a[0],a[1]);
+            }
+            
+            if (minMaxV < Math.min(a[0],a[1])) {
+                minMaxV = Math.min(a[0],a[1]);
             }
         }
-        return answer;
+        return maxV*minMaxV;
     }
 }
 ```
