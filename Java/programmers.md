@@ -147,5 +147,45 @@ class Solution {
 }
 ```
 
+### 2016년
 
+```java
+import java.util.HashMap;
+class Solution {
+    public String solution(int a, int b) {
+        String answer = "";
+        HashMap<Integer,String> days = new HashMap<>();
+        days.put(3,"MON");
+        days.put(4,"TUE");
+        days.put(5,"WED");
+        days.put(6,"THU");
+        days.put(0,"FRI");
+        days.put(1,"SAT");
+        days.put(2,"SUN");
+        
+        
+        HashMap<Integer,Integer> calendar = new HashMap<>();
+        calendar.put(1,31);
+        calendar.put(2,29);
+        calendar.put(3,31);
+        calendar.put(4,30);
+        calendar.put(5,31);
+        calendar.put(6,30);
+        calendar.put(7,31);
+        calendar.put(8,31);
+        calendar.put(9,30);
+        calendar.put(10,31);
+        calendar.put(11,30);
+        calendar.put(12,31);
+        
+        int tmp = 0;
+        for (int i=1;i<a;i++) {
+            tmp += calendar.get(i);
+        }
+        int residue = (tmp+b-1)%7;
+        
+        return days.get(residue);
+    }
+}
+```
 
