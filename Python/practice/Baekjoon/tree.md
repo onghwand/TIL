@@ -590,3 +590,30 @@ for tc in range(T):
     print(a)
 ```
 
+### 사촌
+
+```python
+import sys
+input = sys.stdin.readline
+
+while True:
+    n,k = map(int,input().rstrip().split())
+    if n==0 and k == 0:
+        break
+    answer = 0
+    arr = [-1] + list(map(int, input().split()))
+    lst = [-1] + [0]*n
+    cnt = -1
+    for i in range(1,len(arr)):
+        if arr[i] == k:
+            check = i
+        if arr[i-1]+1 != arr[i]:
+            cnt += 1
+        lst[i] = cnt
+
+    for i in range(1,len(arr)):
+        if lst[i] != lst[check] and lst[lst[i]] == lst[lst[check]]:
+            answer+=1
+    print(answer)
+```
+
