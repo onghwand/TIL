@@ -394,3 +394,25 @@ for i in range(2,201):
 print(dp[k][n])
 ```
 
+### 전깃줄
+
+```python
+n = int(input())
+arr = [[0]*n for _ in range(2)]
+dc = {}
+for i in range(n):
+    x,y = map(int, input().split())
+    arr[0][i] = x
+    dc[x] = y
+arr[0].sort()
+for i in range(n):
+    arr[1][i] = dc[arr[0][i]]
+
+dp = [1]*n
+for i in range(n):
+    for j in range(i):
+        if arr[1][i] > arr[1][j]:
+            dp[i] = max(dp[i], dp[j]+1)
+print(n-max(dp))
+```
+
