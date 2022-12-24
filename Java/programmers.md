@@ -189,3 +189,34 @@ class Solution {
 }
 ```
 
+### 소수만들기
+
+```java
+class Solution {
+    public int solution(int[] nums) {
+        int answer = 0;
+        int[] primes = new int[3001];
+        
+        for (int i=2;i<primes.length;i++) {
+            if (primes[i] == 0) {
+                primes[i] = 1;
+                for (int j=2;i*j<primes.length;j++) {
+                    primes[i*j] = 2;
+                }
+            }
+        }
+        
+        for (int i=0;i<nums.length;i++) {
+            for (int j=i+1;j<nums.length;j++) {
+                for (int l=j+1;l<nums.length;l++) {
+                    if (primes[nums[i]+nums[j]+nums[l]]==1) {
+                        answer++;
+                    }
+                }
+            }
+        }
+        return answer;
+    }
+}
+```
+
