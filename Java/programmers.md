@@ -220,3 +220,36 @@ class Solution {
 }
 ```
 
+### 숫자 짝꿍
+
+```java
+import java.lang.*;
+import java.util.*;
+class Solution {
+    public String solution(String X, String Y) {
+        StringBuilder builder = new StringBuilder();
+        int[] arrX = new int[10];
+        int[] arrY = new int[10];
+        for (Character s:X.toCharArray()) {
+            arrX[Character.getNumericValue(s)]++;
+        }
+        for (Character s:Y.toCharArray()) {
+            arrY[Character.getNumericValue(s)]++;
+        }
+
+        for (int i=9;i>=0;i--) {
+            if (arrX[i]>0 && arrY[i]>0) {
+                builder.append(String.valueOf(i).repeat(Math.min(arrX[i],arrY[i])));
+            }
+        }
+        if (builder.length() == 0) {
+            return "-1";
+        } else if (builder.charAt(0) == '0') {
+            return "0";
+        }
+
+        return builder.toString();
+    }
+}
+```
+
