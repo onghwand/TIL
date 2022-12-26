@@ -253,3 +253,39 @@ class Solution {
 }
 ```
 
+## Level2
+
+### 귤고르기
+
+```java
+import java.util.*;
+class Solution {
+    public int solution(int k, int[] tangerine) {
+        int answer = 0;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        
+        for (int t:tangerine) {
+            if (map.containsKey(t)) {
+                map.put(t,map.get(t)+1);
+            } else {
+                map.put(t,1);
+            }
+        }
+        
+        
+        List<Map.Entry<Integer,Integer>> entryList = new ArrayList<>(map.entrySet());
+        entryList.sort(Map.Entry.comparingByValue());
+        
+        for (int i=entryList.size()-1;i>=0;i--){
+            k-=entryList.get(i).getValue();
+            answer++;
+            if (k <= 0) {
+                break;
+            }
+            
+        }
+        return answer;
+    }
+}
+```
+
