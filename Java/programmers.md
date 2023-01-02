@@ -289,3 +289,31 @@ class Solution {
 }
 ```
 
+### 할인행사
+
+```java
+import java.util.*;
+class Solution {
+    public int solution(String[] want, int[] number, String[] discount) {
+        int answer = 0;
+        Map<String, Integer> map = new HashMap<>();
+        for (int i=0;i<number.length;i++) {
+            map.put(want[i],number[i]);
+        }
+        
+        for (int i=0;i+10<=discount.length;i++) {
+            Map<String, Integer> map1 = new HashMap<>();
+            for (int j=i;j<i+10;j++) {
+                map1.put(discount[j], map1.getOrDefault(discount[j],0)+1);
+            }
+            
+            if (map1.equals(map)) {
+                answer++;
+            }
+        }
+        
+        return answer;
+    }
+}
+```
+
