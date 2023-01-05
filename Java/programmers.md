@@ -317,3 +317,22 @@ class Solution {
 }
 ```
 
+### 점 찍기
+
+```java
+import java.lang.*;
+class Solution {
+    public long solution(int k, int d) {
+        long answer = d/k*2+1;
+        
+        for (int i=k;i<=d;i+=k) {
+            // d가 1000000이면 int가 담을 수 없기 때문에 음수값으로 바뀜..
+            // answer += Math.floor(Math.sqrt((d*d-i*i)))/k; 
+            answer += (long) Math.sqrt(((long)d*d-(long)i*i))/k;
+        }
+        
+        return answer;
+    }
+}
+```
+
