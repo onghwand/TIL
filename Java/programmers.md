@@ -288,8 +288,6 @@ class Solution {
     }
 }
 ```
-```
-
 ### 할인행사
 
 ```java
@@ -330,6 +328,42 @@ class Solution {
             // d가 1000000이면 int가 담을 수 없기 때문에 음수값으로 바뀜..
             // answer += Math.floor(Math.sqrt((d*d-i*i)))/k; 
             answer += (long) Math.sqrt(((long)d*d-(long)i*i))/k;
+        }
+        
+        return answer;
+    }
+}
+```
+
+### 롤케이크 자르기
+
+```java
+import java.util.*;
+class Solution {
+    public int solution(int[] topping) {
+        int answer = 0;
+        if (topping.length == 1) {
+            return 0;
+        }
+        
+        Map<Integer, Integer> front = new HashMap<>();
+        Map<Integer, Integer> back = new HashMap<>();
+        for (int i=0;i<topping.length;i++) {
+            front.put(topping[i], front.getOrDefault(topping[i],0)+1);
+        }
+        
+        for (int i=topping.length-1;i>=0;i--) {
+            if (front.get(topping[i]) > 1) { 
+                front.put(topping[i], front.get(topping[i])-1);
+            } else {
+                front.remove(topping[i]);
+            }
+            
+            back.put(topping[i], front.getOrDefault(topping[i],0)+1);
+            
+            if (front.keySet().size() == back.keySet().size()) {
+                answer++;
+            }
         }
         
         return answer;
