@@ -288,3 +288,52 @@ class Solution {
     }
 }
 ```
+```
+
+### 할인행사
+
+```java
+import java.util.*;
+class Solution {
+    public int solution(String[] want, int[] number, String[] discount) {
+        int answer = 0;
+        Map<String, Integer> map = new HashMap<>();
+        for (int i=0;i<number.length;i++) {
+            map.put(want[i],number[i]);
+        }
+        
+        for (int i=0;i+10<=discount.length;i++) {
+            Map<String, Integer> map1 = new HashMap<>();
+            for (int j=i;j<i+10;j++) {
+                map1.put(discount[j], map1.getOrDefault(discount[j],0)+1);
+            }
+            
+            if (map1.equals(map)) {
+                answer++;
+            }
+        }
+        
+        return answer;
+    }
+}
+```
+
+### 점 찍기
+
+```java
+import java.lang.*;
+class Solution {
+    public long solution(int k, int d) {
+        long answer = d/k*2+1;
+        
+        for (int i=k;i<=d;i+=k) {
+            // d가 1000000이면 int가 담을 수 없기 때문에 음수값으로 바뀜..
+            // answer += Math.floor(Math.sqrt((d*d-i*i)))/k; 
+            answer += (long) Math.sqrt(((long)d*d-(long)i*i))/k;
+        }
+        
+        return answer;
+    }
+}
+```
+
