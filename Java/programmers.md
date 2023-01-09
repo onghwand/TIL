@@ -371,3 +371,42 @@ class Solution {
 }
 ```
 
+### 택배상자
+
+```java
+import java.util.*;
+class Solution {
+    public int solution(int[] order) {
+        int answer = 0;
+        Stack<Integer> tmp = new Stack<>();
+
+        int idx = 0;
+        for (int i=1;i<order.length+1;i++){
+            while (tmp.size() > 0 && tmp.peek() == order[idx]) {
+                answer++;
+                idx++;
+                tmp.pop();
+            } 
+
+            if (i == order[idx]) {
+                answer++;
+                idx++;
+            } else {
+                tmp.push(i);
+            } 
+        }
+
+
+        while (tmp.size() > 0) {
+            if (tmp.pop() != order[idx]) {
+                break;
+            } else {
+                idx++;
+                answer++;
+            }
+        }
+        return answer;
+    }
+}
+```
+
