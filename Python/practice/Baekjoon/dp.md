@@ -431,3 +431,26 @@ for c in coin:
 print(dp[k])
 ```
 
+### 행렬 곱셈 순서
+
+```python
+n = int(input())
+mtrx=[list(map(int, input().split())) for _ in range(n)]
+
+arr = [[2**31]*n for _ in range(n)]
+for i in range(n):
+    arr[i][i] = 0
+
+for diff in range(1,n):
+    for i in range(n-diff):
+        j = i+diff
+        if diff == 1:
+            arr[i][j] = mtrx[i][0]*mtrx[i][1]*mtrx[j][1]
+        else:
+            for k in range(i,j):
+                arr[i][j] = min(arr[i][j],
+                                arr[i][k]+mtrx[i][0]*mtrx[k][1]*mtrx[j][1]+arr[k+1][j])
+
+print(arr[0][n-1])
+```
+
