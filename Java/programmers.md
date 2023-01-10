@@ -410,3 +410,46 @@ class Solution {
 }
 ```
 
+### 숫자 카드 나누기
+
+```java
+import java.util.*;
+class Solution {
+    public int solution(int[] arrayA, int[] arrayB) {
+        int answer = 0;
+        int L = arrayA.length;
+        int minA = arrayA[0]; int minB = arrayB[0];
+        Set<Integer> set = new HashSet<>();
+        for (int i=2;i<=minA;i++) {
+            if (minA%i==0) set.add(i);
+        }
+        for (int i=2;i<=minB;i++) {
+            if (minB%i==0) set.add(i);
+        }
+        
+        List<Integer> list = new ArrayList<>(set);
+        list.sort(Comparator.naturalOrder());
+        
+        for (int i=list.size()-1;i>=0;i--) {
+            int cntA=0; 
+            int cntB=0;
+            
+            for (int j=0;j<L;j++) {
+                if (arrayA[j]%list.get(i) == 0) {
+                    cntA++;
+                }
+                if (arrayB[j]%list.get(i) == 0) {
+                    cntB++;
+                }
+            }
+            
+            if ((cntA==0 && cntB==L) || (cntA==L && cntB==0)) {
+                answer = list.get(i);
+                break;
+            }
+        }
+        return answer;
+    }
+}
+```
+
