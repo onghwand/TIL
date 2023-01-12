@@ -454,3 +454,33 @@ for diff in range(1,n):
 print(arr[0][n-1])
 ```
 
+### LCS2
+
+```python
+x = [0] + list(input())
+y = [0] + list(input())
+dp = [[0]*len(y) for _ in range(len(x))]
+
+for i in range(1,len(x)):
+    for j in range(1,len(y)):
+        if x[i] == y[j]:
+            dp[i][j] = dp[i-1][j-1] + 1
+        else:
+            dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+cnt = dp[-1][-1]
+i,j = len(x)-1,len(y)-1
+s = ''
+while cnt>0:
+    if cnt == dp[i-1][j]:
+        i -= 1
+    elif cnt == dp[i][j-1]:
+        j -= 1
+    else:
+        s = x[i]+s
+        cnt -= 1
+        i -= 1
+        j -= 1
+print(len(s))
+print(s)
+```
+
