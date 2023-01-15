@@ -617,3 +617,57 @@ while True:
     print(answer)
 ```
 
+### 22856 트리 순회
+
+> 종료조건 0 not in visited[1:] 로 하니까 시간초과 => root == arr[-1]
+
+```python
+import sys
+
+sys.setrecursionlimit(10 ** 6)
+input = sys.stdin.readline
+
+n = int(input())
+left = [0] * (n + 1)
+right = [0] * (n + 1)
+parent = [0] * (n + 1)
+
+for _ in range(n):
+    a, b, c = map(int, input().split())
+    left[a] = b
+    right[a] = c
+    if b != -1:
+        parent[b] = a
+    if c != -1:
+        parent[c] = a
+
+cnt = 0
+arr=[]
+def in_order(root):
+    if left[root] != -1:
+        in_order(left[root])
+    arr.append(root)
+    if right[root] != -1:
+        in_order(right[root])
+
+def traverse(root):
+    global cnt
+    visited[root] = 1
+    if left[root] != -1 and visited[left[root]] == 0:
+        cnt += 1
+        return traverse(left[root])
+    elif right[root] != -1 and visited[right[root]]==0:
+        cnt += 1
+        return traverse(right[root])
+    elif root == arr[-1]:
+        return
+    else:
+        cnt += 1
+        return traverse(parent[root])
+
+visited = [0]*(n+1)
+in_order(1)
+traverse(1)
+print(cnt)
+```
+
