@@ -482,28 +482,47 @@ class Solution {
 }
 ```
 
-### 마법의 엘리베이터
+### 우박수열 정적분
 
 ```java
 import java.util.*;
 class Solution {
-    public int solution(int storey) {
-        int answer = 0;
-
-        int i = 1;
-        while (storey != 0) {
-            int unit = (int)Math.pow(10,i);
-            int r = storey % unit;
-            int rr = storey % (int)Math.pow(10,i+1) / unit;
-            if((rr<5&& r <= unit/2) || (rr>=5 && r <= unit/2-1)) {
-                storey -= r;
-                answer += r/Math.pow(10,i-1);
+    public double[] solution(int k, int[][] ranges) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0,k);
+        int cnt = 1;
+        while (k!=1) {
+            if (k%2==1) {
+                k = k*3+1;
             } else {
-                storey += unit-r;
-                answer += (unit-r)/Math.pow(10,i-1);
+                k = k/2;
             }
-            i++;
+            map.put(cnt, k);
+            cnt++;
         }
+
+        double[] areas = new double[cnt-1];
+        for (int i=0;i<cnt-1;i++) {
+            double area = (double)(map.get(i)+map.get(i+1))/2;
+            areas[i] = area;
+        }
+
+        double[] answer = new double[ranges.length];
+        for (int i=0;i<ranges.length;i++) {
+            int start = ranges[i][0]; int end = cnt+ranges[i][1]-1;
+            if (start > end) {
+                answer[i] = -1;
+            } else if (start == end) {
+                answer[i] = 0;
+            } else {
+                double total = 0;
+                for (int j=start;j<end;j++) {
+                    total += areas[j];
+                }
+                answer[i] = total;
+            }
+        }
+
         return answer;
     }
 }
