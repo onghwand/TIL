@@ -482,3 +482,30 @@ class Solution {
 }
 ```
 
+### 마법의 엘리베이터
+
+```java
+import java.util.*;
+class Solution {
+    public int solution(int storey) {
+        int answer = 0;
+
+        int i = 1;
+        while (storey != 0) {
+            int unit = (int)Math.pow(10,i);
+            int r = storey % unit;
+            int rr = storey % (int)Math.pow(10,i+1) / unit;
+            if((rr<5&& r <= unit/2) || (rr>=5 && r <= unit/2-1)) {
+                storey -= r;
+                answer += r/Math.pow(10,i-1);
+            } else {
+                storey += unit-r;
+                answer += (unit-r)/Math.pow(10,i-1);
+            }
+            i++;
+        }
+        return answer;
+    }
+}
+```
+
