@@ -671,3 +671,31 @@ traverse(1)
 print(cnt)
 ```
 
+### K진트리
+
+```python
+import sys
+input = sys.stdin.readline
+
+n,k,q=map(int, input().split())
+arr=[list(map(int, input().split())) for _ in range(q)]
+
+def dist(x,y):
+    cnt = 0
+    while x!=y:
+        if x>y:
+            x = (x-2)//k+1
+        else:
+            y = (y-2)//k+1
+        cnt += 1
+    return cnt
+
+for x,y in arr:
+    if k == 1:
+        print(abs(x-y))
+        continue
+    print(dist(x,y))
+```
+
+
+
