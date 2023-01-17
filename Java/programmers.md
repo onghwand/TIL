@@ -555,3 +555,43 @@ class Solution {
 }
 ```
 
+### 디펜스 게임
+
+```java
+import java.util.*;
+class Solution {
+    public int solution(int n, int k, int[] enemy) {
+        int answer = 0;
+        if (enemy.length <= k) {
+            return enemy.length;
+        } 
+        
+        PriorityQueue<Integer> minheap = new PriorityQueue<>();
+        for (int i=0;i<enemy.length;i++) {
+            if (i<k) {
+                minheap.add(enemy[i]);
+                answer++;
+                continue;
+            }
+            if (minheap.peek() > enemy[i]) {
+                n -= enemy[i];
+            } else { 
+                n -= minheap.poll();
+                minheap.add(enemy[i]);
+            }
+            answer++;
+            
+            if (n == 0) {
+                break;
+            } else if (n < 0) {
+                answer--;
+                break;
+            }
+            
+        }
+        
+        return answer;
+    }
+}
+```
+
