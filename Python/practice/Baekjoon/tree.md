@@ -697,5 +697,68 @@ for x,y in arr:
     print(dist(x,y))
 ```
 
+### 트리의 높이와 너비
 
+```python
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+tree = [[0]*5 for _ in range(n+1)] # 좌/우/부모/깊이/x좌표
+for _ in range(n):
+    node, left, right = map(int, input().split())
+    if left == -1:
+        left = 0
+    if right == -1:
+        right = 0
+    tree[node][0], tree[node][1] = left, right
+    tree[left][2] = tree[right][2] = node
+
+def dfs(s):
+    global depth, maxV
+    tree[s][3] = depth
+    for i in range(2):
+        if v[tree[s][i]] == 0:
+            v[tree[s][i]] = 1
+            depth += 1
+            if maxV < depth:
+                maxV = depth
+            dfs(tree[s][i])
+            v[tree[s][i]] = 0
+            depth -= 1
+
+def inorder(s):
+    global start
+    if tree[s][0]:
+        inorder(tree[s][0])
+    tree[s][4] = start
+    start += 1
+    if tree[s][1]:
+        inorder(tree[s][1])
+
+root = 0
+for i in range(1, n + 1):
+    if tree[i][2] == 0:
+        root = i
+
+maxV = 0
+depth = 1
+v = [0]*(n+1)
+dfs(root)
+start = 1
+inorder(root)
+
+level = [[] for _ in range(maxV)]
+for i in range(1,len(tree)):
+    level[tree[i][3]].append(tree[i][4])
+
+maxI = maxD = 0
+for i in range(1, len(level)):
+    tmp =max(level[i])-min(level[i])+1
+    if maxD < tmp:
+        maxI = i
+        maxD = tmp
+
+print(maxI, maxD)
+```
 
