@@ -394,45 +394,37 @@ for x,y in arr:
 
 ### 양 구출 작전
 
-> 문제를 잘못고른것같다.. 메모리 초과가 계속나는데 구글에 올라와있는 다른 해답들도 똑같이 메모리 초과가난다. 예제는 통과
-
 ```python
 import sys
+sys.setrecursionlimit(10**6)
+input = sys.stdin.readline
 
-sys.setrecursionlimit(1000000)
-N = int(input())
+n = int(input())
+tree = [[] for _ in range(n+1)]
+sw = [0]*(n+1)
+cnt = [0]*(n+1)
 
-tree = [0]*(N+1)
-group = [0]*(N+1)
-cnt = [0]*(N+1)
-tree[1] = 1
-for i in range(2,N+1):
-    t,a,p = input().split()
-    a,p = int(a), int(p)
-    tree[i] = p
-    group[i] = t
-    cnt[i] = a
+for i in range(2,n+1):
+    a,b,c = list(input().split())
+    b, c = int(b), int(c)
+    tree[c].append(i)
+    sw[i] = a
+    if a == 'S':
+        cnt[i] = b
+    else:
+        cnt[i] = b*(-1)
 
-
-def move(k, residue):
-    if group[k] == 'W':
-        tmp = residue
-        residue -= cnt[k]
-        cnt[k] = max(cnt[k]-tmp, 0)
-        if residue <= 0:
-            return 0
-    elif k == 1:
-        return residue
-
-    return move(tree[k], residue)
-
-answer = 0
-for i in range(2,N+1):
-    if group[i] == 'S':
-        count = move(i, cnt[i])
-        answer += count
-    # print(cnt,i,count)
-print(answer)
+v = [0]*(n+1)
+def dfs(s):
+    v[s] = 1
+    for node in tree[s]:
+        if v[node]:
+            continue
+        dfs(node)
+        if cnt[node] > 0:
+            cnt[s] = cnt[s]+cnt[node]
+dfs(1)
+print(cnt[1])
 ```
 
 ### [13325 이진트리](https://t-anb.tistory.com/29)
