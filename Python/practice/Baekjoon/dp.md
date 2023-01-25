@@ -484,3 +484,61 @@ print(len(s))
 print(s)
 ```
 
+### 외판원 순회
+
+> 구글 해답을 봐도 어렵다..
+
+```python
+import sys
+input = sys.stdin.readline
+
+def solution(N,W,dp):
+    for i in range(N):
+        for j in range(N):
+            if not W[i][j]:
+                W[i][j] = float('inf')
+
+    for i in range(1,N):
+        dp[i][0] = W[i][0]
+
+    for k in range(1, N-1): # k는 route 점의 개수
+        for route in range(1, size):
+            if count(route, N) == k: # route가 k개의 점으로 이루어져있는가
+                for i in range(1,N):
+                    if not isin(i,route): # i에서 출발하는데 i를 지나면 안됨
+                        dp[i][route] = get_minimum(N,W,i,route,dp)
+
+    dp[0][size-1] = get_minimum(N,W,0,size-1,dp)
+
+    return dp[0][size-1]
+
+def count(route,N):
+    cnt = 0
+    for n in range(1,N):
+        if route & (1<<n-1) != 0:
+            cnt += 1
+    return cnt
+
+def isin(i,route): # 점 i가 route에 있는지
+    if route & (1 << i-1) != 0:
+        return True
+    return False
+
+def get_minimum(N,W,i,route,dp):
+    minimum_dist = float('inf')
+    for j in range(1,N):
+        if isin(j, route):
+            before_route = route & ~(1<<j-1)
+            dist = W[i][j] + dp[j][before_route]
+            if minimum_dist > dist:
+                minimum_dist = dist
+    return minimum_dist
+
+
+N = int(input())
+W = [list(map(int, input().split())) for _ in range(N)]
+size = 2**(N-1)
+dp = [[float('inf')]*size for _ in range(N)]
+print(solution(N,W,dp))
+```
+
