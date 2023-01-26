@@ -542,3 +542,42 @@ dp = [[float('inf')]*size for _ in range(N)]
 print(solution(N,W,dp))
 ```
 
+### 게임개발
+
+```python
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+graph = [[] for _ in range(n+1)]
+degree = [0]*(n+1)
+times = [0]*(n+1)
+
+for i in range(1,n+1):
+    arr = list(map(int, input().split()))[:-1]
+    times[i] = arr[0]
+    for j in arr[1:]:
+        degree[i] += 1
+        graph[j].append(i)
+
+result = [0]*(n+1)
+q = deque()
+for i in range(1,n+1):
+    if not degree[i]:
+        q.append(i)
+
+while q:
+    cur = q.popleft()
+    result[cur] += times[cur]
+
+    for building in graph[cur]:
+        result[building] = max(result[building], result[cur])
+        degree[building] -= 1
+        if not degree[building]:
+            q.append(building)
+
+for i in range(1,n+1):
+    print(result[i])
+```
+
