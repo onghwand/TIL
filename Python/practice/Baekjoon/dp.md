@@ -596,3 +596,21 @@ for i in range(1,n):
 print(n-max(dp))
 ```
 
+### 동전
+
+```python
+T = int(input())
+for _ in range(T):
+    n = int(input())
+    coin = list(map(int, input().split()))
+    money = int(input())
+
+    dp = [0]*(money+1)
+    dp[0] = 1
+    for c in coin:
+        for i in range(c,money+1):
+            dp[i] += dp[i-c]
+
+    print(dp[money])
+```
+
