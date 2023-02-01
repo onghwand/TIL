@@ -614,3 +614,30 @@ for _ in range(T):
     print(dp[money])
 ```
 
+### RGB거리2
+
+```python
+import sys
+INF = sys.maxsize
+
+n = int(input())
+arr = [list(map(int, input().split())) for _ in range(n)]
+
+ans = INF
+for i in range(3):
+    dp = [INF]*3
+    tmp = [INF]*3
+    tmp[i] = arr[0][i]
+    for j in range(1,n):
+        dp[0] = arr[j][0] + min(tmp[1],tmp[2])
+        dp[1] = arr[j][1] + min(tmp[0],tmp[2])
+        dp[2] = arr[j][2] + min(tmp[0],tmp[1])
+
+        tmp = [x for x in dp]
+
+    for j in range(3):
+        if i != j:
+            ans = min(ans, dp[j])
+print(ans)
+```
+
