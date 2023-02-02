@@ -641,3 +641,47 @@ for i in range(3):
 print(ans)
 ```
 
+### 작업
+
+```python
+from collections import deque
+import sys
+input = sys.stdin.readline
+
+n = int(input())
+graph = [[] for _ in range(n+1)]
+indegree = [0]*(n+1) # 누적 차수
+cost = [0]*(n+1) # 각 작업 소요시간
+
+q = deque()
+
+for i in range(1,n+1):
+    arr = list(map(int, input().split()))
+    cost[i] = arr[0]
+
+    if not arr[1]:
+        q.append(i)
+
+    for v in arr[2:]:
+        indegree[i] += 1
+        graph[v].append(i)
+
+end = [0]*(n+1) # 각 작업 끝나는 시간
+maxV = 0
+while q:
+    c = q.popleft()
+    end[c] += cost[c]
+
+    if end[c] > maxV:
+        maxV = end[c]
+
+    for x in graph[c]:
+        indegree[x] -= 1
+        end[x] = max(end[x], end[c])
+
+        if not indegree[x]:
+            q.append(x)
+
+print(maxV)
+```
+
