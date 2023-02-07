@@ -68,7 +68,7 @@
 
     ![image-20230206160458723](solid.assets/image-20230206160458723.png)
 
-> Dependency Inversion Property
+> Dependency Inversion Principle
 
 - 상위 모듈이 하위 모듈에 의존하면 안됨. 둘다 추상화에 의존하며, 추상화는 세부 사항에 의존하면 안됨.
 
