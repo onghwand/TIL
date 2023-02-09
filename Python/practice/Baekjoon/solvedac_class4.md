@@ -61,7 +61,39 @@ for i in range(L):
                 maxV = cnt
 
 print(maxV)
+```
+
+### N-Queen
+
+```python
+n = int(input())
+
+def dfs(n, r):
+    global cnt
+    if n == r :
+        cnt += 1
+        return
+
+    for j in range(n):
+        if v[j] == -1 and meet(r,j,n):
+            v[j] = r
+            dfs(n,r+1)
+            v[j] = -1
+
+def meet(r,j,n):
+    for k in range(n):
+        if v[k] != -1 and abs(k-j) == abs(v[k]-r):
+            return False
+    return True
 
 
+v = [-1] * n
+cnt = 0
+for i in range(n):
+    v[i] = 0
+    dfs(n,1)
+    v[i] = -1
+
+print(cnt)
 ```
 
