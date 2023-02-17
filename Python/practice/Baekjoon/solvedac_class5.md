@@ -58,3 +58,34 @@ while q:
 print(*res)
 ```
 
+### 부분합
+
+```python
+import sys
+input = sys.stdin.readline
+
+n,s = map(int ,input().split())
+arr = list(map(int, input().split()))
+
+if sum(arr) < s:
+    print(0)
+else:
+    minV = len(arr)
+    i=j=0
+    part = arr[0]
+    while 1:
+        if part < s and j < len(arr)-1:
+            j += 1
+            part += arr[j]
+        else:
+            if part >= s:
+                minV = min(minV, j - i + 1)
+
+            i += 1
+            if i == len(arr):
+                break
+            part -= arr[i-1]
+
+    print(minV)
+```
+
