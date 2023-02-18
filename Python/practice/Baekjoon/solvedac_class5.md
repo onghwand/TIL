@@ -89,3 +89,38 @@ else:
     print(minV)
 ```
 
+### 텀 프로젝트
+
+```python
+import sys
+input = sys.stdin.readline
+
+t=int(input())
+for tc in range(t):
+    n = int(input())
+    arr = [0] + list(map(int, input().split()))
+
+    v = [0]*(n+1)
+    cnt = 0
+    for i in range(1,n+1):
+        if i == arr[i]:
+            v[i] = 1
+
+    for x in range(1,n+1):
+        group = []
+        if not v[x]:
+            c = 1
+            while v[x] == 0:
+                group.append(x)
+                v[x] = c
+                c += 1
+                x = arr[x]
+
+            if x in group: # 부분 사이클이 있다면
+                cnt += v[x]-1
+            else: 
+                cnt += c-1
+
+    print(cnt)
+```
+
