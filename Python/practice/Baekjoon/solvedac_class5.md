@@ -124,3 +124,30 @@ for tc in range(t):
     print(cnt)
 ```
 
+### 앱
+
+```python
+import sys
+input = sys.stdin.readline
+
+n,m= map(int, input().split())
+byte = list(map(int, input().split()))
+cost = list(map(int, input().split()))
+
+res = sum(cost)
+dp = [[0]*(res+1) for _ in range(n)]
+
+# dp[i][j] = i번째까지 앱으로 j코스트 조합을 만들었을 때 최대메모리
+for i in range(n):
+    for j in range(len(dp[0])):
+        if cost[i] > j:
+            dp[i][j] = dp[i-1][j]
+        else:
+            dp[i][j] = max(dp[i-1][j], byte[i] + dp[i-1][j-cost[i]])
+
+        if dp[i][j] >= m:
+            res = min(res, j)
+
+print(res)
+```
+
