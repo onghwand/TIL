@@ -151,3 +151,34 @@ for i in range(n):
 print(res)
 ```
 
+### 도시분할계획
+
+```python
+import sys
+input = sys.stdin.readline
+
+def find(x):
+    while parent[x] != x:
+        x = parent[x]
+    return x
+
+def union(x,y):
+    x, y = find(x), find(y)
+    parent[max(x,y)] = min(x,y)
+
+n, m =map(int, input().split())
+parent = [x for x in range(n+1)]
+graph = sorted([list(map(int, input().split())) for _ in range(m)], key=lambda x:x[2])
+print(graph)
+
+roads = []
+res = 0
+for x,y,cost in graph:
+    if find(x) != find(y):
+        roads.append(cost)
+        res += cost
+        union(x,y)
+
+print(res - roads.pop())
+```
+
