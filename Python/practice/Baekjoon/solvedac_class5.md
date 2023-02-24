@@ -182,3 +182,59 @@ for x,y,cost in graph:
 print(res - roads.pop())
 ```
 
+### 스도쿠
+
+```python
+import sys
+input = sys.stdin.readline
+
+arr = [list(map(int,input().strip())) for _ in range(9)]
+
+def possible(i,j,n):
+    # row
+    for r in range(9):
+        if arr[r][j] == n:
+            return False
+    # col
+    for c in range(9):
+        if arr[i][c] == n:
+            return False
+    # square
+    x, y = i//3*3, j//3*3
+    for r in range(x,x+3):
+        for c in range(y,y+3):
+            if arr[r][c] == n:
+                return False
+
+    return True
+
+def find_zero():
+    lst = []
+    for i in range(9):
+        for j in range(9):
+            if not arr[i][j]:
+                lst.append([i,j])
+    return lst
+
+def dfs(k, lst):
+    global flag
+    if k == len(lst):
+        flag = 1
+        return
+
+    i,j = lst[k]
+    for n in range(1,10):
+        if possible(i,j,n):
+            arr[i][j] = n
+            dfs(k+1,lst)
+            if flag:
+                return
+            arr[i][j] = 0
+
+flag = 0
+lst = find_zero()
+dfs(0,lst)
+for a in arr:
+    print(*a, sep='')
+```
+
