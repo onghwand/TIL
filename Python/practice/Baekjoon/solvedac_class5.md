@@ -238,3 +238,29 @@ for a in arr:
     print(*a, sep='')
 ```
 
+### 보석 도둑
+
+```python
+import sys
+import heapq
+input = sys.stdin.readline
+
+n, k = map(int, input().split())
+info = []
+for _ in range(n):
+    heapq.heappush(info, list(map(int, input().split())))
+bags = sorted([int(input()) for _ in range(k)])
+
+cumul = []
+answer = 0
+for bag in bags:
+    while info and bag >= info[0][0]:
+        heapq.heappush(cumul, -heapq.heappop(info)[1])
+    if cumul:
+        answer -= heapq.heappop(cumul)
+    elif not info:
+        break
+
+print(answer)
+```
+
