@@ -264,3 +264,38 @@ for bag in bags:
 print(answer)
 ```
 
+### 세 용액
+
+```python
+import sys
+
+# n개 고정 & 투포인터 n => n**2 + nlogn(정렬) => n**2
+input = sys.stdin.readline
+
+n = int(input())
+arr = sorted(list(map(int, input().split()))) # nlogn
+
+res = 3000000000
+ans = []
+flag = 0
+for i in range(n-2): # n**2
+    fix = i
+    l, r = i+1, n-1
+    while l < r:
+        tmp = arr[fix]+arr[l]+arr[r]
+        if abs(res) > abs(tmp):
+            res = tmp
+            ans = [fix,l,r]
+        if tmp > 0:
+            r -= 1
+        elif tmp < 0:
+            l += 1
+        else:
+            flag = 1
+            break
+    if flag == 1:
+        break
+
+print(arr[ans[0]],arr[ans[1]],arr[ans[2]])
+```
+
