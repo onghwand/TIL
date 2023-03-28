@@ -435,3 +435,40 @@ def solution(bridge_length, weight, truck_weights):
     return answer
 ```
 
+### 무인도 여행
+
+```python
+from collections import deque
+def bfs(i,j,v,maps,n,m):
+    q = deque()
+    q.append((i,j))
+    v[i][j] = 1
+    
+    cnt = int(maps[i][j])
+    while q:
+        si,sj = q.popleft()
+        for di,dj in [[0,1],[0,-1],[1,0],[-1,0]]:
+            ni,nj = si+di, sj+dj
+            if 0<=ni<n and 0<=nj<m and maps[ni][nj] != 'X' and v[ni][nj] == 0:
+                v[ni][nj] = 1
+                q.append((ni,nj))
+                cnt += int(maps[ni][nj])
+    return cnt
+    
+    
+    
+def solution(maps):
+    answer = []
+    n, m = len(maps), len(maps[0])
+    v = [[0]*m for _ in range(n)]
+    
+    for i in range(n):
+        for j in range(m):
+            if maps[i][j] != 'X' and not v[i][j]:
+                answer.append(bfs(i,j,v,maps,n,m))
+    
+    answer.sort()
+    
+    return answer if answer else [-1]
+```
+
