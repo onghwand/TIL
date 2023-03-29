@@ -472,3 +472,25 @@ def solution(maps):
     return answer if answer else [-1]
 ```
 
+### 호텔대실
+
+```python
+def get_minute(t):
+    h,m = map(int, t.split(':'))
+    return h*60 + m
+
+def solution(book_time):
+    L = 24*60
+    arr = [0]*L
+    for i in range(len(book_time)):
+        start, end = get_minute(book_time[i][0]), get_minute(book_time[i][1])
+        arr[start] += 1
+        if end + 10 < L:
+            arr[end+10] -= 1
+    
+    for i in range(1,L):
+        arr[i] += arr[i-1] 
+    
+    return max(arr)
+```
+
